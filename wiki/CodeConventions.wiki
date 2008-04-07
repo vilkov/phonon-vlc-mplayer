@@ -1,0 +1,752 @@
+= Coding Conventions =
+
+== Introduction ==
+
+These coding conventions are directly inspired from the Java coding style. Thus you should read Java coding style documents and books since this one is not exhaustive.
+
+Here are some interesting documents that you should read:[[BR]]
+[http://java.sun.com/docs/codeconv/ Java Code Conventions by Sun Microsystems][[BR]]
+[http://ambysoft.com/javaCodingStandards.pdf Writing Robust Java Code by AmbySoft]
+
+Coding conventions are not an arbitrary dictatorship, they are here because they are good for code readability and thus for maintenance. In any case use your common sense and ask yourself these questions:
+ * What am I doing?
+ * Why am I doing it this way rather than another?
+ * Is it the best way to do it?
+
+=== From Writing Robust Java Code ===
+
+''Coding standards are important because they lead to greater consistency within your code and the code of your teammates. Greater consistency leads to code that is easier to understand, which in turn means it is easier to develop and to maintain. This reduces the overall cost of the applications that you create.''
+
+''You have to remember that your code will exist for a long time, long after you have moved on to other projects. An important goal during development is to ensure that you can transition your work to another developer, or to another team of developers, so that they can continue to maintain and enhance your work without having to invest an unreasonable effort to understand your code. Code that is difficult to understand runs the risk of being scrapped and rewritten – I wouldn’t be proud of the fact that my code needed to be rewritten, would you? If everyone is doing their own thing then it makes it very difficult to share code between developers, raising the cost of development and maintenance.''
+
+''Inexperienced developers, and cowboys who do not know any better, will often fight having to follow standards. They claim they can code faster if they do it their own way. Pure hogwash. They MIGHT be able to get code out the door faster, but I doubt it. Cowboy programmers get hung up during testing when several difficult-to-find bugs crop up, and when their code needs to be enhanced it often leads to a major rewrite by them because they’re the only ones who understand their code. Is this the way that you want to operate? I certainly do not.''
+
+== A good example is better than a long discussion ==
+
+Here is an implementation of a String class that inherits from std::string, file is named String.h
+
+{{{
+/*
+ * WengoPhone, a voice over Internet phone
+ * Copyright (C) 2004-2005  Wengo
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#ifndef STRING_H
+#define STRING_H
+
+#include <string>
+
+/**
+ * String: std::string wrapper/helper.
+ *
+ * Inspired from the class QString from the Qt library.
+ *
+ * @see QString
+ * @see std::string
+ * @see java.lang.String
+ * @author Tanguy Krotoff
+ */
+class String : public std::string {
+public:
+
+	/**
+	 * Null string.
+	 *
+	 * Rather than to code something like this:
+	 * if (myString == "")
+	 * it's better to write:
+	 * if (myString.empty())
+	 * return "" -> return String::null
+	 */
+	static const String null;
+
+
+	String() : std::string() { }
+
+	String(const char * str) : std::string(str) { }
+
+	String(const std::string & str) : std::string(str) { }
+
+	/**
+	 * Converts a String to std::string.
+	 *
+	 * @return the converted String to std::string
+	 */
+	operator const std::string&() {
+		return *this;
+	}
+
+	/**
+	 * Converts this string to an int.
+	 *
+	 * @return the string converted to an int or 0 if failed to convert
+	 */
+	int toInteger() const;
+
+	/**
+	 * Converts all of the characters in this string to lower case.
+	 *
+	 * Example:
+	 * <pre>
+	 * String myString("WengO");
+	 * str = myString.toLowerCase();	//str == "wengo"
+	 * </pre>
+	 *
+	 * @return the string converted to lowercase
+	 */
+	std::string toLowerCase() const;
+
+	/**
+	 * Converts all of the characters in this string to upper case.
+	 *
+	 * Example:
+	 * <pre>
+	 * String myString("WengO");
+	 * str = myString.toUpperCase();	//str == "WENGO"
+	 * </pre>
+	 *
+	 * @return the string converted to uppercase
+	 */
+	std::string toUpperCase() const;
+
+	/**
+	 * Replaces every occurence of the string before with the String after.
+	 *
+	 * @param before occurence to find
+	 * @param after the string that will replace the String before
+	 * @param caseSensitive the search is case sensitive;
+	 *        otherwise the search is case insensitive
+	 */
+	void replace(const std::string & before, const std::string & after,
+			bool caseSensitive = true);
+
+	/**
+	 * Gets a string from a number.
+	 *
+	 * @param number number to convert into a string
+	 * @return number converted to a string
+	 */
+	static std::string fromNumber(int number);
+
+	/**
+	 * URL-encodes a string.
+	 *
+	 * @param str the string to encode
+	 * @return a string with all non-alphanumeric characters replaced by their
+	 *         URL-encoded equivalent.
+	 */
+	static std::string encodeUrl(const std::string & str);
+
+	/**
+	 * URL-decodes a string.
+	 *
+	 * @param str the URL-encoded string to decode
+	 * @return a string with all URL-encoded sequences replaced by their
+	 *         ASCII equivalent
+	 */
+	static std::string decodeUrl(const std::string & str);
+};
+
+#endif	//STRING_H
+}}}
+
+== A standard C++ header template ==
+
+{{{
+/*
+ * Copyright
+ */
+
+#ifndef NAMESPACE_HEADER_H
+#define NAMESPACE_HEADER_H
+
+#include "..."
+
+#include <...>
+
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cassert>
+#include <cstdlib>
+
+/**
+ * Autobrief.
+ *
+ * More comments.
+ *
+ * @see ...
+ * @see ...
+ * @author ...
+ * @author ...
+ * @author ...
+ * @version ...
+ */
+class Blah : public Blah1, public Blah2, Blah3 {
+public:
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 *
+	 * @param toto ...
+	 * @exception Exception1 ...
+	 * @exception Exception2 ...
+	 */
+	Blah(const Toto & toto) throw (Exception1, Exception2);
+
+	~Blah();
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 *
+	 * @return ...
+	 */
+	std::string getSomething() const {
+		return _something;
+	}
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 *
+	 * @param something ...
+	 */
+	void setSomething(const Something & something) {
+		_something = something;
+	}
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 *
+	 * @return true if ...; false otherwise
+	 */
+	bool isSomething() const {
+		return _isSomething;
+	}
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 *
+	 * @return true if ...; false otherwise
+	 * @deprecated
+	 */
+	bool hasSomething() const {
+		return _hasSomething;
+	}
+
+protected:
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 */
+	virtual void doSomething();
+
+private:
+
+	/**
+	 * Autobrief.
+	 */
+	void computeSomething();
+
+	/** Autobrief. */
+	Something _something;
+
+	/**
+	 * Autobrief.
+	 *
+	 * More comments.
+	 */
+	bool _isSomething;
+
+	/** Autobrief. */
+	bool _hasSomething;
+};
+
+#endif	//NAMESPACE_HEADER_H
+}}}
+
+== C++ filenames ==
+
+C++ headers are of the form !MyClass.h
+C++ implementation files are of the form !MyClass.cpp
+Note the mixed case for filenames.
+
+Never ever use spaces inside filenames nor accents, it can cause some trouble (for instance subversion under MacOSX does not work with accents and spaces).
+
+== Copyright ==
+
+On each source file the copyright notice should be written.
+The copyright starts with /* not /** which is reserved for documentation.
+
+== Include guards ==
+{{{
+	#ifndef NAMESPACE_HEADER_H
+	#define NAMESPACE_HEADER_H
+	...
+	#endif	//NAMESPACE_HEADER_H
+}}}
+
+Avoid the use of !__MY_CLASS_H it's useless, MYCLASS_H is enough.
+Since there are some problems with FILE_H, STRING_H; guards should be named OWFILE_H, OWSTRING_H... OW is the abbreviation for OpenWengo.
+
+== Includes ==
+
+From the book Thinking in C++ (available freely on http://bruceeckel.com) 
+
+''If the order of header inclusion goes “from most specific to most general” then it’s more likely that if your header doesn’t parse by itself, you’ll find out about it sooner and prevent annoyances down the road.''
+
+So the general organization should be:
+{{{
+	#include "InternalHeaders.h"
+	#include <InternalHeaders.h>
+
+	#include <QtLibraryHeaders.h>
+	#include <WindowsHeaders.h>
+	#include <AnotherLibrary.h>
+
+	#include <StandardC++Headers>
+
+	#include <StandardCHeaders>
+}}}
+Standard C++ headers are of the form:
+{{{
+	#include <iostream>
+	#include <vector>
+}}}
+Note that there is no .h
+
+Standard C headers are of the form:
+{{{
+	#include <cstring>
+	#include <cstdlib>
+}}}
+Note that there is no .h and all the headers start with a c
+
+For readability reasons separate include sections with a new line. Be careful when you use #include; Windows is not case sensitive, UNIX is.
+
+WARNING: NEVER EVER WRITE using namespace inside a header file.
+
+== Classes ==
+
+{{{
+	class MySuperHypraCoolClass {
+	public:
+	protected:
+	private:
+	};
+}}}
+
+== Methods ==
+
+Public methods should be declared at the top of the class definition, followed by protected methods and finally private ones.
+Why public methods first and private methods last? Because nobody cares about private methods so they should be at the bottom, on the other hand everybody cares about public methods thus they should be at the top.
+{{{
+	class MyClass {
+	public:
+
+		void doSomethingGreat(...) {
+			...
+		}
+
+	protected:
+
+	private:
+	};
+}}}
+
+== Private members ==
+
+With a leading underscore _. They have to be always private.
+{{{
+	Class MyClass {
+		...
+	private:
+
+		MyClass * _myMemberVariable;
+	};
+}}}
+The advantage of this approach is that you immediately know that you are dealing with a field, avoiding the name hiding issue with parameters and locals. The main disadvantage is that this is not the standard set by Sun.
+Another option is to start private members by 'm_'.
+
+== Variables ==
+
+{{{
+	MyClass * myVariable = new MyClass();
+	int i;
+	int j = 0;
+	MyClass tmp;
+}}}
+
+== Constants ==
+
+{{{
+	static const std::string MY_CONSTANT;
+}}}
+
+== Indentation ==
+
+Tabs should be used. A tab is equal to eight spaces. Mixing tabs and spaces should be avoided.
+But a tab of eight spaces is too long!
+''The answer to that is that if you need more than 3 levels of indentation, you're screwed anyway, and should fix your program.'' (!CodingStyle from the Linux kernel source distribution)
+
+== Code Documentation ==
+
+Use javadoc comments. We don't want to be dependent on a specific tool like Doxygen. Javadoc comments are recognized by all the documentation generators (Doxygen included).
+
+Javadoc comments are inside the header file. Why? Because people like to read header files and to see the documentation at the same time. I don't like to open the header file (.h) plus to read a huge implementation file (.cpp) at the same time. Counterpart is that if you modify documentation from .h files, you might need to recompile most of you project.
+
+If you don't know how to document source code check the examples and read [http://java.sun.com/j2se/javadoc/writingdoccomments/ How to Write Doc Comments for the Javadoc Tool from Sun Microsystems]
+
+Keep in mind (!CodingStyle from the Linux kernel source distribution):
+
+''Comments are good, but there is also a danger of over-commenting. NEVER try to explain HOW your code works in a comment: it's much better to write the code so that the _working_ is obvious, and it's a waste of time to explain badly written code.''
+
+''Generally, you want your comments to tell WHAT your code does, not HOW. Also, try to avoid putting comments inside a function body: if the function is so complex that you need to separately comment parts of it, you should probably split it into smaller pieces. You can make small comments to note or warn about something particularly clever (or ugly), but try to avoid excess. Instead, put the comments at the head of the function, telling people what it does, and possibly WHY it does it.''
+
+== Tags (@tag) ==
+
+||@author||Developer name||name||
+||@bug||(Not from javadoc) A Bug description||description||
+||@deprecated||Marks a method as deprecated. Some IDEs will issue a compilation warning if the method is called.||text||
+||@exception||Documents an exception thrown by a method - same as @throws.||name description||
+||@param||Defines a method parameter. Required for each parameter.||name description||
+||@return||Documents the return value. This tag should not be used for constructors or methods defined with a void return type.||description||
+||@see||Documents an association to another method or class.||!ClassName ClassName#method||
+||@since||Documents when a method was added to a class.||number||
+||@version||Provides the version number of a class or method.||number||
+
+Originally taken from http://en.wikipedia.org/wiki/Javadoc
+
+Specific tags from doxygen for modules can be used:[[BR]]
+@name description[[BR]]
+@defgroup name description[[BR]]
+@ingroup name
+
+{{{
+/**
+ * @name description
+ * @{
+ */
+
+/** @} */
+
+/**
+ * @defgroup group1 The First Group
+ *
+ * This is the first group
+ */
+
+/**
+ * @ingroup group1
+ */
+}}}
+
+== HTML tags (<tag></tag>) ==
+
+<p>new paragraph[[BR]]
+<pre>preformatted fragment very useful for including source code inside documentation</pre>[[BR]]
+<img>image</img>
+
+
+== Other tags ==
+
+TODO[[BR]]
+FIXME
+
+== Implementation source code ==
+
+Example (String.cpp):
+{{{
+/*
+ * WengoPhone, a voice over Internet phone
+ * Copyright (C) 2004-2005  Wengo
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#include "String.h"
+
+#include <cctype>
+#include <algorithm>
+#include <sstream>
+using namespace std;
+
+const String String::null;
+
+int String::toInteger() const {
+	int tmp;
+	stringstream ss(c_str());
+	ss >> tmp;
+	return tmp;
+}
+
+String String::toUpperCase() const {
+	String tmp(c_str());
+	transform(tmp.begin(), tmp.end(), tmp.begin(), toupper);
+	return tmp;
+}
+
+String String::toLowerCase() const {
+	String tmp(c_str());
+	transform(tmp.begin(), tmp.end(), tmp.begin(), tolower);
+	return tmp;
+}
+
+void String::replace(const std::string & before, const std::string & after,
+			bool caseSensitive) {
+
+	//Copy this + before to tmp + before2
+	string tmp(c_str());
+	String before2(before);
+
+	if (!caseSensitive) {
+		//Converts tmp + before2 in lower case
+		tmp = toLowerCase();
+		before2 = before2.toLowerCase();
+	}
+
+	//Searches on tmp + before2 rather than this + before
+	string::size_type pos = 0;
+	while ((pos = tmp.find(before2, pos)) != string::npos) {
+		//Replaces on this + tmp
+		string::replace(pos, before2.length(), after);
+		tmp.replace(pos, before2.length(), after);
+		pos = pos + after.length();
+	}
+}
+
+std::string String::fromNumber(int number) {
+	string tmp;
+	stringstream ss;
+	ss << number;
+	ss >> tmp;
+	return tmp;
+}
+
+std::string String::decodeUrl(const std::string & str) {
+	std::string out;
+	std::string::const_iterator it;
+
+	for (it = str.begin(); it != str.end(); it++) {
+		if (*it == '%') {
+			char entity[3] = {*(++it), *(++it), 0};
+			int c = strtol(entity, NULL, 16);
+			out += c;
+		} else {
+			out += *it;
+		}
+	}
+	return out;
+}
+
+std::string String::encodeUrl(const std::string & str) {
+	std::string out;
+	std::string::const_iterator it;
+
+	for (it = str.begin(); it != str.end(); it++) {
+		if (!(isalpha(*it) || isdigit(*it))) {
+			unsigned char highNibble = ((unsigned char) *it) >> 4;
+			unsigned char lowNibble = ((unsigned char) *it) & 0x0F;
+			out += '%';
+			out += (highNibble < 0x0A ? '0' + highNibble : 'a' + highNibble - 0x0A);
+			out += (lowNibble < 0x0A ? '0' + lowNibble : 'a' + lowNibble - 0x0A);
+			continue;
+		}
+		out += *it;
+	}
+	return out;
+}
+}}}
+
+== Braces ==
+
+''The preferred way, as shown to us by the prophets Kernighan and Ritchie, is to put the opening brace last on the line, and put the closing brace first, thusly:'' (!CodingStyle from the Linux kernel source distribution)
+{{{
+	if (x is true) {
+		we do y
+	}
+
+	if (x == y) {
+		..
+	} else if (x > y) {
+		...
+	} else {
+		....
+	}
+}}}
+
+Always write braces otherwise it can introduce mistakes:
+{{{
+	if (x is true)
+		we do y
+		we do z
+	else
+		we do w
+}}}
+
+== Use new lines in your code ==
+
+Use a single blank line to separate logical groups of code.
+
+== Avoid endline comments ==
+
+They are hard to format and to maintain. Comments at the beginning of a new line makes the code cleaner.
+{{{
+	if (x is true) {
+		we do y	//y blah blah
+		we do z	//z blah blah
+	}
+
+	if (x is true) {
+		//y blah blah
+		we do y
+
+		//z blah blah
+		we do z
+	}
+}}}
+
+== if(...) or if (...)?? ==
+
+Let's people decide:
+http://www.google.com/codesearch
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28%22&btnG=Search "if(" -> 2,730,000 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28%22&btnG=Search "if (" -> 6,080,000 answers]
+
+Same for "if (...) {" and "if (...){"[[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22%29%7B%22&btnG=Search "){" -> 754,000 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22%29+%7B%22&btnG=Search ") {" -> 5,490,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28+tmp%22&btnG=Search "if( tmp" -> 5,000 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28+tmp%22&btnG=Search "if ( tmp" -> 8,000 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28tmp%22&btnG=Search "if(tmp" -> 22,900 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28tmp%22&btnG=Search "if (tmp" -> 150,000 answers]
+
+General idea is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most developers follow.
+
+== Methods and functions ==
+
+A perfect explanation is from the Linux kernel !CodingStyle:
+
+''Functions should be short and sweet, and do just one thing. They should (...) do one thing and do that well.''
+
+''The maximum length of a function is inversely proportional to the complexity and indentation level of that function. So, if you have a conceptually simple function that is just one long (but simple) case-statement, where you have to do lots of small things for a lot of different cases, it's OK to have a longer function.''
+
+''However, if you have a complex function, and you suspect that a less-than-gifted first-year high-school student might not even understand what the function is all about, you should adhere to the maximum limits all the more closely. Use helper functions with descriptive names (...).''
+
+''Another measure of the function is the number of local variables. They shouldn't exceed 5-10, or you're doing something wrong. Re-think the function, and split it into smaller pieces. A human brain can generally easily keep track of about 7 different things, anything more and it gets confused. You know you're brilliant, but maybe you'd like to understand what you did 2 weeks from now.''
+
+In other words, "Keep it Simple, Stupid", "Keep It Short and Straight-forward" or if your prefer Albert Einstein, ''Things should be made as simple as possible, but no simpler.''
+
+== Libraries and applications organization ==
+
+Directory hierarchy for libraries and applications are as follow:
+
+'''/include/*.h'''[[BR]]
+Include files with classes that needs to be public
+
+'''/include/$platform/*.h'''[[BR]]
+Classes for a specific platform, $platform is lowercase and can be win32, linux, mac1...
+
+'''/src/*.cpp'''[[BR]]
+Private classes: implementation files (*.cpp) + private include files (*.h)
+
+'''/src/$platform/*.cpp *.rc'''[[BR]]
+Classes for a specific platform, $platform is lowercase and can be win32, linux, macx...
+
+'''/doc/'''[[BR]]
+Documentation directory (with subdirectories like html for Doxygen, together...)
+
+'''/tests/'''[[BR]]
+Test classes (using Boost::test)
+
+'''/bin/'''[[BR]]
+Binary files (*.exe, *.lib, *.so, *.a...)
+
+'''/debian/'''[[BR]]
+Standard Debian installer directory
+
+'''/rpm/*.spec *.spec.in'''[[BR]]
+RPM installer directory
+
+'''/nsis/'''[[BR]]
+NSIS installer directory
+
+'''/Doxyfile'''[[BR]]
+Standard configuration file for Doxygen
+
+'''/README'''[[BR]]
+Standard read me file
+
+'''/INSTALL'''[[BR]]
+Standard install file
+
+'''/TODO'''[[BR]]
+Standard to do file
+
+'''/COPYING'''[[BR]]
+Standard license file
+
+'''/AUTHORS'''[[BR]]
+Standard authors file
+
+'''/ChangeLog'''[[BR]]
+Standard change log file
+
+'''/*.pro'''[[BR]]
+Standard qmake file
+
+'''/SConscript'''[[BR]]
+Standard SCons file
+
+'''/CMakeLists.txt'''[[BR]]
+Standard CMake file
+
+'''/*.vcproj *.sln *.dsp'''[[BR]]
+Visual C++ project files
+
+== Links == 
+
+[http://www.ambysoft.com/javaCodingStandards.html Ambysoft Coding Standards][[BR]]
+[http://java.sun.com/docs/codeconv/ Code Conventions for the Java Programming Language][[BR]]
+[http://java.sun.com/j2se/javadoc/writingdoccomments/ How to Write Doc Comments for the Javadoc Tool][[BR]]
+[http://www.joelonsoftware.com/printerFriendly/articles/fog0000000043.html The Joel Test: 12 Steps to Better Code][[BR]]
+[http://www.gamesfromwithin.com/articles/0406/000024.html Simple Is Beautiful]
