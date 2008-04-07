@@ -1,19 +1,22 @@
-= Coding Conventions =
+=Coding Conventions=
 
-== Introduction ==
+==Introduction==
 
 These coding conventions are directly inspired from the Java coding style. Thus you should read Java coding style documents and books since this one is not exhaustive.
 
-Here are some interesting documents that you should read:[[BR]]
-[http://java.sun.com/docs/codeconv/ Java Code Conventions by Sun Microsystems][[BR]]
+Here are some interesting documents that you should read:
+
+[http://java.sun.com/docs/codeconv/ Java Code Conventions by Sun Microsystems]
+
 [http://ambysoft.com/javaCodingStandards.pdf Writing Robust Java Code by AmbySoft]
+
 
 Coding conventions are not an arbitrary dictatorship, they are here because they are good for code readability and thus for maintenance. In any case use your common sense and ask yourself these questions:
  * What am I doing?
  * Why am I doing it this way rather than another?
  * Is it the best way to do it?
 
-=== From Writing Robust Java Code ===
+===From Writing Robust Java Code===
 
 ''Coding standards are important because they lead to greater consistency within your code and the code of your teammates. Greater consistency leads to code that is easier to understand, which in turn means it is easier to develop and to maintain. This reduces the overall cost of the applications that you create.''
 
@@ -21,7 +24,7 @@ Coding conventions are not an arbitrary dictatorship, they are here because they
 
 ''Inexperienced developers, and cowboys who do not know any better, will often fight having to follow standards. They claim they can code faster if they do it their own way. Pure hogwash. They MIGHT be able to get code out the door faster, but I doubt it. Cowboy programmers get hung up during testing when several difficult-to-find bugs crop up, and when their code needs to be enhanced it often leads to a major rewrite by them because they’re the only ones who understand their code. Is this the way that you want to operate? I certainly do not.''
 
-== A good example is better than a long discussion ==
+==A good example is better than a long discussion==
 
 Here is an implementation of a String class that inherits from std::string, file is named String.h
 
@@ -164,7 +167,7 @@ public:
 #endif	//STRING_H
 }}}
 
-== A standard C++ header template ==
+==A standard C++ header template==
 
 {{{
 /*
@@ -290,7 +293,7 @@ private:
 #endif	//NAMESPACE_HEADER_H
 }}}
 
-== C++ filenames ==
+==C++ filenames==
 
 C++ headers are of the form !MyClass.h
 C++ implementation files are of the form !MyClass.cpp
@@ -298,12 +301,12 @@ Note the mixed case for filenames.
 
 Never ever use spaces inside filenames nor accents, it can cause some trouble (for instance subversion under MacOSX does not work with accents and spaces).
 
-== Copyright ==
+==Copyright==
 
 On each source file the copyright notice should be written.
 The copyright starts with /* not /** which is reserved for documentation.
 
-== Include guards ==
+==Include guards==
 {{{
 	#ifndef NAMESPACE_HEADER_H
 	#define NAMESPACE_HEADER_H
@@ -314,7 +317,7 @@ The copyright starts with /* not /** which is reserved for documentation.
 Avoid the use of !__MY_CLASS_H it's useless, MYCLASS_H is enough.
 Since there are some problems with FILE_H, STRING_H; guards should be named OWFILE_H, OWSTRING_H... OW is the abbreviation for OpenWengo.
 
-== Includes ==
+==Includes==
 
 From the book Thinking in C++ (available freely on http://bruceeckel.com) 
 
@@ -351,7 +354,7 @@ For readability reasons separate include sections with a new line. Be careful wh
 
 WARNING: NEVER EVER WRITE using namespace inside a header file.
 
-== Classes ==
+==Classes==
 
 {{{
 	class MySuperHypraCoolClass {
@@ -361,7 +364,7 @@ WARNING: NEVER EVER WRITE using namespace inside a header file.
 	};
 }}}
 
-== Methods ==
+==Methods==
 
 Public methods should be declared at the top of the class definition, followed by protected methods and finally private ones.
 Why public methods first and private methods last? Because nobody cares about private methods so they should be at the bottom, on the other hand everybody cares about public methods thus they should be at the top.
@@ -379,7 +382,7 @@ Why public methods first and private methods last? Because nobody cares about pr
 	};
 }}}
 
-== Private members ==
+==Private members==
 
 With a leading underscore _. They have to be always private.
 {{{
@@ -393,7 +396,7 @@ With a leading underscore _. They have to be always private.
 The advantage of this approach is that you immediately know that you are dealing with a field, avoiding the name hiding issue with parameters and locals. The main disadvantage is that this is not the standard set by Sun.
 Another option is to start private members by 'm_'.
 
-== Variables ==
+==Variables==
 
 {{{
 	MyClass * myVariable = new MyClass();
@@ -402,19 +405,19 @@ Another option is to start private members by 'm_'.
 	MyClass tmp;
 }}}
 
-== Constants ==
+==Constants==
 
 {{{
 	static const std::string MY_CONSTANT;
 }}}
 
-== Indentation ==
+==Indentation==
 
 Tabs should be used. A tab is equal to eight spaces. Mixing tabs and spaces should be avoided.
 But a tab of eight spaces is too long!
 ''The answer to that is that if you need more than 3 levels of indentation, you're screwed anyway, and should fix your program.'' (!CodingStyle from the Linux kernel source distribution)
 
-== Code Documentation ==
+==Code Documentation==
 
 Use javadoc comments. We don't want to be dependent on a specific tool like Doxygen. Javadoc comments are recognized by all the documentation generators (Doxygen included).
 
@@ -428,7 +431,7 @@ Keep in mind (!CodingStyle from the Linux kernel source distribution):
 
 ''Generally, you want your comments to tell WHAT your code does, not HOW. Also, try to avoid putting comments inside a function body: if the function is so complex that you need to separately comment parts of it, you should probably split it into smaller pieces. You can make small comments to note or warn about something particularly clever (or ugly), but try to avoid excess. Instead, put the comments at the head of the function, telling people what it does, and possibly WHY it does it.''
 
-== Tags (@tag) ==
+==Tags (@tag)==
 
 ||@author||Developer name||name||
 ||@bug||(Not from javadoc) A Bug description||description||
@@ -442,9 +445,12 @@ Keep in mind (!CodingStyle from the Linux kernel source distribution):
 
 Originally taken from http://en.wikipedia.org/wiki/Javadoc
 
-Specific tags from doxygen for modules can be used:[[BR]]
-@name description[[BR]]
-@defgroup name description[[BR]]
+Specific tags from doxygen for modules can be used:
+
+@name description
+
+@defgroup name description
+
 @ingroup name
 
 {{{
@@ -466,19 +472,22 @@ Specific tags from doxygen for modules can be used:[[BR]]
  */
 }}}
 
-== HTML tags (<tag></tag>) ==
+==HTML tags (<tag></tag>)==
 
-<p>new paragraph[[BR]]
-<pre>preformatted fragment very useful for including source code inside documentation</pre>[[BR]]
+<p>new paragraph
+
+<pre>preformatted fragment very useful for including source code inside documentation</pre>
+
 <img>image</img>
 
 
-== Other tags ==
+==Other tags==
 
-TODO[[BR]]
+TODO
+
 FIXME
 
-== Implementation source code ==
+==Implementation source code==
 
 Example (String.cpp):
 {{{
@@ -595,7 +604,7 @@ std::string String::encodeUrl(const std::string & str) {
 }
 }}}
 
-== Braces ==
+==Braces==
 
 ''The preferred way, as shown to us by the prophets Kernighan and Ritchie, is to put the opening brace last on the line, and put the closing brace first, thusly:'' (!CodingStyle from the Linux kernel source distribution)
 {{{
@@ -621,11 +630,11 @@ Always write braces otherwise it can introduce mistakes:
 		we do w
 }}}
 
-== Use new lines in your code ==
+==Use new lines in your code==
 
 Use a single blank line to separate logical groups of code.
 
-== Avoid endline comments ==
+==Avoid endline comments==
 
 They are hard to format and to maintain. Comments at the beginning of a new line makes the code cleaner.
 {{{
@@ -643,26 +652,32 @@ They are hard to format and to maintain. Comments at the beginning of a new line
 	}
 }}}
 
-== if(...) or if (...)?? ==
+==if(...) or if (...)??==
 
 Let's people decide:
 http://www.google.com/codesearch
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28%22&btnG=Search "if(" -> 2,730,000 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28%22&btnG=Search "if(" -> 2,730,000 answers]
+
 [http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28%22&btnG=Search "if (" -> 6,080,000 answers]
 
-Same for "if (...) {" and "if (...){"[[BR]]
-[http://www.google.com/codesearch?hl=en&lr=&q=%22%29%7B%22&btnG=Search "){" -> 754,000 answers][[BR]]
+Same for "if (...) {" and "if (...){"
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22%29%7B%22&btnG=Search "){" -> 754,000 answers]
+
 [http://www.google.com/codesearch?hl=en&lr=&q=%22%29+%7B%22&btnG=Search ") {" -> 5,490,000 answers]
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28+tmp%22&btnG=Search "if( tmp" -> 5,000 answers][[BR]]
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28+tmp%22&btnG=Search "if ( tmp" -> 8,000 answers][[BR]]
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28tmp%22&btnG=Search "if(tmp" -> 22,900 answers][[BR]]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28+tmp%22&btnG=Search "if( tmp" -> 5,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28+tmp%22&btnG=Search "if ( tmp" -> 8,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28tmp%22&btnG=Search "if(tmp" -> 22,900 answers]
+
 [http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28tmp%22&btnG=Search "if (tmp" -> 150,000 answers]
 
 General idea is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most developers follow.
 
-== Methods and functions ==
+==Methods and functions==
 
 A perfect explanation is from the Linux kernel !CodingStyle:
 
@@ -676,77 +691,102 @@ A perfect explanation is from the Linux kernel !CodingStyle:
 
 In other words, "Keep it Simple, Stupid", "Keep It Short and Straight-forward" or if your prefer Albert Einstein, ''Things should be made as simple as possible, but no simpler.''
 
-== Libraries and applications organization ==
+==Libraries and applications organization==
 
 Directory hierarchy for libraries and applications are as follow:
 
-'''/include/*.h'''[[BR]]
+'''/include/*.h'''
+
 Include files with classes that needs to be public
 
-'''/include/$platform/*.h'''[[BR]]
+'''/include/$platform/*.h'''
+
 Classes for a specific platform, $platform is lowercase and can be win32, linux, mac1...
 
-'''/src/*.cpp'''[[BR]]
+'''/src/*.cpp'''
+
 Private classes: implementation files (*.cpp) + private include files (*.h)
 
-'''/src/$platform/*.cpp *.rc'''[[BR]]
+'''/src/$platform/*.cpp *.rc'''
+
 Classes for a specific platform, $platform is lowercase and can be win32, linux, macx...
 
-'''/doc/'''[[BR]]
+'''/doc/'''
+
 Documentation directory (with subdirectories like html for Doxygen, together...)
 
-'''/tests/'''[[BR]]
-Test classes (using Boost::test)
+'''/tests/'''
 
-'''/bin/'''[[BR]]
+Test classes
+
+'''/bin/'''
+
 Binary files (*.exe, *.lib, *.so, *.a...)
 
-'''/debian/'''[[BR]]
+'''/debian/'''
+
 Standard Debian installer directory
 
-'''/rpm/*.spec *.spec.in'''[[BR]]
+'''/rpm/*.spec *.spec.in'''
+
 RPM installer directory
 
-'''/nsis/'''[[BR]]
+'''/nsis/'''
+
 NSIS installer directory
 
-'''/Doxyfile'''[[BR]]
+'''/Doxyfile'''
+
 Standard configuration file for Doxygen
 
-'''/README'''[[BR]]
+'''/README'''
+
 Standard read me file
 
-'''/INSTALL'''[[BR]]
+'''/INSTALL'''
+
 Standard install file
 
-'''/TODO'''[[BR]]
+'''/TODO'''
+
 Standard to do file
 
-'''/COPYING'''[[BR]]
+'''/COPYING'''
+
 Standard license file
 
-'''/AUTHORS'''[[BR]]
+'''/AUTHORS'''
+
 Standard authors file
 
-'''/ChangeLog'''[[BR]]
+'''/ChangeLog'''
+
 Standard change log file
 
-'''/*.pro'''[[BR]]
+'''/*.pro'''
+
 Standard qmake file
 
-'''/SConscript'''[[BR]]
+'''/SConscript'''
+
 Standard SCons file
 
-'''/CMakeLists.txt'''[[BR]]
+'''/CMakeLists.txt'''
+
 Standard CMake file
 
-'''/*.vcproj *.sln *.dsp'''[[BR]]
+'''/*.vcproj *.sln *.dsp'''
+
 Visual C++ project files
 
-== Links == 
+==Links==
 
-[http://www.ambysoft.com/javaCodingStandards.html Ambysoft Coding Standards][[BR]]
-[http://java.sun.com/docs/codeconv/ Code Conventions for the Java Programming Language][[BR]]
-[http://java.sun.com/j2se/javadoc/writingdoccomments/ How to Write Doc Comments for the Javadoc Tool][[BR]]
-[http://www.joelonsoftware.com/printerFriendly/articles/fog0000000043.html The Joel Test: 12 Steps to Better Code][[BR]]
+[http://www.ambysoft.com/javaCodingStandards.html Ambysoft Coding Standards]
+
+[http://java.sun.com/docs/codeconv/ Code Conventions for the Java Programming Language]
+
+[http://java.sun.com/j2se/javadoc/writingdoccomments/ How to Write Doc Comments for the Javadoc Tool]
+
+[http://www.joelonsoftware.com/printerFriendly/articles/fog0000000043.html The Joel Test: 12 Steps to Better Code]
+
 [http://www.gamesfromwithin.com/articles/0406/000024.html Simple Is Beautiful]
