@@ -18,11 +18,11 @@ Coding conventions are not an arbitrary dictatorship, they are here because they
 
 ===From Writing Robust Java Code===
 
-''Coding standards are important because they lead to greater consistency within your code and the code of your teammates. Greater consistency leads to code that is easier to understand, which in turn means it is easier to develop and to maintain. This reduces the overall cost of the applications that you create.''
+_Coding standards are important because they lead to greater consistency within your code and the code of your teammates. Greater consistency leads to code that is easier to understand, which in turn means it is easier to develop and to maintain. This reduces the overall cost of the applications that you create._
 
-''You have to remember that your code will exist for a long time, long after you have moved on to other projects. An important goal during development is to ensure that you can transition your work to another developer, or to another team of developers, so that they can continue to maintain and enhance your work without having to invest an unreasonable effort to understand your code. Code that is difficult to understand runs the risk of being scrapped and rewritten – I wouldn’t be proud of the fact that my code needed to be rewritten, would you? If everyone is doing their own thing then it makes it very difficult to share code between developers, raising the cost of development and maintenance.''
+_You have to remember that your code will exist for a long time, long after you have moved on to other projects. An important goal during development is to ensure that you can transition your work to another developer, or to another team of developers, so that they can continue to maintain and enhance your work without having to invest an unreasonable effort to understand your code. Code that is difficult to understand runs the risk of being scrapped and rewritten - I wouldn't be proud of the fact that my code needed to be rewritten, would you? If everyone is doing their own thing then it makes it very difficult to share code between developers, raising the cost of development and maintenance._
 
-''Inexperienced developers, and cowboys who do not know any better, will often fight having to follow standards. They claim they can code faster if they do it their own way. Pure hogwash. They MIGHT be able to get code out the door faster, but I doubt it. Cowboy programmers get hung up during testing when several difficult-to-find bugs crop up, and when their code needs to be enhanced it often leads to a major rewrite by them because they’re the only ones who understand their code. Is this the way that you want to operate? I certainly do not.''
+_Inexperienced developers, and cowboys who do not know any better, will often fight having to follow standards. They claim they can code faster if they do it their own way. Pure hogwash. They MIGHT be able to get code out the door faster, but I doubt it. Cowboy programmers get hung up during testing when several difficult-to-find bugs crop up, and when their code needs to be enhanced it often leads to a major rewrite by them because they're the only ones who understand their code. Is this the way that you want to operate? I certainly do not._
 
 ==A good example is better than a long discussion==
 
@@ -295,16 +295,16 @@ private:
 
 ==C++ filenames==
 
-C++ headers are of the form !MyClass.h
-C++ implementation files are of the form !MyClass.cpp
+C++ headers are of the form {{{MyClass.h}}}
+C++ implementation files are of the form {{{MyClass.cpp}}}
 Note the mixed case for filenames.
 
-Never ever use spaces inside filenames nor accents, it can cause some trouble (for instance subversion under MacOSX does not work with accents and spaces).
+Never use spaces inside filenames nor accents, it can cause some trouble (for instance Subversion under MacOSX does not work with accents and spaces).
 
 ==Copyright==
 
 On each source file the copyright notice should be written.
-The copyright starts with /* not /** which is reserved for documentation.
+The copyright starts with {{{/*}}} not {{{/**}}} which is reserved for documentation.
 
 ==Include guards==
 {{{
@@ -314,14 +314,13 @@ The copyright starts with /* not /** which is reserved for documentation.
 	#endif	//NAMESPACE_HEADER_H
 }}}
 
-Avoid the use of !__MY_CLASS_H it's useless, MYCLASS_H is enough.
-Since there are some problems with FILE_H, STRING_H; guards should be named OWFILE_H, OWSTRING_H... OW is the abbreviation for OpenWengo.
+Avoid the use of {{{__MY_CLASS_H}}} it's useless, {{{MYCLASS_H}}} is enough.
 
 ==Includes==
 
-From the book Thinking in C++ (available freely on http://bruceeckel.com) 
+From the book Thinking in C++ (available freely on http://bruceeckel.com)
 
-''If the order of header inclusion goes “from most specific to most general” then it’s more likely that if your header doesn’t parse by itself, you’ll find out about it sooner and prevent annoyances down the road.''
+_If the order of header inclusion goes "from most specific to most general" then it's more likely that if your header doesn't parse by itself, you'll find out about it sooner and prevent annoyances down the road._
 
 So the general organization should be:
 {{{
@@ -352,7 +351,7 @@ Note that there is no .h and all the headers start with a c
 
 For readability reasons separate include sections with a new line. Be careful when you use #include; Windows is not case sensitive, UNIX is.
 
-WARNING: NEVER EVER WRITE using namespace inside a header file.
+Never do {{{using namespace}}} inside a header file.
 
 ==Classes==
 
@@ -384,7 +383,7 @@ Why public methods first and private methods last? Because nobody cares about pr
 
 ==Private members==
 
-With a leading underscore _. They have to be always private.
+With a leading underscore {{{_}}}. They have to be always private.
 {{{
 	Class MyClass {
 		...
@@ -394,7 +393,7 @@ With a leading underscore _. They have to be always private.
 	};
 }}}
 The advantage of this approach is that you immediately know that you are dealing with a field, avoiding the name hiding issue with parameters and locals. The main disadvantage is that this is not the standard set by Sun.
-Another option is to start private members by 'm_'.
+Another option is to start private members by {{{m_}}}.
 
 ==Variables==
 
@@ -415,7 +414,7 @@ Another option is to start private members by 'm_'.
 
 Tabs should be used. A tab is equal to eight spaces. Mixing tabs and spaces should be avoided.
 But a tab of eight spaces is too long!
-''The answer to that is that if you need more than 3 levels of indentation, you're screwed anyway, and should fix your program.'' (!CodingStyle from the Linux kernel source distribution)
+_The answer to that is that if you need more than 3 levels of indentation, you're screwed anyway, and should fix your program._ (!CodingStyle from the Linux kernel source distribution)
 
 ==Code Documentation==
 
@@ -427,9 +426,9 @@ If you don't know how to document source code check the examples and read [http:
 
 Keep in mind (!CodingStyle from the Linux kernel source distribution):
 
-''Comments are good, but there is also a danger of over-commenting. NEVER try to explain HOW your code works in a comment: it's much better to write the code so that the _working_ is obvious, and it's a waste of time to explain badly written code.''
+_Comments are good, but there is also a danger of over-commenting. NEVER try to explain HOW your code works in a comment: it's much better to write the code so that the _working_ is obvious, and it's a waste of time to explain badly written code._
 
-''Generally, you want your comments to tell WHAT your code does, not HOW. Also, try to avoid putting comments inside a function body: if the function is so complex that you need to separately comment parts of it, you should probably split it into smaller pieces. You can make small comments to note or warn about something particularly clever (or ugly), but try to avoid excess. Instead, put the comments at the head of the function, telling people what it does, and possibly WHY it does it.''
+_Generally, you want your comments to tell WHAT your code does, not HOW. Also, try to avoid putting comments inside a function body: if the function is so complex that you need to separately comment parts of it, you should probably split it into smaller pieces. You can make small comments to note or warn about something particularly clever (or ugly), but try to avoid excess. Instead, put the comments at the head of the function, telling people what it does, and possibly WHY it does it._
 
 ==Tags (@tag)==
 
@@ -439,7 +438,7 @@ Keep in mind (!CodingStyle from the Linux kernel source distribution):
 ||@exception||Documents an exception thrown by a method - same as @throws.||name description||
 ||@param||Defines a method parameter. Required for each parameter.||name description||
 ||@return||Documents the return value. This tag should not be used for constructors or methods defined with a void return type.||description||
-||@see||Documents an association to another method or class.||!ClassName ClassName#method||
+||@see||Documents an association to another method or class.||!ClassName !ClassName#method||
 ||@since||Documents when a method was added to a class.||number||
 ||@version||Provides the version number of a class or method.||number||
 
@@ -606,7 +605,7 @@ std::string String::encodeUrl(const std::string & str) {
 
 ==Braces==
 
-''The preferred way, as shown to us by the prophets Kernighan and Ritchie, is to put the opening brace last on the line, and put the closing brace first, thusly:'' (!CodingStyle from the Linux kernel source distribution)
+_The preferred way, as shown to us by the prophets Kernighan and Ritchie, is to put the opening brace last on the line, and put the closing brace first, thusly:_ (!CodingStyle from the Linux kernel source distribution)
 {{{
 	if (x is true) {
 		we do y
@@ -681,101 +680,101 @@ General idea is that you want your code to be accessible to other developers (th
 
 A perfect explanation is from the Linux kernel !CodingStyle:
 
-''Functions should be short and sweet, and do just one thing. They should (...) do one thing and do that well.''
+_Functions should be short and sweet, and do just one thing. They should (...) do one thing and do that well._
 
-''The maximum length of a function is inversely proportional to the complexity and indentation level of that function. So, if you have a conceptually simple function that is just one long (but simple) case-statement, where you have to do lots of small things for a lot of different cases, it's OK to have a longer function.''
+_The maximum length of a function is inversely proportional to the complexity and indentation level of that function. So, if you have a conceptually simple function that is just one long (but simple) case-statement, where you have to do lots of small things for a lot of different cases, it's OK to have a longer function._
 
-''However, if you have a complex function, and you suspect that a less-than-gifted first-year high-school student might not even understand what the function is all about, you should adhere to the maximum limits all the more closely. Use helper functions with descriptive names (...).''
+_However, if you have a complex function, and you suspect that a less-than-gifted first-year high-school student might not even understand what the function is all about, you should adhere to the maximum limits all the more closely. Use helper functions with descriptive names (...)._
 
-''Another measure of the function is the number of local variables. They shouldn't exceed 5-10, or you're doing something wrong. Re-think the function, and split it into smaller pieces. A human brain can generally easily keep track of about 7 different things, anything more and it gets confused. You know you're brilliant, but maybe you'd like to understand what you did 2 weeks from now.''
+_Another measure of the function is the number of local variables. They shouldn't exceed 5-10, or you're doing something wrong. Re-think the function, and split it into smaller pieces. A human brain can generally easily keep track of about 7 different things, anything more and it gets confused. You know you're brilliant, but maybe you'd like to understand what you did 2 weeks from now._
 
-In other words, "Keep it Simple, Stupid", "Keep It Short and Straight-forward" or if your prefer Albert Einstein, ''Things should be made as simple as possible, but no simpler.''
+In other words, "Keep it Simple, Stupid", "Keep It Short and Straight-forward" or if your prefer Albert Einstein, _Things should be made as simple as possible, but no simpler._
 
 ==Libraries and applications organization==
 
 Directory hierarchy for libraries and applications are as follow:
 
-'''/include/*.h'''
+{{{/include/*.h}}}
 
 Include files with classes that needs to be public
 
-'''/include/$platform/*.h'''
+{{{/include/$platform/*.h}}}
 
-Classes for a specific platform, $platform is lowercase and can be win32, linux, mac1...
+Classes for a specific platform, $platform is lowercase and can be win32, linux, mac...
 
-'''/src/*.cpp'''
+{{{/src/*.cpp}}}
 
-Private classes: implementation files (*.cpp) + private include files (*.h)
+Private classes: implementation files (.cpp) + private include files (.h)
 
-'''/src/$platform/*.cpp *.rc'''
+{{{/src/$platform/*.cpp *.rc}}}
 
-Classes for a specific platform, $platform is lowercase and can be win32, linux, macx...
+Classes for a specific platform, $platform is lowercase and can be win32, linux, mac...
 
-'''/doc/'''
+{{{/doc/}}}
 
 Documentation directory (with subdirectories like html for Doxygen, together...)
 
-'''/tests/'''
+{{{/tests/}}}
 
 Test classes
 
-'''/bin/'''
+{{{/bin/}}}
 
-Binary files (*.exe, *.lib, *.so, *.a...)
+Binary files (.exe, .lib, .so, .a...)
 
-'''/debian/'''
+{{{/debian/}}}
 
 Standard Debian installer directory
 
-'''/rpm/*.spec *.spec.in'''
+{{{/rpm/*.spec *.spec.in}}}
 
 RPM installer directory
 
-'''/nsis/'''
+{{{/nsis/}}}
 
 NSIS installer directory
 
-'''/Doxyfile'''
+{{{/Doxyfile}}}
 
 Standard configuration file for Doxygen
 
-'''/README'''
+{{{/README}}}
 
 Standard read me file
 
-'''/INSTALL'''
+{{{/INSTALL}}}
 
 Standard install file
 
-'''/TODO'''
+{{{/TODO}}}
 
 Standard to do file
 
-'''/COPYING'''
+{{{/COPYING}}}
 
 Standard license file
 
-'''/AUTHORS'''
+{{{/AUTHORS}}}
 
 Standard authors file
 
-'''/ChangeLog'''
+{{{/ChangeLog}}}
 
 Standard change log file
 
-'''/*.pro'''
+{{{/*.pro}}}
 
 Standard qmake file
 
-'''/SConscript'''
+{{{/SConscript}}}
 
 Standard SCons file
 
-'''/CMakeLists.txt'''
+{{{/CMakeLists.txt}}}
 
 Standard CMake file
 
-'''/*.vcproj *.sln *.dsp'''
+{{{/*.vcproj *.sln *.dsp}}}
 
 Visual C++ project files
 
