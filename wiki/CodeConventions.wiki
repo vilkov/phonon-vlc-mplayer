@@ -656,23 +656,27 @@ They are hard to format and to maintain. Comments at the beginning of a new line
 Let's people decide:
 http://www.google.com/codesearch
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28%22&btnG=Search "if(" -> 2,730,000 answers]
-
 [http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28%22&btnG=Search "if (" -> 6,080,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28%22&btnG=Search "if(" -> 2,730,000 answers]
 
 Same for "if (...) {" and "if (...){"
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22%29%7B%22&btnG=Search "){" -> 754,000 answers]
-
 [http://www.google.com/codesearch?hl=en&lr=&q=%22%29+%7B%22&btnG=Search ") {" -> 5,490,000 answers]
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28+tmp%22&btnG=Search "if( tmp" -> 5,000 answers]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22%29%7B%22&btnG=Search "){" -> 754,000 answers]
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28+tmp%22&btnG=Search "if ( tmp" -> 8,000 answers]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28tmp%22&btnG=Search "if (tmp" -> 150,000 answers]
 
 [http://www.google.com/codesearch?hl=en&lr=&q=%22if%28tmp%22&btnG=Search "if(tmp" -> 22,900 answers]
 
-[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28tmp%22&btnG=Search "if (tmp" -> 150,000 answers]
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if+%28+tmp%22&btnG=Search "if ( tmp" -> 8,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22if%28+tmp%22&btnG=Search "if( tmp" -> 5,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22char+*%22&btnG=Search "char *" -> 5,380,000 answers]
+
+[http://www.google.com/codesearch?hl=en&lr=&q=%22char*%22&btnG=Search "char*" -> 1,710,000 answers]
 
 General idea is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most developers follow.
 
@@ -777,6 +781,24 @@ Standard CMake file
 {{{/*.vcproj *.sln *.dsp}}}
 
 Visual C++ project files
+
+==Qt Specific issues==
+
+In order to avoid unnecessary include directories (and thus increase compilation time) it is recommended to write:
+
+{{{
+#include <QtCore/QObject>
+#include <QtGui/QMainWindow>
+}}}
+
+rather than:
+
+{{{
+#include <QObject>
+#include <QMainWindow>
+}}}
+
+This way, only one include directory is needed during compilation: {{{-I$QTDIR/include}}} instead of {{{-I$QTDIR/include/QtCore}}}, {{{-I$QTDIR/include/QtGui}}}, {{{-I$QTDIR/include/QtNetwork}}}... 
 
 ==Links==
 
