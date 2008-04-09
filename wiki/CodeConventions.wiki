@@ -1,5 +1,5 @@
 #summary Coding conventions for phonon-vlc-mplayer
-#labels Phase-Design,Phase-QA
+#labels Featured,Phase-Design,Phase-QA
 =Coding Conventions=
 
 ==Introduction==
