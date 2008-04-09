@@ -1,0 +1,45 @@
+#summary How to build and install phonon-vlc-mplayer
+#labels Featured,Phase-Requirements,Phase-Deploy
+
+=Introduction=
+
+This document explains how to build and install phonon-vlc-mplayer under Windows and Linux.
+
+=Requirements=
+
+ * OS: GNU/Linux, Windows
+ * Tested under: Windows XP SP2, Ubuntu Hardy 8.04
+ * Language: C++
+ * License: GNU LGPL
+ * Dependencies:
+   * Qt: >= Qt-4.4.0 beta1 (or >= Qt-4.3.4 if you have KDE-4.0.3)
+      * Website: http://trolltech.com/
+      * Download link: ftp://ftp.trolltech.com/qt/source/
+   * CMake: >= CMake-2.4.8
+      * Website: http://cmake.org/
+      * Download link: http://cmake.org/HTML/Download.html
+   * Compiler: GCC or Visual C++ 2005 (MSVC8)
+
+==VLC Phonon backend==
+
+ * Dependencies
+   * Same as above
+   * VLC: VLC-0.9 (git trunk)
+      * Website: http://www.videolan.org/
+      * Developers infos: http://wiki.videolan.org/Developers_Corner
+      * Download link: http://nightlies.videolan.org/
+
+VLC Phonon backend uses libvlc (http://wiki.videolan.org/Libvlc) in order to control VLC.
+It currently works under Windows and Linux by loading libvlc-control.(dll|so) at runtime.
+There is no need to install the vlc-devel package.
+
+==MPlayer Phonon backend==
+
+ * Dependencies
+   * Same as above
+   * MPlayer: >= MPlayer-1.0rc2
+      * Website: http://www.mplayerhq.hu/
+      * Developers infos: http://www.mplayerhq.hu/DOCS/tech/slave.txt
+      * Download link: http://www.mplayerhq.hu/design7/dload.html
+
+=Get the source code=
