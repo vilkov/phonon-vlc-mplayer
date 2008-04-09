@@ -45,7 +45,7 @@ Warning: the whole process is quite long and uneasy.
  * Download and install DirectX SDK (probably not needed, please tell me if it works without): [http://www.microsoft.com/downloads/details.aspx?FamilyId=572BE8A6-263A-4424-A7FE-69CFF1A5B180&displaylang=en link]
  * Download and install CMake (see links above)
 
-You need to setup you compiling environment, I use this small script: [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki/setenv.bat setenv.bat]
+You need to setup you compiling environment, I use this small script: [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki/setenv.bat setenv.bat].
 Adapt and save this script to a {{{setenv.bat}}} file to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
 
 When all this is done properly, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
