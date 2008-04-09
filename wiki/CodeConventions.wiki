@@ -1,3 +1,4 @@
+#summary Coding conventions for phonon-vlc-mplayer
 #labels Phase-Design,Phase-QA
 =Coding Conventions=
 
@@ -799,7 +800,7 @@ rather than:
 #include <QMainWindow>
 }}}
 
-This way, only one include directory is needed during compilation: {{{-I$QTDIR/include}}} instead of {{{-I$QTDIR/include/QtCore}}}, {{{-I$QTDIR/include/QtGui}}}, {{{-I$QTDIR/include/QtNetwork}}}... 
+This way, only one include directory is needed during compilation: {{{-I$QTDIR/include}}} instead of {{{-I$QTDIR/include/QtCore}}}, {{{-I$QTDIR/include/QtGui}}}, {{{-I$QTDIR/include/QtNetwork}}}...
 
 ==Links==
 
