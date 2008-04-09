@@ -3,7 +3,7 @@
 
 =Introduction=
 
-This document explains how to build and install phonon-vlc-mplayer under Windows and Linux.
+This document explains how to build and install phonon-vlc-mplayer under Windows and GNU/Linux.
 
 =Requirements=
 
@@ -20,10 +20,40 @@ This document explains how to build and install phonon-vlc-mplayer under Windows
       * Download link: http://cmake.org/HTML/Download.html
    * Compiler: GCC or Visual C++ 2005 (MSVC8)
 
+==GNU/Linux==
+
+If Qt-4.4 is not present on your distribution (libqt4-devel packages), you will have to download and compile Qt-4.4 by yourself.
+Qt-4.4 needs to be configured with Phonon support.
+Please refer to the links above for downloading and installing Qt-4.4
+
+==MinGW==
+
+I didn't test compiling phonon-vlc-mplayer with MinGW, however it should work fine.
+
+ * Download and install MinGW: http://www.mingw.org/
+
+==Visual C++ 2005 (MSVC8)==
+
+(Informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
+
+If you want to compile phonon-vlc-mplayer under Windows, you need to install Microsoft Visual Studio 2005 Express Edition (or whatever edition of Visual C++ 2005/2008).
+Warning: the whole process is quite long and uneasy.
+
+ * Download and install Visual C++ 2005 Express Edition: http://www.microsoft.com/express/2005/download/default.aspx
+ * Download and install Platform SDK: [http://www.microsoft.com/downloads/details.aspx?FamilyID=0baf2b35-c656-4969-ace8-e4c0c0716adb&DisplayLang=en link]
+ * Download and install Service Pack 1 for Visual C++ 2005 Express Edition (probably not needed, please tell me if it works without): [http://www.microsoft.com/downloads/details.aspx?FamilyID=7b0b0339-613a-46e6-ab4d-080d4d4a8c4e&DisplayLang=en link]
+ * Download and install DirectX SDK (probably not needed, please tell me if it works without): [http://www.microsoft.com/downloads/details.aspx?FamilyId=572BE8A6-263A-4424-A7FE-69CFF1A5B180&displaylang=en link]
+ * Download and install CMake (see links above)
+
+You need to setup you compiling environment, I use this small script: [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki/setenv.bat setenv.bat]
+Adapt and save this script to a {{{setenv.bat}}} file to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
+
+When all this is done properly, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
+
 ==VLC Phonon backend==
 
  * Dependencies
-   * Same as above
+   * Same as above +
    * VLC: VLC-0.9 (git trunk)
       * Website: http://www.videolan.org/
       * Developers infos: http://wiki.videolan.org/Developers_Corner
@@ -31,15 +61,79 @@ This document explains how to build and install phonon-vlc-mplayer under Windows
 
 VLC Phonon backend uses libvlc (http://wiki.videolan.org/Libvlc) in order to control VLC.
 It currently works under Windows and Linux by loading libvlc-control.(dll|so) at runtime.
-There is no need to install the vlc-devel package.
+
+ * Under GNU/Linux, install a nightly build (there is no need to install the vlc-devel package)
+
+ * Under Windows, install a nightly build, see links above
 
 ==MPlayer Phonon backend==
 
  * Dependencies
-   * Same as above
+   * Same as above +
    * MPlayer: >= MPlayer-1.0rc2
       * Website: http://www.mplayerhq.hu/
       * Developers infos: http://www.mplayerhq.hu/DOCS/tech/slave.txt
       * Download link: http://www.mplayerhq.hu/design7/dload.html
 
+MPlayer Phonon backend runs the MPlayer (mplayer.exe under Windows) process in slave mode.
+
+ * Under GNU/Linux, you should get a MPlayer package with your favorite GNU/Linux distribution
+
+ * Under Windows, download and install [http://smplayer.sourceforge.net/ SMPlayer] that comes with a Windows build of MPlayer. phonon-mplayer looks for {{{C:/Program Files/SMPlayer/mplayer/mplayer.exe}}}, I have to improve this code, if you have some ideas please tell me.
+
 =Get the source code=
+
+ * Linux
+You need to install [http://subversion.tigris.org/ Subversion]
+And then enter this command line:
+{{{svn co http://phonon-vlc-mplayer.googlecode.com/svn/ phonon-vlc-mplayer}}}
+
+ * Windows
+Under Windows, I recommend to download and install [http://tortoisesvn.tigris.org/ TortoiseSVN]
+Then right click on an empty directory and select {{{SVN Checkout...}}} and enter {{{http://phonon-vlc-mplayer.googlecode.com/svn/}}}
+
+=How to build=
+
+ * Under GNU/Linux:
+{{{
+cd trunk
+cd build
+./build_make-debug.sh
+make
+make install
+}}}
+
+ * Under Windows:
+{{{
+cd trunk
+cd build
+build_nmake-debug.bat
+nmake
+nmake install
+}}}
+
+Do the same for the {{{trunk/tests}}} directory for compiling and running Phonon examples.
+
+For Visual C++ 2005, there is {{{tests/build/build_projectmsvc8-debug.bat}}}, however I recommend the process above.
+
+=Run the Phonon backends=
+
+Qt looks for a specific location where Phonon .(dll|so) plugins are installed. Qt will load the first plugin found from this location.
+Check Qt Plugins HowTo: http://doc.trolltech.com/main-snapshot/plugins-howto.html
+
+KDE allows you to configure the Phonon backend you want to use via the command {{{systemsettings}}}
+Qt comes with the program {{{qtconfig}}} under GNU/Linux that let's you configure your Phonon backend.
+
+Currenlty, Phonon backends have to be recompiled either for KDE or for Qt, that's why you will find some KDE4_FOUND defines in phonon-vlc-mplayer code (Backend.cpp and CMakeLists.txt)
+
+ * Under Window, Qt looks for Phonon plugins inside {{{$QTDIR/plugins/phonon_backend}}}
+
+ * Under GNU/Linux it varies, Qt looks for {{{}}} or {{{}}}
+
+=Use phonon-vlc-mplayer with your own Qt application=
+
+Copy phonon-vlc.(dll|so) or phonon-mplayer.(dll|so) inside {{{MYAPP/phonon_backend/}}}
+
+It is not possible to do a {{{Phonon::setPreferredBackend("backend my app need")}}} inside your Qt application.
+
+Please tell me if you encounter some problems.
