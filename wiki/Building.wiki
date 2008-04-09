@@ -93,6 +93,8 @@ You need to install [http://subversion.tigris.org/ Subversion], and then enter t
 Under Windows, I recommend to download and install [http://tortoisesvn.tigris.org/ TortoiseSVN].
 Then right click on an empty directory and select {{{SVN Checkout...}}} and enter {{{http://phonon-vlc-mplayer.googlecode.com/svn/}}}
 
+http://phonon-vlc-mplayer.googlegroups.com/web/phonon-vlc-mplayer-tortoisesvn.png?gda=2qH30VMAAADzGcJ2Wp_dML5pKvawJMYJk78pZsf9cl0k95O_fFnkOmG1qiJ7UbTIup-M2XPURDTf-EQHMgtRDQmqKfqDX3niD-A81HbH9qxuvAXiTpBThAKOZFcal87Qff7gkugrF_g&gsc=-sR1VgsAAABMDwMWexEhpE3I217pOobO
+
 =How to build=
 
  * Under GNU/Linux:
