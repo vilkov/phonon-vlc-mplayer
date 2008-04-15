@@ -116,9 +116,7 @@ nmake
 nmake install
 }}}
 
-Do the same for the {{{trunk/tests}}} directory for compiling and running Phonon examples.
-
-For generating a Visual C++ 2005 project, there is {{{tests/build/build_projectmsvc8-debug.bat}}}, however I recommend the process above.
+For generating a Visual C++ 2005 project, there is {{{build/build_projectmsvc8-debug.bat}}}, however I recommend the process above.
 
 =Run the Phonon backends=
 
@@ -137,6 +135,7 @@ Currenlty, Phonon backends have to be recompiled either for KDE or for Qt, that'
 =Use phonon-vlc-mplayer with your own Qt application=
 
 Copy phonon-vlc.(dll|so) or phonon-mplayer.(dll|so) inside {{{MYAPP/phonon_backend/}}}
+(I didn't test this but it should work)
 
 It is not possible to do a {{{Phonon::setPreferredBackend("backend my app need")}}} inside your Qt application.
 
