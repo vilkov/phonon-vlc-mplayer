@@ -12,9 +12,11 @@ This document explains how to build and install phonon-vlc-mplayer under Windows
  * Language: C++
  * License: GNU LGPL
  * Dependencies:
-   * Qt: >= Qt-4.4.0 beta1 (or >= Qt-4.3.4 if you have KDE-4.0.3)
+   * Qt: >= Qt-4.4.0 RC (or KDE-4.1 SVN)
       * Website: http://trolltech.com/
       * Download link: ftp://ftp.trolltech.com/qt/source/
+   * Phonon: >= Phonon KDE 4.1 SVN
+      * Website: 
    * CMake: >= CMake-2.4.8
       * Website: http://cmake.org/
       * Download link: http://cmake.org/HTML/Download.html
@@ -55,6 +57,20 @@ When all this is done properly, you will be able to compile Qt-4.4 (see links ab
 
 I didn't try phonon-vlc-mplayer under MacOS X (I don't have an Apple computer).
 However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source code is multiplatform and depends only on Qt. I guess you will need to modify CMakeLists.txt files.
+
+==Compiling the latest Phonon librarie==
+
+If you use KDE-4.1 SVN, then you have the latest Phonon librarie.
+Otherwise, Qt-4.4 contains an old version of Phonon, you need Phonon SVN in order to compile phonon-vlc-mplayer.
+
+Here is a way to patch Qt-4.4 using latest Phonon SVN, it is a bit complex but not very long.
+
+ * Get latest Phonon SVN: {{{svn co svn://anonsvn.kde.org/home/kde/trunk/KDE/kdelibs/phonon phonon}}}
+ * Patch Qt-4.4:
+   * Copy [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki/phonon.pro phonon.pro] to the directory {{{$QTDIR/src/phonon}}}
+   * Copy Phonon SVN sources inside the directory {{{$QTDIR/src/3rdparty/kdelibs/phonon}}}
+   * Copy Phonon SVN headers inside the directory {{{$QTDIR/include/phonon}}}
+   * Compile Qt-4.4
 
 ==VLC Phonon backend==
 
