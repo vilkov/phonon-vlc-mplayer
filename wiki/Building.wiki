@@ -37,7 +37,7 @@ I didn't test compiling phonon-vlc-mplayer with MinGW, however it should work fi
 Qt-4.4 RC1 already contains a simple way to install MinGW.
 Be aware that MinGW version of Qt-4.4 does not come with Phonon. This is not an issue since you need to compile Phonon SVN anyway.
 
-(For the little story, the default Windows backend for Phonon is based on DirectShow 9 and MinGW is not capable of compiling DS9 code,
+(For the little story, the default Windows backend for Phonon is based on !DirectShow 9 and MinGW is not capable of compiling DS9 code,
 that's why Trolltech doesn't ship Phonon with Qt-4.4 MinGW)
 
 ==Visual C++ 2005 (MSVC8)==
@@ -54,7 +54,7 @@ Warning: the whole process is quite long and uneasy.
  * Install CMake (see links above)
 
 You need to setup you compiling environment, I use this small script: [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki/setenv.bat setenv.bat].
-Adapt and save this script to a {{{setenv.bat}}} file to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
+Adapt this script to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
 
 When all this is done properly, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
 (Unfortunately, Qt-4.4 Windows binaries have not been yet released on the website: http://qt.windows.binaries.googlepages.com/index.html)
@@ -78,7 +78,7 @@ Here is a way to patch Qt-4.4 source code using latest Phonon SVN, it is a bit c
    * Copy Phonon SVN headers inside the directory {{{$QTDIR/include/phonon}}}
    * Compile Qt-4.4
 
-Compiled Phonon files (*.dll, *.lib, *.pdb) should be located inside {{{$QTDIR/bin}}} and {{{$QTDIR/lib}}}
+Compiled Phonon files ({{{*.dll}}}, {{{*.lib}}}, {{{*.pdb}}}) should be located inside {{{$QTDIR/bin}}} and {{{$QTDIR/lib}}}
 
 ==VLC Phonon backend==
 
@@ -116,7 +116,7 @@ You need to install [http://subversion.tigris.org/ Subversion], and then enter t
 
  * Windows
 Under Windows, I recommend to install [http://tortoisesvn.tigris.org/ TortoiseSVN].
-Then right click on an empty directory and select {{{SVN Checkout...}}} and enter {{{http://phonon-vlc-mplayer.googlecode.com/svn/}}}
+Then right click on an empty directory and select {{{SVN Checkout...}}} and enter {{{http://phonon-vlc-mplayer.googlecode.com/svn/trunk}}}
 
 http://phonon-vlc-mplayer.googlegroups.com/web/phonon-vlc-mplayer-tortoisesvn.png?gda=2qH30VMAAADzGcJ2Wp_dML5pKvawJMYJk78pZsf9cl0k95O_fFnkOmG1qiJ7UbTIup-M2XPURDTf-EQHMgtRDQmqKfqDX3niD-A81HbH9qxuvAXiTpBThAKOZFcal87Qff7gkugrF_g&gsc=-sR1VgsAAABMDwMWexEhpE3I217pOobO
 
