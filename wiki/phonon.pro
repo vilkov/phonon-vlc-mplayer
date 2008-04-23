@@ -11,8 +11,8 @@ VERSION = $${PHONON_MAJOR_VERSION}.$${PHONON_MINOR_VERSION}.$${PHONON_PATCH_VERS
 DEPENDPATH += .
 DEFINES += MAKE_PHONON_LIB
 
-#PHONON_DIR = $$QT_SOURCE_TREE/src/3rdparty/kdelibs/phonon
-PHONON_DIR = .
+PHONON_DIR = $$QT_SOURCE_TREE/src/3rdparty/kdelibs/phonon
+#PHONON_DIR = .
 
 # Input
 HEADERS += $$PHONON_DIR/abstractaudiooutput.h \
