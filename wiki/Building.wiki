@@ -14,10 +14,10 @@ Please check that you have the right Qt and Phonon versions otherwise it probabl
  * Language: C++
  * License: GNU LGPL
  * Dependencies:
-   * Qt: >= Qt-4.4.0 RC1 (or KDE-4.1 SVN)
+   * Qt: >= Qt-4.4.0 (or KDE-4.1)
       * Website: http://trolltech.com/
       * Download link: ftp://ftp.trolltech.com/qt/source/
-   * Phonon: >= Phonon KDE 4.1 SVN
+   * Phonon: >= Phonon KDE 4.1
       * Website:
    * CMake: >= CMake-2.4.8
       * Website: http://cmake.org/
@@ -32,9 +32,9 @@ Please refer to the links above for downloading and installing Qt-4.4
 
 ==MinGW==
 
- * Install Qt-4.4 RC1 compiled for MinGW: [ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.4.0-rc1-mingw.exe qt-win-opensource-4.4.0-rc1-mingw.exe]
+ * Install Qt-4.4 RC1 compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.0-mingw.exe qt-win-opensource-4.4.0-mingw.exe]
 
-Qt-4.4 RC1 already contains a simple way to install MinGW.
+Qt-4.4 already contains a simple way to install MinGW.
 Be aware that MinGW version of Qt-4.4 does not come with Phonon. This is not an issue since you need to compile Phonon SVN anyway.
 
 (For the little story, the default Windows backend for Phonon is based on !DirectShow 9 and MinGW is not capable of compiling DS9 code,
@@ -66,7 +66,7 @@ However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source 
 
 ==Compiling the latest Phonon library==
 
-If you use KDE-4.1 SVN, then you have the latest Phonon library.
+If you use KDE-4.1, then you have the latest Phonon library.
 Qt-4.4 contains an old version of Phonon, you need Phonon SVN (I use rev799767) in order to compile phonon-vlc-mplayer.
 
 Here is a way to patch Qt-4.4 source code using latest Phonon SVN, it is a bit complex but not very long.
