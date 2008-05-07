@@ -35,7 +35,7 @@ I've noticed MPlayer video window can be grey sometimes.
 Specially when I downclock my video card (NVidia) under Windows.
 + MPlayer is very slow compare to VLC in this case.
 
-==Add VolumeFaderEffectClass, AudioDataOutputClass, VisualizationClass, VideoDataOutputClass from Backend.cpp
+==Add !VolumeFaderEffectClass, !AudioDataOutputClass, !VisualizationClass, !VideoDataOutputClass from Backend.cpp==
 
 See code here: http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon-vlc-mplayer/Backend.cpp
 
