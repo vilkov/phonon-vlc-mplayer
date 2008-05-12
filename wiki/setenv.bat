@@ -1,12 +1,12 @@
 @echo off
 
-@echo Setting up Qt...
-@set QTDIR=C:\Qt\4.4.1
+@echo Setting up Qt 4.4.0...
+@set QTDIR=C:\Qt\4.4.0
 @set PATH=%QTDIR%\bin;%PATH%
 @set QMAKESPEC=win32-msvc2005
 
-@echo Setting up CMake...
-@set PATH=C:\Program Files\CMake 2.4\bin;%PATH%
+@echo Setting up CMake 2.6...
+@set PATH=C:\Program Files\CMake 2.6\bin;%PATH%
 
 rem See C:\Program Files\Microsoft Platform SDK for Windows Server 2003 R2\SetEnv.Cmd
 @echo Setting up Microsoft Platform SDK...
@@ -22,6 +22,6 @@ rem See C:\Program Files\Microsoft DirectX SDK (November 2007)\Utilities\Bin\dx_
 @set INCLUDE=%DXSDK_DIR%\Include;%INCLUDE%
 @set LIB=%DXSDK_DIR%\Lib\x86;%LIB%
 
-rem Must be the last
+rem Must be the last line in this script: create a new shell/prompt
 @echo Setting up Microsoft Visual Studio...
 "C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\vsvars32.bat"
