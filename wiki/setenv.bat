@@ -1,7 +1,7 @@
 @echo off
 
-@echo Setting up Qt 4.4.0...
-@set QTDIR=C:\Qt\4.4.0
+@echo Setting up Qt 4.4.0-msvc2005...
+@set QTDIR=C:\Qt\4.4.0-msvc2005
 @set PATH=%QTDIR%\bin;%PATH%
 @set QMAKESPEC=win32-msvc2005
 
