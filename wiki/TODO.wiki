@@ -1,24 +1,6 @@
 #summary phonon-vlc-mplayer TODO List
 #labels Featured,Phase-Design,Phase-QA
 
-==Seek bar==
-
-Seek bar is not working cleanly with the MPlayer backend.
-The VLC backend should be improved too.
-MPlayer seek() code here:
-http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon-vlc-mplayer/mplayer/MPlayerMediaObject.cpp
-VLC seek() code here:
-http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon-vlc-mplayer/vlc/VLCMediaObject.cpp
-
-==Video window proper size==
-
-Resize the video window to the current video size.
-I managed to make this work, it does not now, I don't know why.
-Code is here:
-http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon-vlc-mplayer/VideoWidget.cpp
-and here for the MPlayer specific part:
-http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon-vlc-mplayer/mplayer/mplayer/MPlayerWindow.cpp
-
 ==More testing==
 
 More testing with various file format is needed.
@@ -31,7 +13,7 @@ That is why VLC backend is behind MPlayer backend support.
 
 ==MPlayer grey video window sometimes==
 
-I've noticed MPlayer video window can be grey sometimes.
+I've noticed that MPlayer video window can be grey sometimes.
 Specially when I downclock my video card (NVidia) under Windows.
 + MPlayer is very slow compare to VLC in this case.
 
@@ -43,4 +25,4 @@ See code here: http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/p
 
 See code here: http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon-vlc-mplayer/Backend.cpp
 
-==Patch Phonon to allow backends initialization with user parameters==
+==Allow backends initialization with user parameters==
