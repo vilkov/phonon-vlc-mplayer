@@ -128,6 +128,7 @@ cd build
 ./build_make-debug.sh
 make
 make install
+make package
 }}}
 
  * Under Windows:
@@ -137,6 +138,7 @@ cd build
 build_nmake-debug.bat
 nmake
 nmake install
+nmake package
 }}}
 
 For generating a Visual C++ 2005 project, there is {{{build/build_projectmsvc8-debug.bat}}}, however I recommend the process above.
