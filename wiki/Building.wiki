@@ -68,17 +68,6 @@ However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source 
 If you use KDE-4.1, then you have the latest Phonon library and phonon-vlc-mplayer will use it.
 Qt-4.4 contains an old version of Phonon, that's why phonon-vlc-mplayer ships with its own copy of Phonon SVN.
 
-For information, here is a way to patch Qt-4.4 source code using latest Phonon SVN, it is a bit complex but not very long.
-
- * Get latest Phonon SVN: {{{svn co svn://anonsvn.kde.org/home/kde/trunk/KDE/kdelibs/phonon phonon}}}
- * Patch Qt-4.4:
-   * Copy [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/phonon/phonon.pro phonon.pro] to the directory {{{$QTDIR/src/phonon}}}
-   * Copy Phonon SVN sources inside the directory {{{$QTDIR/src/3rdparty/kdelibs/phonon}}}
-   * Copy Phonon SVN headers inside the directory {{{$QTDIR/include/phonon}}}
-   * Compile Qt-4.4
-
-Compiled Phonon files ({{{*.dll}}}, {{{*.lib}}}, {{{*.pdb}}}) should be located inside {{{$QTDIR/bin}}} and {{{$QTDIR/lib}}}
-
 ==VLC Phonon backend==
 
  * Dependencies
