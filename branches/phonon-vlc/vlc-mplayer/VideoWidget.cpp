@@ -51,10 +51,11 @@ VideoWidget::VideoWidget(QWidget * parent)
 	_aspectRatio = Phonon::VideoWidget::AspectRatioAuto;
 	_scaleMode = Phonon::VideoWidget::FitInView;
 
-	_brightness = 0;
-	_contrast = 0;
-	_hue = 0;
-	_saturation = 0;
+    _filter_adjust_activated = false;
+	_brightness = 0.0;
+	_contrast = 0.0;
+	_hue = 0.0;
+	_saturation = 0.0;
 }
 
 VideoWidget::~VideoWidget() {
@@ -137,6 +138,19 @@ qreal VideoWidget::brightness() const {
 void VideoWidget::setBrightness(qreal brightness) {
 	_brightness = brightness;
 
+#ifdef PHONON_VLC
+    // vlc takes brightness in range 0.0 - 2.0
+    float f_brightness = brightness + 1.0;
+	if (_vlcCurrentMediaPlayer) {
+	    if ( !_filter_adjust_activated )
+	    {
+	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
+	        _filter_adjust_activated = true;
+	    }
+		p_libvlc_video_set_brightness(_vlcCurrentMediaPlayer, f_brightness, _vlcException);
+	}
+#endif	//PHONON_VLC
+
 	sendMPlayerCommand("brightness " + QString::number(_brightness * 100) + " 1");
 }
 
@@ -177,6 +191,19 @@ qreal VideoWidget::contrast() const {
 void VideoWidget::setContrast(qreal contrast) {
 	_contrast = contrast;
 
+#ifdef PHONON_VLC
+    // vlc takes contrast in range 0.0 - 2.0
+    float f_contrast = contrast + 1.0;
+	if (_vlcCurrentMediaPlayer) {
+	    if ( !_filter_adjust_activated )
+	    {
+	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
+	        _filter_adjust_activated = true;
+	    }
+		p_libvlc_video_set_contrast(_vlcCurrentMediaPlayer, f_contrast, _vlcException);
+	}
+#endif	//PHONON_VLC
+
 	sendMPlayerCommand("contrast " + QString::number(_contrast * 100) + " 1");
 }
 
@@ -188,8 +215,15 @@ void VideoWidget::setHue(qreal hue) {
 	_hue = hue;
 
 #ifdef PHONON_VLC
+    // vlc takes hue in range 0 - 360
+    int i_hue = (hue + 1.0) * 180;
 	if (_vlcCurrentMediaPlayer) {
-		p_libvlc_video_filter_set_hue(_vlcCurrentMediaPlayer, hue, _vlcException);
+	    if ( !_filter_adjust_activated )
+	    {
+	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
+	        _filter_adjust_activated = true;
+	    }
+		p_libvlc_video_set_hue(_vlcCurrentMediaPlayer, i_hue, _vlcException);
 	}
 #endif	//PHONON_VLC
 
@@ -202,6 +236,19 @@ qreal VideoWidget::saturation() const {
 
 void VideoWidget::setSaturation(qreal saturation) {
 	_saturation = saturation;
+
+#ifdef PHONON_VLC
+    // vlc takes brightness in range 0.0 - 3.0
+    float f_saturation = (saturation + 1.0) * 1.5;
+	if (_vlcCurrentMediaPlayer) {
+	    if ( !_filter_adjust_activated )
+	    {
+	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
+	        _filter_adjust_activated = true;
+	    }
+		p_libvlc_video_set_saturation(_vlcCurrentMediaPlayer, f_saturation, _vlcException);
+	}
+#endif	//PHONON_VLC
 
 	sendMPlayerCommand("saturation " + QString::number(_saturation * 100) + " 1");
 }

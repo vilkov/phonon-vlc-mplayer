@@ -86,14 +86,12 @@ private:
 
 	Phonon::VideoWidget::AspectRatio _aspectRatio;
 
-	qreal _brightness;
-
 	Phonon::VideoWidget::ScaleMode _scaleMode;
 
+    bool  _filter_adjust_activated;
+    qreal _brightness;
 	qreal _contrast;
-
 	qreal _hue;
-
 	qreal _saturation;
 };
 

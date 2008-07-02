@@ -594,7 +594,19 @@ DEFINEFUNC(char *, libvlc_video_get_crop_geometry, (libvlc_media_player_t * p_mi
 
 DEFINEFUNC(void, libvlc_video_set_crop_geometry, (libvlc_media_player_t * p_mi, char * psz_geometry, libvlc_exception_t * p_e), (p_mi, psz_geometry, p_e), )
 
-DEFINEFUNC(void, libvlc_video_filter_set_hue, (libvlc_media_player_t * p_mi, int i_value, libvlc_exception_t * p_e), (p_mi, i_value, p_e), )
+DEFINEFUNC(void, libvlc_video_set_brightness, (libvlc_media_player_t * p_mi, float f_brightness, libvlc_exception_t * p_e), (p_mi, f_brightness, p_e), )
+
+DEFINEFUNC(void, libvlc_video_set_contrast, (libvlc_media_player_t * p_mi, float f_contrast, libvlc_exception_t * p_e), (p_mi, f_contrast, p_e), )
+
+DEFINEFUNC(void, libvlc_video_set_hue, (libvlc_media_player_t * p_mi, int i_hue, libvlc_exception_t * p_e), (p_mi, i_hue, p_e), )
+
+DEFINEFUNC(void, libvlc_video_set_gamma, (libvlc_media_player_t * p_mi, float f_gamma, libvlc_exception_t * p_e), (p_mi, f_gamma, p_e), )
+
+DEFINEFUNC(void, libvlc_video_set_saturation, (libvlc_media_player_t * p_mi, float f_saturation, libvlc_exception_t * p_e), (p_mi, f_saturation, p_e), )
+
+DEFINEFUNC(void, libvlc_video_filter_add, (libvlc_media_player_t * p_mi, int i_filter, libvlc_exception_t * p_e), (p_mi, i_filter, p_e), )
+
+DEFINEFUNC(void, libvlc_video_filter_remove, (libvlc_media_player_t * p_mi, int i_filter, libvlc_exception_t * p_e), (p_mi, i_filter, p_e), )
 
 DEFINEFUNC(void, libvlc_toggle_teletext, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), )
 
