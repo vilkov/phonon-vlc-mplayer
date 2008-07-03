@@ -39,4 +39,4 @@ if (WIN32)
 endif (WIN32)
 
 add_subdirectory(vlc)
-add_subdirectory(mplayer)
+#add_subdirectory(mplayer)
