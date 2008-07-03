@@ -1,7 +1,0 @@
-add_subdirectory(filebrowser)
-add_subdirectory(mediacontroller)
-add_subdirectory(playlist)
-add_subdirectory(playtoolbar)
-add_subdirectory(quicksettings)
-add_subdirectory(statusbar)
-add_subdirectory(videowidget)
