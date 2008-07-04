@@ -282,6 +282,26 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 				emit vlcMediaObject->hasVideoChanged(vlcMediaObject->_hasVideo);
 			}
 
+			// give info about audio tracks
+			libvlc_track_description_t * p_info = p_libvlc_audio_get_track_description(
+			        vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            while (p_info)
+            {
+                vlcMediaObject->audioChannelAdded(p_info->i_id, p_info->psz_name);
+                p_info = p_info->p_next;
+            }
+            libvlc_track_description_release( p_info );
+
+            // give info about subtitle tracks
+            p_info = p_libvlc_video_get_spu_description(
+                vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            while (p_info)
+            {
+                vlcMediaObject->subtitleAdded(p_info->i_id, p_info->psz_name, "");
+                p_info = p_info->p_next;
+            }
+            libvlc_track_description_release( p_info );            
+
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state
 			emit vlcMediaObject->stateChanged(Phonon::PlayingState);
@@ -369,7 +389,7 @@ qint64 VLCMediaObject::currentTimeInternal() const {
 	libvlc_time_t time = p_libvlc_media_player_get_time(_vlcMediaPlayer, _vlcException);
 	//checkException();
 
-	qDebug() << "currentTime:" << time;
+	//qDebug() << "currentTime:" << time;
 
 	return time;
 }

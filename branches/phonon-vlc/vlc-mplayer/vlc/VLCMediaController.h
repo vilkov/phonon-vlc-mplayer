@@ -39,6 +39,12 @@ public:
 	VLCMediaController();
 	virtual ~VLCMediaController();
 
+    void audioChannelAdded(int id, const QString & lang);
+	void subtitleAdded(int id, const QString & lang, const QString & type);
+	void titleAdded(int id, qint64 length);
+	void chapterAdded(int titleId, const QString & name);
+	
+
 protected:
 
 	//AudioChannel

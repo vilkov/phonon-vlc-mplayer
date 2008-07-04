@@ -570,6 +570,22 @@ DEFINEFUNC(void, libvlc_media_list_player_next, (
 				libvlc_exception_t * p_e),
 				(p_mlp, p_e), )
 
+DEFINEFUNC(void, libvlc_track_description_release, (
+				libvlc_track_description_t *p_track_description),
+				(p_track_description), )
+
+DEFINEFUNC(libvlc_track_description_t *, libvlc_video_get_spu_description, (
+				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
+				(p_mi, p_e), return )
+
+DEFINEFUNC(libvlc_track_description_t *, libvlc_video_get_track_description, (
+				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
+				(p_mi, p_e), return )
+
+DEFINEFUNC(libvlc_track_description_t *, libvlc_audio_get_track_description, (
+				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
+				(p_mi, p_e), return )
+
 DEFINEFUNC(void, libvlc_toggle_fullscreen, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), )
 
 DEFINEFUNC(void, libvlc_set_fullscreen, (libvlc_media_player_t * p_mi, int fullscreen, libvlc_exception_t * p_e), (p_mi, fullscreen, p_e), )

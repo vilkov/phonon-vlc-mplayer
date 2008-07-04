@@ -35,6 +35,59 @@ VLCMediaController::VLCMediaController()
 VLCMediaController::~VLCMediaController() {
 }
 
+/* add audio channel -> in libvlc it is track, it means audio in another
+   language
+ */
+void VLCMediaController::audioChannelAdded(int id, const QString & lang)
+{
+    qDebug() << __FUNCTION__;
+
+	QHash<QByteArray, QVariant> properties;
+	properties.insert("name", id);
+	properties.insert("description", lang);
+
+	_availableAudioChannels << Phonon::AudioChannelDescription(id, properties);    
+	emit availableAudioChannelsChanged();
+}
+
+/* add subtitle */
+void VLCMediaController::subtitleAdded(int id, const QString & lang, const QString & type)
+{
+	qDebug() << __FUNCTION__;
+
+	QHash<QByteArray, QVariant> properties;
+	properties.insert("name", id);
+	properties.insert("description", lang);
+	properties.insert("type", type);
+
+	_availableSubtitles << Phonon::SubtitleDescription(id, properties);
+	emit availableSubtitlesChanged();
+}
+
+/* add title */
+void VLCMediaController::titleAdded(int id, qint64 length)
+{
+    qDebug() << __FUNCTION__;
+
+	QHash<QByteArray, QVariant> properties;
+	properties.insert("name", id);
+	properties.insert("description", length);
+
+	_availableTitles << Phonon::TitleDescription(id, properties);
+}
+
+/* add chapter */
+void VLCMediaController::chapterAdded(int titleId, const QString & name)
+{
+    qDebug() << __FUNCTION__;
+
+	QHash<QByteArray, QVariant> properties;
+    properties.insert("name", title);
+	properties.insert("description", name);
+
+	_availableChapters << Phonon::ChapterDescription(titleId, properties);
+}
+
 //AudioChannel
 void VLCMediaController::setCurrentAudioChannel(const Phonon::AudioChannelDescription & audioChannel) {
 	qDebug() << __FUNCTION__;
