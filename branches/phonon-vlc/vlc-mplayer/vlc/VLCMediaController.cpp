@@ -82,7 +82,7 @@ void VLCMediaController::chapterAdded(int titleId, const QString & name)
     qDebug() << __FUNCTION__;
 
 	QHash<QByteArray, QVariant> properties;
-    properties.insert("name", title);
+    properties.insert("name", titleId);
 	properties.insert("description", name);
 
 	_availableChapters << Phonon::ChapterDescription(titleId, properties);
@@ -93,6 +93,8 @@ void VLCMediaController::setCurrentAudioChannel(const Phonon::AudioChannelDescri
 	qDebug() << __FUNCTION__;
 
 	_currentAudioChannel = audioChannel;
+    p_libvlc_audio_set_track(_vlcMediaPlayer, audioChannel.name().toInt(), _vlcException);
+    checkException();
 }
 
 QList<Phonon::AudioChannelDescription> VLCMediaController::availableAudioChannels() const {
@@ -121,6 +123,11 @@ void VLCMediaController::setCurrentSubtitle(const Phonon::SubtitleDescription & 
 			_availableSubtitles << _currentSubtitle;
 			emit availableSubtitlesChanged();
 		}
+	}
+	else
+	{
+        p_libvlc_video_set_spu(_vlcMediaPlayer, subtitle.name().toInt(), _vlcException);
+        checkException();
 	}
 }
 

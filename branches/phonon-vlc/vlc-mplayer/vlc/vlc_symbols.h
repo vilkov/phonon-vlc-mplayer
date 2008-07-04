@@ -578,6 +578,10 @@ DEFINEFUNC(libvlc_track_description_t *, libvlc_video_get_spu_description, (
 				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
 				(p_mi, p_e), return )
 
+DEFINEFUNC(void, libvlc_video_set_track, (
+				libvlc_media_player_t *p_mi, int track, libvlc_exception_t *p_e),
+				(p_mi, track, p_e), return )
+
 DEFINEFUNC(libvlc_track_description_t *, libvlc_video_get_track_description, (
 				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
 				(p_mi, p_e), return )
