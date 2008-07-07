@@ -74,9 +74,6 @@ signals:
 	void availableChaptersChanged();
 	void availableTitlesChanged();
 
-	void availableChaptersChanged(int availableChapters);
-	void availableTitlesChanged(int availableTitles);
-
 	void availableAnglesChanged(int availableAngles);
 	void angleChanged(int angleNumber);
 	void chapterChanged(int chapterNumber);
