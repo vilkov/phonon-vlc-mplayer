@@ -74,6 +74,7 @@ void VLCMediaController::titleAdded(int id, qint64 length)
 	properties.insert("description", length);
 
 	_availableTitles << Phonon::TitleDescription(id, properties);
+	emit availableTitlesChanged();
 }
 
 /* add chapter */
@@ -86,6 +87,7 @@ void VLCMediaController::chapterAdded(int titleId, const QString & name)
 	properties.insert("description", name);
 
 	_availableChapters << Phonon::ChapterDescription(titleId, properties);
+	emit availableChaptersChanged();
 }
 
 //AudioChannel
@@ -143,6 +145,7 @@ Phonon::SubtitleDescription VLCMediaController::currentSubtitle() const {
 
 void VLCMediaController::setCurrentTitle(const Phonon::TitleDescription & title) {
 	_currentTitle = title;
+	p_libvlc_media_player_set_title(_vlcMediaPlayer, title.name().toInt(), _vlcException);
 }
 
 QList<Phonon::TitleDescription> VLCMediaController::availableTitles() const {
@@ -165,6 +168,8 @@ bool VLCMediaController::autoplayTitles() const {
 
 void VLCMediaController::setCurrentChapter(const Phonon::ChapterDescription & chapter) {
 	_currentChapter = chapter;
+    p_libvlc_media_player_set_chapter(_vlcMediaPlayer, chapter.name().toInt(), _vlcException);
+    checkException();
 }
 
 QList<Phonon::ChapterDescription> VLCMediaController::availableChapters() const {

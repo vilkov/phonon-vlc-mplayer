@@ -158,7 +158,7 @@ QVariant MediaController::interfaceCall(Interface iface, int command, const QLis
 					qCritical() << __FUNCTION__ << "Error: arguments invalid";
 					return false;
 				}
-				setCurrentSubtitle(arguments.first().value<SubtitleDescription>());
+			    setCurrentSubtitle(arguments.first().value<SubtitleDescription>());
 				return true;
 
 			default:
@@ -180,7 +180,7 @@ QVariant MediaController::interfaceCall(Interface iface, int command, const QLis
 					qCritical() << __FUNCTION__ << "Error: arguments invalid";
 					return false;
 				}
-				setCurrentAudioChannel(arguments.first().value<AudioChannelDescription>());
+                setCurrentAudioChannel(arguments.first().value<AudioChannelDescription>());
 				return true;
 
 			default:

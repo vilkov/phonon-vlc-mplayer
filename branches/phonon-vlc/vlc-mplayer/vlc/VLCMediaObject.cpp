@@ -295,7 +295,19 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
                 vlcMediaObject->subtitleAdded(p_info->i_id, p_info->psz_name, "");
                 p_info = p_info->p_next;
             }
-            libvlc_track_description_release( p_info );            
+            libvlc_track_description_release( p_info );
+
+            // chapters
+            int i_chapters_count = p_libvlc_media_player_get_chapter_count(
+                vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            for( int i = 0; i < i_chapters_count; i++ )
+                vlcMediaObject->chapterAdded(i, QString::number(i));
+
+            // titles
+            int i_titles_count = p_libvlc_media_player_get_title_count(
+                vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            for( int i = 0; i < i_titles_count; i++ )
+                vlcMediaObject->titleAdded(i, 0);    // FIX ME, should set length
 
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state

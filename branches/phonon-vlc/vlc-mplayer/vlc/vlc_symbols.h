@@ -329,6 +329,12 @@ DEFINEFUNC(int, libvlc_media_player_get_chapter, (libvlc_media_player_t * p_mi, 
 
 DEFINEFUNC(int, libvlc_media_player_get_chapter_count, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), return)
 
+DEFINEFUNC(void, libvlc_media_player_set_title, (libvlc_media_player_t * p_mi, int i_title, libvlc_exception_t * p_e), (p_mi, i_title, p_e), )
+
+DEFINEFUNC(int, libvlc_media_player_get_title, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), return)
+
+DEFINEFUNC(int, libvlc_media_player_get_title_count, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), return)
+
 DEFINEFUNC(int, libvlc_media_player_will_play, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), return)
 
 DEFINEFUNC(float, libvlc_media_player_get_rate, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), return)
