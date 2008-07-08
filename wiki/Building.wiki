@@ -110,7 +110,7 @@ http://phonon-vlc-mplayer.googlegroups.com/web/phonon-vlc-mplayer-tortoisesvn.pn
 
 =How to build=
 
-Warning: be sure that your Qt installation matches the way you compile vlc-mplayer i.e if Qt is in debug mode, vlc-mplayer should be in debug mode. You cannot mix vlc-mplayer in release mode and Qt in debug mode (you will get an error message: "backend cannot be loaded" when running vlc-mplayer).
+Warning: be sure that your Qt installation matches the way you compile vlc-mplayer i.e if Qt is in debug mode, vlc-mplayer should be compiled in debug mode too. You cannot mix vlc-mplayer in release mode and Qt in debug mode (you will get an error message: "backend cannot be loaded" when running vlc-mplayer).
 
  * Under GNU/Linux:
 {{{
