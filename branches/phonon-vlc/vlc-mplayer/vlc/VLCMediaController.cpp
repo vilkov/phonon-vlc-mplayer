@@ -65,13 +65,13 @@ void VLCMediaController::subtitleAdded(int id, const QString & lang, const QStri
 }
 
 /* add title */
-void VLCMediaController::titleAdded(int id, qint64 length)
+void VLCMediaController::titleAdded(int id, const QString & name)
 {
     qDebug() << __FUNCTION__;
 
 	QHash<QByteArray, QVariant> properties;
 	properties.insert("name", id);
-	properties.insert("description", length);
+	properties.insert("description", name);
 
 	_availableTitles << Phonon::TitleDescription(id, properties);
 	emit availableTitlesChanged();

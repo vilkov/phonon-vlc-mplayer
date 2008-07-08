@@ -307,7 +307,7 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
             int i_titles_count = p_libvlc_media_player_get_title_count(
                 vlcMediaObject->_vlcMediaPlayer, _vlcException);
             for( int i = 0; i < i_titles_count; i++ )
-                vlcMediaObject->titleAdded(i, 0);    // FIX ME, should set length
+                vlcMediaObject->titleAdded(i, QString("Title ") + QString::number(i));
 
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state

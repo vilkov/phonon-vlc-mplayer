@@ -41,7 +41,7 @@ public:
 
     void audioChannelAdded(int id, const QString & lang);
 	void subtitleAdded(int id, const QString & lang, const QString & type);
-	void titleAdded(int id, qint64 length);
+	void titleAdded(int id, const QString & name);
 	void chapterAdded(int titleId, const QString & name);
 	
 
