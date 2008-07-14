@@ -146,6 +146,8 @@ Phonon::SubtitleDescription VLCMediaController::currentSubtitle() const {
 void VLCMediaController::setCurrentTitle(const Phonon::TitleDescription & title) {
 	_currentTitle = title;
 	p_libvlc_media_player_set_title(_vlcMediaPlayer, title.name().toInt(), _vlcException);
+	checkException();
+    refreshChapters(title.name().toInt());
 }
 
 QList<Phonon::TitleDescription> VLCMediaController::availableTitles() const {
@@ -178,6 +180,18 @@ QList<Phonon::ChapterDescription> VLCMediaController::availableChapters() const 
 
 Phonon::ChapterDescription VLCMediaController::currentChapter() const {
 	return _currentChapter;
+}
+
+void VLCMediaController::refreshChapters(int i_title)
+{
+    _currentChapter = Phonon::ChapterDescription();
+    _availableChapters.clear();
+
+   int i_chapters_count = p_libvlc_media_player_get_chapter_count_for_title(
+       _vlcMediaPlayer, i_title, _vlcException);
+   checkException();
+   for( int i = 0; i < i_chapters_count; i++ )
+       chapterAdded(i, QString::number(i));
 }
 
 

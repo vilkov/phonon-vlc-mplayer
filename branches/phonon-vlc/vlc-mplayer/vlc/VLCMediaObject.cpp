@@ -280,6 +280,7 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 			// give info about audio tracks
 			libvlc_track_description_t * p_info = p_libvlc_audio_get_track_description(
 			        vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            checkException();
             while (p_info)
             {
                 vlcMediaObject->audioChannelAdded(p_info->i_id, p_info->psz_name);
@@ -290,6 +291,7 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
             // give info about subtitle tracks
             p_info = p_libvlc_video_get_spu_description(
                 vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            checkException();
             while (p_info)
             {
                 vlcMediaObject->subtitleAdded(p_info->i_id, p_info->psz_name, "");
@@ -300,12 +302,14 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
             // chapters
             int i_chapters_count = p_libvlc_media_player_get_chapter_count(
                 vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            checkException();
             for( int i = 0; i < i_chapters_count; i++ )
                 vlcMediaObject->chapterAdded(i, QString::number(i));
 
             // titles
             int i_titles_count = p_libvlc_media_player_get_title_count(
                 vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            checkException();
             for( int i = 0; i < i_titles_count; i++ )
                 vlcMediaObject->titleAdded(i, QString("Title ") + QString::number(i));
 

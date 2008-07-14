@@ -66,6 +66,7 @@ protected:
 	void setCurrentChapter(const Phonon::ChapterDescription & chapter);
 	QList<Phonon::ChapterDescription> availableChapters() const;
 	Phonon::ChapterDescription currentChapter() const;
+	void refreshChapters(int i_title);
 
 	//Title
 	void setCurrentTitle(const Phonon::TitleDescription & title);
