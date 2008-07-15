@@ -131,6 +131,22 @@ Phonon::AudioChannelDescription VLCMediaController::currentAudioChannel() const 
 	return _currentAudioChannel;
 }
 
+void VLCMediaController::refreshAudioChannels()
+{
+    _currentAudioChannel = Phonon::AudioChannelDescription();
+    _availableAudioChannels.clear();
+
+	libvlc_track_description_t * p_info = p_libvlc_audio_get_track_description(
+	        _vlcMediaPlayer, _vlcException);
+    checkException();
+    while (p_info)
+    {
+        audioChannelAdded(p_info->i_id, p_info->psz_name);
+        p_info = p_info->p_next;
+    }
+    libvlc_track_description_release( p_info );
+}
+
 //Subtitle
 void VLCMediaController::setCurrentSubtitle(const Phonon::SubtitleDescription & subtitle) {
 	qDebug() << __FUNCTION__;
@@ -165,6 +181,22 @@ Phonon::SubtitleDescription VLCMediaController::currentSubtitle() const {
 	return _currentSubtitle;
 }
 
+void VLCMediaController::refreshSubtitles()
+{
+    _currentSubtitle = Phonon::SubtitleDescription();
+    _availableSubtitles.clear();
+
+    libvlc_track_description_t *p_info = p_libvlc_video_get_spu_description(
+        _vlcMediaPlayer, _vlcException);
+    checkException();
+    while (p_info)
+    {
+        subtitleAdded(p_info->i_id, p_info->psz_name, "");
+        p_info = p_info->p_next;
+    }
+    libvlc_track_description_release( p_info );
+}
+
 //Title
 
 void VLCMediaController::setCurrentTitle(const Phonon::TitleDescription & title) {
@@ -172,7 +204,6 @@ void VLCMediaController::setCurrentTitle(const Phonon::TitleDescription & title)
 	
 	p_libvlc_media_player_set_title(_vlcMediaPlayer, title.index(), _vlcException);
 	checkException();
-    refreshChapters(title.index());
 }
 
 QList<Phonon::TitleDescription> VLCMediaController::availableTitles() const {

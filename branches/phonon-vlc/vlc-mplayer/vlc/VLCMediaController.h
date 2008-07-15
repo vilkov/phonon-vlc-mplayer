@@ -52,11 +52,13 @@ protected:
 	void setCurrentAudioChannel(const Phonon::AudioChannelDescription & audioChannel);
 	QList<Phonon::AudioChannelDescription> availableAudioChannels() const;
 	Phonon::AudioChannelDescription currentAudioChannel() const;
+	void refreshAudioChannels();
 
 	//Subtitle
 	void setCurrentSubtitle(const Phonon::SubtitleDescription & subtitle);
 	QList<Phonon::SubtitleDescription> availableSubtitles() const;
 	Phonon::SubtitleDescription currentSubtitle() const;
+	void refreshSubtitles();
 
 	//Angle
 	void setCurrentAngle(int angleNumber);

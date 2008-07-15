@@ -188,6 +188,7 @@ void VLCMediaObject::connectToAllVLCEvents() {
 		libvlc_MediaPlayerStopped,
 		libvlc_MediaPlayerEncounteredError,
 		libvlc_MediaPlayerTimeChanged,
+		libvlc_MediaPlayerTitleChanged,
 		libvlc_MediaPlayerPositionChanged,
 		libvlc_MediaPlayerSeekableChanged,
 		libvlc_MediaPlayerPausableChanged,
@@ -233,6 +234,7 @@ void VLCMediaObject::connectToAllVLCEvents() {
 
 void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_data) {
 	static int firstTime_MediaPlayerTimeChanged = 0;
+	static bool mediaPlayerTitleChanged = false;
 
 	VLCMediaObject * vlcMediaObject = (VLCMediaObject *) user_data;
 
@@ -272,54 +274,38 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 			}
 
 			// give info about audio tracks
-			libvlc_track_description_t * p_info = p_libvlc_audio_get_track_description(
-			        vlcMediaObject->_vlcMediaPlayer, _vlcException);
-            checkException();
-            while (p_info)
-            {
-                vlcMediaObject->audioChannelAdded(p_info->i_id, p_info->psz_name);
-                p_info = p_info->p_next;
-            }
-            libvlc_track_description_release( p_info );
-
+			vlcMediaObject->refreshAudioChannels();
             // give info about subtitle tracks
-            p_info = p_libvlc_video_get_spu_description(
-                vlcMediaObject->_vlcMediaPlayer, _vlcException);
-            checkException();
-            while (p_info)
-            {
-                vlcMediaObject->subtitleAdded(p_info->i_id, p_info->psz_name, "");
-                p_info = p_info->p_next;
-            }
-            libvlc_track_description_release( p_info );
+            vlcMediaObject->refreshSubtitles();
 
             // if there is no chapter, then it isnt title/chapter media
             if( p_libvlc_media_player_get_chapter_count( 
                 vlcMediaObject->_vlcMediaPlayer, _vlcException) > 0 )
             {
                 // give info about title
-                p_info = p_libvlc_video_get_title_description(
-                    vlcMediaObject->_vlcMediaPlayer, _vlcException);
-                checkException();
-                while (p_info)
-                {
-                    vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
-                    p_info = p_info->p_next;
+                // only first time, no when title changed
+                if( !mediaPlayerTitleChanged )
+                { 
+                    libvlc_track_description_t *p_info = p_libvlc_video_get_title_description(
+                        vlcMediaObject->_vlcMediaPlayer, _vlcException);
+                    checkException();
+                    while (p_info)
+                    {
+                        vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
+                        p_info = p_info->p_next;
+                    }
+                    libvlc_track_description_release( p_info );
                 }
-                libvlc_track_description_release( p_info );
-            
 
                 // give info about chapters for actual title 0
-                p_info = p_libvlc_video_get_chapter_description(
-                    vlcMediaObject->_vlcMediaPlayer, 0, _vlcException);
-                checkException();
-                while (p_info)
-                {
-                    vlcMediaObject->chapterAdded(p_info->i_id, p_info->psz_name);
-                    p_info = p_info->p_next;
-                }
-                libvlc_track_description_release( p_info );
+                if( mediaPlayerTitleChanged )
+                    vlcMediaObject->refreshChapters( p_libvlc_media_player_get_title(
+                        vlcMediaObject->_vlcMediaPlayer, _vlcException) );
+                else
+                    vlcMediaObject->refreshChapters( 0 );
             }
+            if( mediaPlayerTitleChanged )
+                mediaPlayerTitleChanged = false;
 
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state
@@ -351,6 +337,11 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 		firstTime_MediaPlayerTimeChanged = 0;
 		vlcMediaObject->clearMediaController();
 		emit vlcMediaObject->stateChanged(Phonon::StoppedState);
+	}
+
+	if (event->type == libvlc_MediaPlayerTitleChanged) {
+		firstTime_MediaPlayerTimeChanged = 0;
+		mediaPlayerTitleChanged = true;
 	}
 
 	/* Media events */
