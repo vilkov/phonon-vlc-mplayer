@@ -598,6 +598,14 @@ DEFINEFUNC(libvlc_track_description_t *, libvlc_audio_get_track_description, (
 				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
 				(p_mi, p_e), return )
 
+DEFINEFUNC(libvlc_track_description_t *, libvlc_video_get_title_description, (
+				libvlc_media_player_t *p_mi, libvlc_exception_t *p_e),
+				(p_mi, p_e), return )
+
+DEFINEFUNC(libvlc_track_description_t *, libvlc_video_get_chapter_description, (
+				libvlc_media_player_t *p_mi, int i_title, libvlc_exception_t *p_e),
+				(p_mi, i_title, p_e), return )
+
 DEFINEFUNC(void, libvlc_toggle_fullscreen, (libvlc_media_player_t * p_mi, libvlc_exception_t * p_e), (p_mi, p_e), )
 
 DEFINEFUNC(void, libvlc_set_fullscreen, (libvlc_media_player_t * p_mi, int fullscreen, libvlc_exception_t * p_e), (p_mi, fullscreen, p_e), )

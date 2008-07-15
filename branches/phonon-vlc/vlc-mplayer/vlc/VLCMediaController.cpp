@@ -43,8 +43,8 @@ void VLCMediaController::audioChannelAdded(int id, const QString & lang)
     qDebug() << __FUNCTION__;
 
 	QHash<QByteArray, QVariant> properties;
-	properties.insert("name", id);
-	properties.insert("description", lang);
+	properties.insert("name", lang);
+	properties.insert("description", "");
 
 	_availableAudioChannels << Phonon::AudioChannelDescription(id, properties);    
 	emit availableAudioChannelsChanged();
@@ -56,9 +56,9 @@ void VLCMediaController::subtitleAdded(int id, const QString & lang, const QStri
 	qDebug() << __FUNCTION__;
 
 	QHash<QByteArray, QVariant> properties;
-	properties.insert("name", id);
-	properties.insert("description", lang);
-	properties.insert("type", type);
+	properties.insert("name", lang);
+	properties.insert("description", "");
+	properties.insert("type", "");
 
 	_availableSubtitles << Phonon::SubtitleDescription(id, properties);
 	emit availableSubtitlesChanged();
@@ -70,8 +70,8 @@ void VLCMediaController::titleAdded(int id, const QString & name)
     qDebug() << __FUNCTION__;
 
 	QHash<QByteArray, QVariant> properties;
-	properties.insert("name", id);
-	properties.insert("description", name);
+	properties.insert("name", name);
+	properties.insert("description", "");
 
 	_availableTitles << Phonon::TitleDescription(id, properties);
 	emit availableTitlesChanged();
@@ -83,8 +83,8 @@ void VLCMediaController::chapterAdded(int titleId, const QString & name)
     qDebug() << __FUNCTION__;
 
 	QHash<QByteArray, QVariant> properties;
-    properties.insert("name", titleId);
-	properties.insert("description", name);
+    properties.insert("name", name);
+	properties.insert("description", "");
 
 	_availableChapters << Phonon::ChapterDescription(titleId, properties);
 	emit availableChaptersChanged();
@@ -95,7 +95,7 @@ void VLCMediaController::setCurrentAudioChannel(const Phonon::AudioChannelDescri
 	qDebug() << __FUNCTION__;
 
 	_currentAudioChannel = audioChannel;
-    p_libvlc_audio_set_track(_vlcMediaPlayer, audioChannel.name().toInt(), _vlcException);
+    p_libvlc_audio_set_track(_vlcMediaPlayer, audioChannel.index(), _vlcException);
     checkException();
 }
 
@@ -128,7 +128,7 @@ void VLCMediaController::setCurrentSubtitle(const Phonon::SubtitleDescription & 
 	}
 	else
 	{
-        p_libvlc_video_set_spu(_vlcMediaPlayer, subtitle.name().toInt(), _vlcException);
+        p_libvlc_video_set_spu(_vlcMediaPlayer, subtitle.index(), _vlcException);
         checkException();
 	}
 }
@@ -145,9 +145,10 @@ Phonon::SubtitleDescription VLCMediaController::currentSubtitle() const {
 
 void VLCMediaController::setCurrentTitle(const Phonon::TitleDescription & title) {
 	_currentTitle = title;
-	p_libvlc_media_player_set_title(_vlcMediaPlayer, title.name().toInt(), _vlcException);
+	
+	p_libvlc_media_player_set_title(_vlcMediaPlayer, title.index(), _vlcException);
 	checkException();
-    refreshChapters(title.name().toInt());
+    refreshChapters(title.index());
 }
 
 QList<Phonon::TitleDescription> VLCMediaController::availableTitles() const {
@@ -170,7 +171,7 @@ bool VLCMediaController::autoplayTitles() const {
 
 void VLCMediaController::setCurrentChapter(const Phonon::ChapterDescription & chapter) {
 	_currentChapter = chapter;
-    p_libvlc_media_player_set_chapter(_vlcMediaPlayer, chapter.name().toInt(), _vlcException);
+    p_libvlc_media_player_set_chapter(_vlcMediaPlayer, chapter.index(), _vlcException);
     checkException();
 }
 
@@ -187,11 +188,16 @@ void VLCMediaController::refreshChapters(int i_title)
     _currentChapter = Phonon::ChapterDescription();
     _availableChapters.clear();
 
-   int i_chapters_count = p_libvlc_media_player_get_chapter_count_for_title(
-       _vlcMediaPlayer, i_title, _vlcException);
-   checkException();
-   for( int i = 0; i < i_chapters_count; i++ )
-       chapterAdded(i, QString::number(i));
+    // give info about chapters for actual title
+    libvlc_track_description_t *p_info = p_libvlc_video_get_chapter_description(
+        _vlcMediaPlayer, i_title, _vlcException);
+    checkException();
+    while (p_info)
+    {
+        chapterAdded(p_info->i_id, p_info->psz_name);
+        p_info = p_info->p_next;
+    }
+    libvlc_track_description_release( p_info );
 }
 
 

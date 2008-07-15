@@ -299,19 +299,27 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
             }
             libvlc_track_description_release( p_info );
 
-            // chapters
-            int i_chapters_count = p_libvlc_media_player_get_chapter_count(
+            // give info about title
+            p_info = p_libvlc_video_get_title_description(
                 vlcMediaObject->_vlcMediaPlayer, _vlcException);
             checkException();
-            for( int i = 0; i < i_chapters_count; i++ )
-                vlcMediaObject->chapterAdded(i, QString::number(i));
+            while (p_info)
+            {
+                vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
+                p_info = p_info->p_next;
+            }
+            libvlc_track_description_release( p_info );
 
-            // titles
-            int i_titles_count = p_libvlc_media_player_get_title_count(
-                vlcMediaObject->_vlcMediaPlayer, _vlcException);
+            // give info about chapters for actual title 0
+            p_info = p_libvlc_video_get_chapter_description(
+                vlcMediaObject->_vlcMediaPlayer, 0, _vlcException);
             checkException();
-            for( int i = 0; i < i_titles_count; i++ )
-                vlcMediaObject->titleAdded(i, QString("Title ") + QString::number(i));
+            while (p_info)
+            {
+                vlcMediaObject->chapterAdded(p_info->i_id, p_info->psz_name);
+                p_info = p_info->p_next;
+            }
+            libvlc_track_description_release( p_info );
 
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state
