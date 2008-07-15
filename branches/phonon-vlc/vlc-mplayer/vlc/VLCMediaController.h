@@ -46,6 +46,7 @@ public:
 	
 
 protected:
+    virtual void clearMediaController();
 
 	//AudioChannel
 	void setCurrentAudioChannel(const Phonon::AudioChannelDescription & audioChannel);

@@ -35,6 +35,30 @@ VLCMediaController::VLCMediaController()
 VLCMediaController::~VLCMediaController() {
 }
 
+void VLCMediaController::clearMediaController() {
+	_currentAudioChannel = Phonon::AudioChannelDescription();
+	_availableAudioChannels.clear();
+
+	_currentSubtitle = Phonon::SubtitleDescription();
+	_availableSubtitles.clear();
+
+	_currentAngle = 0;
+	_availableAngles = 0;
+
+	_currentChapter = Phonon::ChapterDescription();
+	_availableChapters.clear();
+
+	_currentTitle = Phonon::TitleDescription();
+	_availableTitles.clear();
+
+	_autoplayTitles = false;
+
+    emit availableAudioChannelsChanged();
+    emit availableSubtitlesChanged();
+    emit availableTitlesChanged();
+    emit availableChaptersChanged();
+}
+
 /* add audio channel -> in libvlc it is track, it means audio in another
    language
  */

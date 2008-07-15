@@ -106,13 +106,7 @@ void VLCMediaObject::loadMediaInternal(const QString & filename) {
 	//There is no audio channel/subtitle/angle/chapter events inside libvlc
 	//so let's send our own events...
 	//This will reset the GUI
-	emit availableAudioChannelsChanged();
-	emit availableSubtitlesChanged();
-
-	emit availableChaptersChanged();
-	emit availableTitlesChanged();
-
-	emit availableAnglesChanged(availableAngles());
+    clearMediaController();
 
 	//emit angleChanged(int angleNumber);
 	//emit chapterChanged(int chapterNumber);
@@ -299,27 +293,33 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
             }
             libvlc_track_description_release( p_info );
 
-            // give info about title
-            p_info = p_libvlc_video_get_title_description(
-                vlcMediaObject->_vlcMediaPlayer, _vlcException);
-            checkException();
-            while (p_info)
+            // if there is no chapter, then it isnt title/chapter media
+            if( p_libvlc_media_player_get_chapter_count( 
+                vlcMediaObject->_vlcMediaPlayer, _vlcException) > 0 )
             {
-                vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
-                p_info = p_info->p_next;
-            }
-            libvlc_track_description_release( p_info );
+                // give info about title
+                p_info = p_libvlc_video_get_title_description(
+                    vlcMediaObject->_vlcMediaPlayer, _vlcException);
+                checkException();
+                while (p_info)
+                {
+                    vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
+                    p_info = p_info->p_next;
+                }
+                libvlc_track_description_release( p_info );
+            
 
-            // give info about chapters for actual title 0
-            p_info = p_libvlc_video_get_chapter_description(
-                vlcMediaObject->_vlcMediaPlayer, 0, _vlcException);
-            checkException();
-            while (p_info)
-            {
-                vlcMediaObject->chapterAdded(p_info->i_id, p_info->psz_name);
-                p_info = p_info->p_next;
+                // give info about chapters for actual title 0
+                p_info = p_libvlc_video_get_chapter_description(
+                    vlcMediaObject->_vlcMediaPlayer, 0, _vlcException);
+                checkException();
+                while (p_info)
+                {
+                    vlcMediaObject->chapterAdded(p_info->i_id, p_info->psz_name);
+                    p_info = p_info->p_next;
+                }
+                libvlc_track_description_release( p_info );
             }
-            libvlc_track_description_release( p_info );
 
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state
@@ -342,12 +342,14 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 
 	if (event->type == libvlc_MediaPlayerEndReached) {
 		firstTime_MediaPlayerTimeChanged = 0;
+		vlcMediaObject->clearMediaController();
 		emit vlcMediaObject->stateChanged(Phonon::StoppedState);
 		emit vlcMediaObject->finished();
 	}
 
 	if (event->type == libvlc_MediaPlayerStopped) {
 		firstTime_MediaPlayerTimeChanged = 0;
+		vlcMediaObject->clearMediaController();
 		emit vlcMediaObject->stateChanged(Phonon::StoppedState);
 	}
 
