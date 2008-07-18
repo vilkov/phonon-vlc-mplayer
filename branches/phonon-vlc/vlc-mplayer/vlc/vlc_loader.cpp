@@ -78,6 +78,7 @@ void releaseLibVLC() {
 void checkException() {
 	if (p_libvlc_exception_raised(_vlcException)) {
 		qDebug() << "libvlc exception:" << p_libvlc_exception_get_message(_vlcException);
+		p_libvlc_exception_clear(_vlcException);
 	}
 }
 

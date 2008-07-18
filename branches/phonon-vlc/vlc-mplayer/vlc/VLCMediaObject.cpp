@@ -273,40 +273,42 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 				emit vlcMediaObject->hasVideoChanged(vlcMediaObject->_hasVideo);
 			}
 
-			// give info about audio tracks
-			vlcMediaObject->refreshAudioChannels();
-            // give info about subtitle tracks
             if( hasVideo )
+            {
+			    // give info about audio tracks
+			    vlcMediaObject->refreshAudioChannels();
+                // give info about subtitle tracks
                 vlcMediaObject->refreshSubtitles();
 
-            // if there is no chapter, then it isnt title/chapter media
-            if( p_libvlc_media_player_get_chapter_count( 
-                vlcMediaObject->_vlcMediaPlayer, _vlcException) > 0 )
-            {
-                // give info about title
-                // only first time, no when title changed
-                if( !mediaPlayerTitleChanged )
-                { 
-                    libvlc_track_description_t *p_info = p_libvlc_video_get_title_description(
-                        vlcMediaObject->_vlcMediaPlayer, _vlcException);
-                    checkException();
-                    while (p_info)
-                    {
-                        vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
-                        p_info = p_info->p_next;
+                // if there is no chapter, then it isnt title/chapter media
+                if( p_libvlc_media_player_get_chapter_count( 
+                    vlcMediaObject->_vlcMediaPlayer, _vlcException) > 0 )
+                {
+                    // give info about title
+                    // only first time, no when title changed
+                    if( !mediaPlayerTitleChanged )
+                    { 
+                        libvlc_track_description_t *p_info = p_libvlc_video_get_title_description(
+                            vlcMediaObject->_vlcMediaPlayer, _vlcException);
+                        checkException();
+                        while (p_info)
+                        {
+                            vlcMediaObject->titleAdded(p_info->i_id, p_info->psz_name);
+                            p_info = p_info->p_next;
+                        }
+                        libvlc_track_description_release( p_info );
                     }
-                    libvlc_track_description_release( p_info );
-                }
 
-                // give info about chapters for actual title 0
+                    // give info about chapters for actual title 0
+                    if( mediaPlayerTitleChanged )
+                        vlcMediaObject->refreshChapters( p_libvlc_media_player_get_title(
+                            vlcMediaObject->_vlcMediaPlayer, _vlcException) );
+                    else
+                        vlcMediaObject->refreshChapters( 0 );
+                }
                 if( mediaPlayerTitleChanged )
-                    vlcMediaObject->refreshChapters( p_libvlc_media_player_get_title(
-                        vlcMediaObject->_vlcMediaPlayer, _vlcException) );
-                else
-                    vlcMediaObject->refreshChapters( 0 );
+                    mediaPlayerTitleChanged = false;
             }
-            if( mediaPlayerTitleChanged )
-                mediaPlayerTitleChanged = false;
 
 			//Bugfix with mediaplayer example from Trolltech
 			//Now we are in playing state
