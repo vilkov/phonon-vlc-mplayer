@@ -276,7 +276,8 @@ void VLCMediaObject::libvlc_callback(const libvlc_event_t * event, void * user_d
 			// give info about audio tracks
 			vlcMediaObject->refreshAudioChannels();
             // give info about subtitle tracks
-            vlcMediaObject->refreshSubtitles();
+            if( hasVideo )
+                vlcMediaObject->refreshSubtitles();
 
             // if there is no chapter, then it isnt title/chapter media
             if( p_libvlc_media_player_get_chapter_count( 
