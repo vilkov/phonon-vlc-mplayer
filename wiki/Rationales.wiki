@@ -1,0 +1,52 @@
+#labels Phase-Design
+#Rationales, background and history of QuarkPlayer
+
+= Introduction =
+
+Rationales, background and history of QuarkPlayer.
+Yet another media player! Here my reasons for writing another media player...
+
+= History =
+
+Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mainly a Windows users beside using GNU/Linux for about 10 years).
+
+Compared to VLC (version 0.8.6 time of writing), SMPlayer has a much better GUI based on the [http://trolltech.com/ Qt] toolkit. (VLC 0.8.6 was based on [http://wxwidgets.org/ wxWidgets] before moving to Qt toolkit for 0.9 release).
+Of course I've started to look at SMPlayer source code and found that there were no separation between the engine (which uses the very good [http://www.mplayerhq.hu/ MPlayer]) and the GUI.
+At the same time, [http://phonon.kde.org/ Phonon], which is a multimedia API for Qt4, started to get mature and I was seduced by this thin multimedia layer where you can implement different backends (DirectShow, Xine, GStreamer...)
+
+After sending few [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00803040503n68b72f33i49524d5405f7d777%40mail.gmail.com&forum_name=smplayer-development mails] to Ricardo Villalba, SMPlayer author, about patching his video player for using Phonon instead of his own engine. He was pretty interested at first and I sent to him several [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00804220111g7a92ead8l493c1c549c6391c2%40mail.gmail.com&forum_name=smplayer-development patches] and even submit experimental VLC and MPlayer backends for Phonon to be used with SMPlayer inside its SVN repository.
+
+Unfortunalty, [http://smplayer.berlios.de/forums/viewtopic.php?pid=1668#p1668 "SMPlayer is so oriented to mplayer that probably it would be necessary to rewrite it again from zero to use Phonon instead, and currently Phonon is very basic and doesn't allow all things that MPlayer can do."]
+
+So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplayer.googlecode.com/ and decided to create a simple media player in order to test my new backends...
+
+= Rationales behind QuarkPlayer =
+
+QuarkPlayer is designed to be a multimedia player, meaning not only for videos but also suitable for audio playing, similar to Windows Media Player approach. QuarkPlayer started as a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-0.1-win32-2.png?gda=zeMzP0wAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDSDk6dLSXWTIU0t_YRCVF5xDeGi6XjxcWE2ApR61obtyA video player] very similar to SMPlayer GUI before I code a playlist and other more "audio" oriented features.
+
+== "Windows Explorer" panel ==
+
+All my friends are big music fans and I discovered that there were using Winamp or Windows Media Player in conjunction with Windows Explorer to do some drag and drop from there music directory which contains only directories with artist names.
+They don't use advanced features from Amarok or ITunes with tagging support even if they know these features.
+
+That's why I've deciced to directly add a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080626-win32-fullplugins.png?gda=_Ji1I1sAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDRYEbqvAFjzWFrl9M5z94S3SZGsd5o1AwXI20RE_qYl0SJl3I5nvU7ZMR3tcW67EOQ "Windows Explorer" panel] inside QuarkPlayer from where they can do drag&drop to the playlist.
+
+== Architecture ==
+
+Moto:
+Pushing intelligence to the edge
+KISS Keep It Simple, Stupid
+Small is Beautiful!
+
+=== Everything are plugins... ===
+
+A media player can contain a lot of features. Instead of having a big fatty monolithic software that can be difficult to maintain over time, a way better approach is to add features via a plugin system.
+If you look at QuarkPlayer source code, you will see that [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/quarkplayer/plugins?r=250 everything are plugins] and that QuarkPlayer core is [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/quarkplayer?r=250 very small].
+
+=== Create libraries when you can ===
+
+QuarkPlayer comes with several small libraries that can be re-used:
+- TkUtil, which is a utility library
+- PlaylistParser for parsing m3u playlist and other playlist formats
+- ContentFetcher to download content (lyrics, Amazon cover, artist Wikipedia page)
+- WebBrowser, a simple web browser based on QTextBrowser (so no QtWebKit use)
