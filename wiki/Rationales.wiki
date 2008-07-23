@@ -8,7 +8,7 @@ Yet another media player! Here my reasons for writing another media player...
 
 = History =
 
-Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mainly a Windows users beside using GNU/Linux for about 10 years).
+Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mostly a Windows users beside using GNU/Linux for about 10 years).
 
 Compared to VLC (version 0.8.6 time of writing), SMPlayer has a much better GUI based on the [http://trolltech.com/ Qt] toolkit. (VLC 0.8.6 was based on [http://wxwidgets.org/ wxWidgets] before moving to Qt toolkit for 0.9 release).
 Of course I've started to look at SMPlayer source code and found that there were no separation between the engine (which uses the very good [http://www.mplayerhq.hu/ MPlayer]) and the GUI.
