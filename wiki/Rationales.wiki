@@ -55,7 +55,8 @@ Free as in free speech, not as in free beer. Source code is under GPLv3+
 
 == Skins support ==
 
-
+I don't like skins, I like good OS integration and this is what Qt brings.
+If someone wants skins support, Qt CSS support is [http://doc.trolltech.com/main-snapshot/stylesheet.html here].
 
 == Architecture ==
 
