@@ -6,6 +6,8 @@
 Rationales, background and history of !QuarkPlayer.
 Yet another media player! Here my reasons for writing another media player...
 
+http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080724-win32.png?gsc=F98u1AsAAACPmwBWT6bgpe7EAZoCOXfr
+
 = History =
 
 Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mostly a Windows users beside using GNU/Linux for about 10 years).
