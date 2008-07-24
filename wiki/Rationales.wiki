@@ -24,13 +24,6 @@ So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplaye
 
 !QuarkPlayer is designed to be a multimedia player, meaning not only for videos but also suitable for audio playback, similar to Windows Media Player approach. !QuarkPlayer started as a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-0.1-win32-2.png?gda=zeMzP0wAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDSDk6dLSXWTIU0t_YRCVF5xDeGi6XjxcWE2ApR61obtyA video player] very similar to SMPlayer GUI before I code a playlist and other more "audio" oriented features.
 
-== "Windows Explorer" panel ==
-
-All my friends are big music fans and I discovered that there were using Winamp or Windows Media Player in conjunction with Windows Explorer to do some drag and drop from their music directory which contains only directories with artist names.
-They don't use advanced features from Amarok or ITunes with tagging support even if they know them.
-
-That's why I've decided to directly add a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080626-win32-fullplugins.png?gda=_Ji1I1sAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDRYEbqvAFjzWFrl9M5z94S3SZGsd5o1AwXI20RE_qYl0SJl3I5nvU7ZMR3tcW67EOQ "Windows Explorer" panel] inside !QuarkPlayer from where they can do drag&drop to the playlist.
-
 == Libraries dependencies ==
 
 !QuarkPlayer only depends on Qt, not on KDE libraries. I think that !QuarkPlayer should be as fast as possible (a key factor of success in this area) and base it on KDE libraries would slow down the soft specially under Windows. Adding an important dependency like KDE makes it difficult to compile the software under Windows. I don't see yet any argument to introduce a KDE dependency compare to Qt features.
@@ -69,6 +62,13 @@ I still have a lot of patches for him :/
 == VLC and MPlayer backends ==
 
 When it comes to multiplatform video engines, you have the choice between VLC and MPlayer. Let's integrate both inside Phonon library!
+
+== "Windows Explorer" panel ==
+
+All my friends are big music fans and I discovered that there were using Winamp or Windows Media Player in conjunction with Windows Explorer to do some drag and drop from their music directory which contains only directories with artist names.
+They don't use advanced features from Amarok or ITunes with tagging support even if they know them.
+
+That's why I've decided to directly add a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080626-win32-fullplugins.png?gda=_Ji1I1sAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDRYEbqvAFjzWFrl9M5z94S3SZGsd5o1AwXI20RE_qYl0SJl3I5nvU7ZMR3tcW67EOQ "Windows Explorer" panel] inside !QuarkPlayer from where they can do drag&drop to the playlist.
 
 == Architecture ==
 
