@@ -8,7 +8,7 @@ Yet another media player! Here my reasons for writing another media player...
 
 Goals:
  * Multimedia (video and audio support)
- * Qt-4.4
+ * C++/Qt-4.4
  * Fast
  * Multiplatform
  * OS integration
@@ -66,6 +66,7 @@ If someone wants skins support, Qt CSS support is [http://doc.trolltech.com/main
 Phonon is a very well written multimedia API: easy, portable, small footprint...
 I thank everyday Matthias Kretz, the author, for developing such a good library!
 I still have a lot of patches for him :/
+
 !QuarkPlayer name comes from [http://en.wikipedia.org/wiki/Quark Quark] to keep it in physics area like [http://en.wikipedia.org/wiki/Phonon Phonon].
 
 == VLC and MPlayer backends ==
@@ -74,7 +75,7 @@ When it comes to multiplatform video engines, you have the choice between VLC an
 
 == "Windows Explorer" panel ==
 
-All my friends are big music fans and I discovered that there were using Winamp or Windows Media Player in conjunction with Windows Explorer to do some drag and drop from their music directory which contains only directories with artist names.
+All my friends are big music fans and I discovered that there were using Winamp or Windows Media Player in conjunction with Windows Explorer to do some drag and drop from their music directory.
 They don't use advanced features from Amarok or ITunes with tagging support even if they know them.
 
 That's why I've decided to directly add a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080626-win32-fullplugins.png?gda=_Ji1I1sAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDRYEbqvAFjzWFrl9M5z94S3SZGsd5o1AwXI20RE_qYl0SJl3I5nvU7ZMR3tcW67EOQ "Windows Explorer" panel] inside !QuarkPlayer from where they can do drag&drop to the playlist.
