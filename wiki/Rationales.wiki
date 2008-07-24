@@ -61,6 +61,13 @@ Free as in free speech, not as in free beer. Source code is under GPLv3+
 I don't like skins, I like good OS integration and this is what Qt brings.
 If someone wants skins support, Qt CSS support is [http://doc.trolltech.com/main-snapshot/stylesheet.html here].
 
+== Phonon ==
+
+Phonon is a very well written multimedia API: easy, portable, small footprint...
+I thank everyday Matthias Kretz, the author, for developing such a good library!
+I still have a lot of patches to send to Matthias Kretz :/
+!QuarkPlayer name comes from [http://en.wikipedia.org/wiki/Quark Quark] to keep it in physics area like [http://en.wikipedia.org/wiki/Phonon Phonon].
+
 == Architecture ==
 
 Moto:
