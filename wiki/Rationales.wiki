@@ -33,9 +33,29 @@ That's why I've decided to directly add a [http://phonon-vlc-mplayer.googlegroup
 
 == Libraries dependencies ==
 
-!QuarkPlayer only depends on Qt, not on KDE libraries. I think that !QuarkPlayer should be as fast as possible (a key factor of success) and base it on KDE libraries would slow down the soft specially under Windows. Beside this reason I don't see yet any arguments to introduce a KDE dependency compare to Qt features.
+!QuarkPlayer only depends on Qt, not on KDE libraries. I think that !QuarkPlayer should be as fast as possible (a key factor of success in this area) and base it on KDE libraries would slow down the soft specially under Windows. Adding an important dependency like KDE makes it difficult to compile the software under Windows. I don't see yet any arguments to introduce a KDE dependency compare to Qt features.
 
-Under GNU/Linux, !QuarkPlayer can be recompiled with a minimal support for KDE. !TkUtil tries to achieve this goal by using KMainWindow for example instead of QMainWindow. This process is totally transparent from the rest of the source code.
+Under GNU/Linux, !QuarkPlayer can be compiled if needed with a minimal "visual" support for KDE. !TkUtil tries to achieve this goal by using KMainWindow for example instead of QMainWindow. This process is totally transparent from the rest of the source code.
+
+== Portability ==
+
+Windows is the most used OS, when you use the portable Qt library it would have been stupid to only support GNU/Linux. Windows also comes with good tools for developing: debugger and compiler from Visual C++ 2005 are for free and very good.
+Supporting more compilers help to find bugs.
+Therefore, !QuarkPlayer compiles with Visual C++ 2005, MinGW and GCC for GNU/Linux.
+
+== C++ ==
+
+As said before, speed is a key factor of success for a video/audio player.
+Popular players are fast: Winamp, Foobar2000, VLC...
+One could think Python/Qt instead of C++/Qt, but I think it would slow down !QuarkPlayer startup time and increase memory consumption.
+
+== Free software ==
+
+Free as in free speech, not as in free beer. Source code is under GPLv3+
+
+== Skins support ==
+
+
 
 == Architecture ==
 
