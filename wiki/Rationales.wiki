@@ -12,11 +12,11 @@ Everything started in march 2008 when I've discovered the video player [http://s
 
 Compared to VLC (version 0.8.6 time of writing), SMPlayer has a much better GUI based on the [http://trolltech.com/ Qt] toolkit. (VLC 0.8.6 was based on [http://wxwidgets.org/ wxWidgets] before moving to Qt toolkit for 0.9 release).
 Of course I've started to look at SMPlayer source code and found that there were no separation between the engine (which uses the very good [http://www.mplayerhq.hu/ MPlayer]) and the GUI.
-At the same time, [http://phonon.kde.org/ Phonon], which is a multimedia API for Qt4, started to get mature and I was seduced by this thin multimedia layer where you can implement different backends (!DirectShow, Xine, GStreamer...)
+At the same time, [http://phonon.kde.org/ Phonon], a multimedia API for Qt4, started to get mature and I was seduced by this thin multimedia layer where you can implement different backends (!DirectShow, Xine, GStreamer...)
 
-After sending few [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00803040503n68b72f33i49524d5405f7d777%40mail.gmail.com&forum_name=smplayer-development mails] to Ricardo Villalba, SMPlayer author, about patching his video player for using Phonon instead of his own engine. He was pretty interested at first and I sent to him several [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00804220111g7a92ead8l493c1c549c6391c2%40mail.gmail.com&forum_name=smplayer-development patches] and even submit experimental VLC and MPlayer backends for Phonon to be used with SMPlayer inside its SVN repository.
+I sent few [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00803040503n68b72f33i49524d5405f7d777%40mail.gmail.com&forum_name=smplayer-development mails] to Ricardo Villalba, the SMPlayer author, about patching his video player for using Phonon instead of his own engine. He was pretty interested at first and I sent to him several [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00804220111g7a92ead8l493c1c549c6391c2%40mail.gmail.com&forum_name=smplayer-development patches] and even submit experimental VLC and MPlayer backends for Phonon to be used with SMPlayer inside its SVN repository.
 
-Unfortunalty, [http://smplayer.berlios.de/forums/viewtopic.php?pid=1668#p1668 "SMPlayer is so oriented to mplayer that probably it would be necessary to rewrite it again from zero to use Phonon instead, and currently Phonon is very basic and doesn't allow all things that MPlayer can do."]
+Unfortunalty, [http://smplayer.berlios.de/forums/viewtopic.php?pid=1668#p1668 "SMPlayer is so oriented to MPlayer that probably it would be necessary to rewrite it again from zero to use Phonon instead, and currently Phonon is very basic and doesn't allow all things that MPlayer can do."]
 
 So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplayer.googlecode.com/ and decided to create a simple media player in order to test my new backends...
 
@@ -33,8 +33,9 @@ That's why I've decided to directly add a [http://phonon-vlc-mplayer.googlegroup
 
 == Libraries dependencies ==
 
-!QuarkPlayer only depends on Qt, not on KDE libraries. I think that QuarkPlayer should be as fast as possible and base it on KDE libraries would slow down the soft specially under Windows. Beside this reason I don't see yet any arguments to introduce a KDE dependency compare to Qt features.
-Under GNU/Linux, !QuarkPlayer can be recompiled with a minimal support for KDE. TkUtil tries to achieve this goal by using KMainWindow for example instead of QMainWindow. This process is totally transparent from the rest of the source code.
+!QuarkPlayer only depends on Qt, not on KDE libraries. I think that !QuarkPlayer should be as fast as possible (a key factor of success) and base it on KDE libraries would slow down the soft specially under Windows. Beside this reason I don't see yet any arguments to introduce a KDE dependency compare to Qt features.
+
+Under GNU/Linux, !QuarkPlayer can be recompiled with a minimal support for KDE. !TkUtil tries to achieve this goal by using KMainWindow for example instead of QMainWindow. This process is totally transparent from the rest of the source code.
 
 == Architecture ==
 
@@ -46,12 +47,12 @@ Moto:
 === Everything are plugins... ===
 
 A media player can contain a lot of features. Instead of having a big fatty monolithic software that can be difficult to maintain over time, a way better approach is to add features via a plugin system.
-If you look at !QuarkPlayer source code, you will see that [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/quarkplayer/plugins?r=250 everything are plugins] and that !QuarkPlayer core is [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/quarkplayer?r=250 very small].
+If you look at !QuarkPlayer source code, you will see that [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/quarkplayer/plugins?r=250 everything are plugins] and that !QuarkPlayer core is [http://code.google.com/p/phonon-vlc-mplayer/source/browse/trunk/quarkplayer?r=250 very small] (< 3000LOC).
 
-=== Create libraries when you can ===
+=== Create libraries whenever you can ===
 
 !QuarkPlayer comes with several small libraries that can be re-used:
  * !TkUtil, which is a utility library
- * !PlaylistParser for parsing m3u playlist and other playlist formats
- * !ContentFetcher to download content (lyrics, Amazon cover, artist Wikipedia page)
- * !WebBrowser, a simple web browser based on QTextBrowser (so no !QtWebKit use)
+ * !PlaylistParser for parsing m3u playlist and other formats
+ * !ContentFetcher to download Internet contents (lyrics, Amazon cover, artist Wikipedia page)
+ * !WebBrowser, a simple web browser based on QTextBrowser (so no !QtWebKit dependency)
