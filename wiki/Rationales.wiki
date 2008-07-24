@@ -6,8 +6,6 @@
 Rationales, background and history of !QuarkPlayer.
 Yet another media player! Here my reasons for writing another media player...
 
-http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080724-win32.png?gsc=F98u1AsAAACPmwBWT6bgpe7EAZoCOXfr
-
 = History =
 
 Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mostly a Windows users beside using GNU/Linux for about 10 years).
@@ -65,8 +63,12 @@ If someone wants skins support, Qt CSS support is [http://doc.trolltech.com/main
 
 Phonon is a very well written multimedia API: easy, portable, small footprint...
 I thank everyday Matthias Kretz, the author, for developing such a good library!
-I still have a lot of patches to send to Matthias Kretz :/
+I still have a lot of patches for him :/
 !QuarkPlayer name comes from [http://en.wikipedia.org/wiki/Quark Quark] to keep it in physics area like [http://en.wikipedia.org/wiki/Phonon Phonon].
+
+== VLC and MPlayer backends ==
+
+When it comes to multiplatform video engines, you have the choice between VLC and MPlayer. Let's integrate both inside Phonon library!
 
 == Architecture ==
 
@@ -87,3 +89,7 @@ If you look at !QuarkPlayer source code, you will see that [http://code.google.c
  * !PlaylistParser for parsing m3u playlist and other formats
  * !ContentFetcher to download Internet contents (lyrics, Amazon cover, artist Wikipedia page)
  * !WebBrowser, a simple web browser based on QTextBrowser (so no !QtWebKit dependency)
+
+
+
+http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080724-win32.png?gsc=F98u1AsAAACPmwBWT6bgpe7EAZoCOXfr
