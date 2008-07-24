@@ -1,4 +1,4 @@
-#summary Rationales, background and history of !QuarkPlayer
+#summary Rationales, background and history of QuarkPlayer
 #labels Phase-Design
 
 = Introduction =
@@ -30,6 +30,11 @@ All my friends are big music fans and I discovered that there were using Winamp 
 They don't use advanced features from Amarok or ITunes with tagging support even if they know these features.
 
 That's why I've decided to directly add a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080626-win32-fullplugins.png?gda=_Ji1I1sAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDRYEbqvAFjzWFrl9M5z94S3SZGsd5o1AwXI20RE_qYl0SJl3I5nvU7ZMR3tcW67EOQ "Windows Explorer" panel] inside !QuarkPlayer from where they can do drag&drop to the playlist.
+
+== Libraries dependencies ==
+
+!QuarkPlayer only depends on Qt, not on KDE libraries. I think that QuarkPlayer should be as fast as possible and base it on KDE libraries would slow down the soft specially under Windows. Beside this reason I don't see yet any arguments to introduce a KDE dependency compare to Qt features.
+Under GNU/Linux, !QuarkPlayer can be recompiled with a minimal support for KDE. TkUtil tries to achieve this goal by using KMainWindow for example instead of QMainWindow. This process is totally transparent from the rest of the source code.
 
 == Architecture ==
 
