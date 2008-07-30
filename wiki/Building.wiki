@@ -56,7 +56,7 @@ You need to setup you compiling environment, I use this small script: [http://co
 Adapt this script to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
 
 When all this is done properly, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
-(Unfortunately, Qt-4.4 Windows binaries have not been yet released on the website: http://qt.windows.binaries.googlepages.com/index.html)
+(Qt-4.4 Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
 ==MacOS X==
 
