@@ -19,6 +19,8 @@
 #include "Effect.h"
 
 #include "EffectManager.h"
+#include "vlc/vlc_loader.h"
+#include "vlc/vlc_symbols.h"
 
 #include "MediaObject.h"
 
@@ -38,9 +40,10 @@ namespace VLC_MPlayer
 Effect::Effect(EffectManager * effectManager, int effectId, QObject * parent)
 	: SinkNode(parent) {
 
+    effectManager->enableEqualizerEffects();
 	QList<EffectInfo *> effects = effectManager->getEffectList();
 	if (effectId >= 0 && effectId < effects.size()) {
-		_effectCommand = effects[effectId]->getCommand();
+		_effectFilter = effects[effectId]->getFilter();
 		_effectType = effects[effectId]->getType();
 	} else {
 		//Effect ID out of range
@@ -53,7 +56,6 @@ Effect::~Effect() {
 
 void Effect::connectToMediaObject(PrivateMediaObject * mediaObject) {
 	SinkNode::connectToMediaObject(mediaObject);
-
 #ifdef PHONON_MPLAYER
 	switch (_effectType) {
 	case EffectInfo::AudioEffect:
@@ -67,6 +69,19 @@ void Effect::connectToMediaObject(PrivateMediaObject * mediaObject) {
 	MPlayerProcess * process = _mediaObject->getMPlayerProcess();
 	MPlayerLoader::restart(process);
 #endif	//PHONON_MPLAYER
+
+#ifdef PHONON_VLC
+	switch (_effectType) {
+	case EffectInfo::AudioEffect:
+		p_libvlc_audio_equalizer_set_preset( _vlcInstance, ( libvlc_audio_preset_names_t )_effectFilter, _vlcException);
+		checkException();
+		break;
+	case EffectInfo::VideoEffect:
+		p_libvlc_video_filter_add( _vlcCurrentMediaPlayer, ( libvlc_video_filter_names_t ) _effectFilter, _vlcException);
+		checkException();
+		break;
+	}
+#endif
 }
 
 void Effect::disconnectFromMediaObject(PrivateMediaObject * mediaObject) {
@@ -85,6 +100,18 @@ void Effect::disconnectFromMediaObject(PrivateMediaObject * mediaObject) {
 	MPlayerProcess * process = _mediaObject->getMPlayerProcess();
 	MPlayerLoader::restart(process);
 #endif	//PHONON_MPLAYER
+
+#ifdef PHONON_VLC
+    printf("deleting: \n");
+	switch (_effectType) {
+	case EffectInfo::AudioEffect:
+		break;
+	case EffectInfo::VideoEffect:
+		p_libvlc_video_filter_remove( _vlcCurrentMediaPlayer, ( libvlc_video_filter_names_t ) _effectFilter, _vlcException);
+		checkException();
+		break;
+	}
+#endif
 }
 
 QList<EffectParameter> Effect::parameters() const {

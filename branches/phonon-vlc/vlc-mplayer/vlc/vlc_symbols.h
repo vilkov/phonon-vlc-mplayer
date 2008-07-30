@@ -692,6 +692,14 @@ DEFINEFUNC(int, libvlc_audio_get_channel, (libvlc_instance_t * p_i, libvlc_excep
 
 DEFINEFUNC(void, libvlc_audio_set_channel, (libvlc_instance_t * p_i, int i_channel, libvlc_exception_t * p_e), (p_i, i_channel, p_e), )
 
+DEFINEFUNC(void, libvlc_audio_equalizer_enable, (libvlc_instance_t * p_i, libvlc_exception_t * p_e), (p_i, p_e), )
+
+DEFINEFUNC(void, libvlc_audio_equalizer_disable, (libvlc_instance_t * p_i, libvlc_exception_t * p_e), (p_i, p_e), )
+
+DEFINEFUNC(void, libvlc_audio_equalizer_set_preset, (libvlc_instance_t * p_i, 
+                                                     libvlc_audio_preset_names_t name,
+                                                     libvlc_exception_t * p_e), (p_i, name, p_e), )
+
 DEFINEFUNC(libvlc_media_discoverer_t *, libvlc_media_discoverer_new_from_name, (
 				libvlc_instance_t * p_i,
 				const char * psz_name,

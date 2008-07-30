@@ -237,7 +237,7 @@ QStringList Backend::availableMimeTypes() const {
 }
 
 QList<int> Backend::objectDescriptionIndexes(ObjectDescriptionType type) const {
-	qDebug() << __FUNCTION__ << "";
+	//qDebug() << __FUNCTION__ << "";
 
 	QList<int> list;
 
@@ -273,7 +273,6 @@ QList<int> Backend::objectDescriptionIndexes(ObjectDescriptionType type) const {
 }
 
 QHash<QByteArray, QVariant> Backend::objectDescriptionProperties(ObjectDescriptionType type, int index) const {
-	qDebug() << __FUNCTION__ << "";
 
 	QHash<QByteArray, QVariant> ret;
 
@@ -312,7 +311,7 @@ QHash<QByteArray, QVariant> Backend::objectDescriptionProperties(ObjectDescripti
 		if (index >= 0 && index <= effectList.size()) {
 			const EffectInfo * effect = effectList[index];
 			ret.insert("name", effect->getName());
-			ret.insert("command", effect->getCommand());
+			ret.insert("filter", effect->getFilter());
 		} else
 			Q_ASSERT(1); // Since we use list position as ID, this should not happen
 

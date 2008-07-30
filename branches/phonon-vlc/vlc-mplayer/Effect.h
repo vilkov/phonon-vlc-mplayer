@@ -58,9 +58,10 @@ public:
 
 private:
 
-	QString _effectCommand;
+	int _effectFilter;
 
 	EffectInfo::Type _effectType;
+
 };
 
 }}	//Namespace Phonon::VLC_MPlayer

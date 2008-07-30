@@ -17,6 +17,8 @@
  */
 
 #include "EffectManager.h"
+#include "vlc/vlc_loader.h"
+#include "vlc/vlc_symbols.h"
 
 namespace Phonon
 {
@@ -25,6 +27,8 @@ namespace VLC_MPlayer
 
 EffectManager::EffectManager(QObject * parent)
 	: QObject(parent) {
+	    
+    b_equalizer_enabled = false;
 
 #ifdef PHONON_MPLAYER
 	//Audio effects
@@ -62,10 +66,70 @@ EffectManager::EffectManager(QObject * parent)
 	//FIXME does not work
 	//_effectList.append(new EffectInfo("(Video) Postprocessing", "pp -autoq 6", EffectInfo::VideoEffect));
 #endif	//PHONON_MPLAYER
+
+#ifdef PHONON_VLC
+	/* Audio effects - equalizer
+	   only one of them can be used => last set
+	   it is clever used with combobox */
+	_effectList.append(new EffectInfo("(Audio) Flat", FLAT, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Classical", CLASSICAL, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Club", CLUB, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Dance", DANCE, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Fullbass", FULLBASS, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Fullbasstreble", FULLBASSTREBLE, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Fulltreble", FULLTREBLE, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Headphones", HEADPHONES, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Large hall", LARGEHALL, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Live", LIVE, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Party", PARTY, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Pop", POP, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Reggae", REGGAE, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Rock", ROCK, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Ska", SKA, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Soft", SOFT, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Softrock", SOFTROCK, EffectInfo::AudioEffect));
+	_effectList.append(new EffectInfo("(Audio) Techno", TECHNO, EffectInfo::AudioEffect));
+	
+	/* Video effects, more than one can be used simultaneously
+	   clever to used with checboxes */
+	_effectList.append(new EffectInfo("(Video) Color threshold", COLORTHRESHOLD, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Extract", EXTRACT, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Gradient", GRADIENT, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Invert", INVERT, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Motion blur", MOTIONBLUR, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Motion detect", MOTIONDETECT, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Noise", NOISE, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Postprocess", POSTPROCESS, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Psychedelic", PSYCHEDELIC, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Ripple", RIPPLE, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Rotate", ROTATE, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Sharpen", SHARPEN, EffectInfo::VideoEffect));
+	_effectList.append(new EffectInfo("(Video) Wave", WAVE, EffectInfo::VideoEffect));
+#endif
 }
 
 EffectManager::~EffectManager() {
 	_effectList.clear();
+}
+
+void EffectManager::enableEqualizerEffects()
+{
+    if( !b_equalizer_enabled )
+    {
+        libvlc_audio_equalizer_enable( _vlcInstance, _vlcException );
+        checkException();
+        b_equalizer_enabled = true;
+    }
+}
+
+void EffectManager::disableEqualizerEffects()
+{
+    if( b_equalizer_enabled )
+    {
+        libvlc_audio_equalizer_disable( _vlcInstance, _vlcException );
+        checkException();
+        b_equalizer_enabled = false;
+    }
 }
 
 QList<EffectInfo *> EffectManager::getEffectList() const {

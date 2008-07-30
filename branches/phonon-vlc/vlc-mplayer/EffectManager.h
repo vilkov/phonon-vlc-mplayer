@@ -22,6 +22,8 @@
 #include <phonon/effectinterface.h>
 #include <phonon/effectparameter.h>
 
+#include <vlc/vlc.h>
+
 #include <QtCore/QObject>
 
 namespace Phonon
@@ -37,9 +39,9 @@ public:
 		VideoEffect
 	};
 
-	EffectInfo(const QString & name, const QString & command, Type type) {
+	EffectInfo(const QString & name, int filter, Type type) {
 		_name = name;
-		_command = command;
+		_filter = filter;
 		_type = type;
 	}
 
@@ -47,9 +49,10 @@ public:
 		return _name;
 	}
 
-	QString getCommand() const {
-		return _command;
+	int getFilter() const {
+		return _filter;
 	}
+	
 
 	Type getType() const {
 		return _type;
@@ -59,7 +62,7 @@ private:
 
 	QString _name;
 
-	QString _command;
+	int _filter;
 
 	Type _type;
 };
@@ -77,10 +80,13 @@ public:
 	~EffectManager();
 
 	QList<EffectInfo *> getEffectList() const;
+	void enableEqualizerEffects();
+	void disableEqualizerEffects();
 
 private:
 
 	QList<EffectInfo *> _effectList;
+    bool b_equalizer_enabled;
 };
 
 }}	//Namespace Phonon::VLC_MPlayer
