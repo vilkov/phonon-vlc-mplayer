@@ -1,16 +1,6 @@
-project(phonon)
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-set(PHONON_LIB_MAJOR_VERSION "4")
-set(PHONON_LIB_MINOR_VERSION "2")
-set(PHONON_LIB_PATCH_VERSION "70")
-set(PHONON_LIB_VERSION "${PHONON_LIB_MAJOR_VERSION}.3.0")
-set(PHONON_LIB_SOVERSION ${PHONON_LIB_MAJOR_VERSION})
-
-set(SHARE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/share")
-set(KDE4_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-set(DBUS_INTERFACES_INSTALL_DIR "${KDE4_INSTALL_DIR}/share/dbus-1/interfaces" )
+add_subdirectory(tests)
+add_subdirectory(examples)
+add_subdirectory(experimental)
 
 set(phonon_LIB_SRCS
    objectdescription.cpp
@@ -18,7 +8,7 @@ set(phonon_LIB_SRCS
    phononnamespace.cpp
    mediasource.cpp
    abstractmediastream.cpp
-   abstractmediastream2.cpp
+   #abstractmediastream2.cpp
    streaminterface.cpp
    mediaobject.cpp
    medianode.cpp
@@ -52,13 +42,16 @@ if (QT_QTDBUS_FOUND)
    )
 endif (QT_QTDBUS_FOUND)
 
-qt4_automoc(${phonon_LIB_SRCS})
-add_library(phonon SHARED ${phonon_LIB_SRCS})
+
+automoc4_add_library(phonon SHARED ${phonon_LIB_SRCS})
+target_link_libraries(phonon ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 if (QT_QTDBUS_FOUND)
-   target_link_libraries(phonon ${QT_QTDBUS_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-else (QT_QTDBUS_FOUND)
-   target_link_libraries(phonon ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+  target_link_libraries(phonon ${QT_QTDBUS_LIBRARY})
 endif (QT_QTDBUS_FOUND)
+if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
+  # We need to explicitly link libm to phonon in Solaris
+  target_link_libraries(phonon m)
+endif (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
 
 set_target_properties(phonon PROPERTIES
                              VERSION ${PHONON_LIB_VERSION}
@@ -75,7 +68,7 @@ install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/phononnamespace.h
    mediasource.h
    abstractmediastream.h
-   abstractmediastream2.h
+   #abstractmediastream2.h
    streaminterface.h
    mediaobject.h
    audiooutput.h
