@@ -38,8 +38,21 @@ reduce_qt_include_dirs()
 #Does not use Phonon from Qt or KDE4
 #Uses Phonon from this repository instead
 #CMake declarations order matters!!!
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/phonon ${CMAKE_CURRENT_SOURCE_DIR}/phonon)
 set(QT_PHONON_LIBRARY phonon)
+
+
+find_package(Automoc4 REQUIRED)
+include (CheckCXXCompilerFlag)
+include (MacroEnsureVersion)
+
+if (NOT AUTOMOC4_VERSION)
+   set(AUTOMOC4_VERSION "0.9.83")
+endif (NOT AUTOMOC4_VERSION)
+macro_ensure_version("0.9.86" "${AUTOMOC4_VERSION}" _automoc4_version_ok)
+if (NOT _automoc4_version_ok)
+   message(FATAL_ERROR "Your version of automoc4 is too old. You have ${AUTOMOC4_VERSION}, you need at least 0.9.86")
+endif (NOT _automoc4_version_ok)
 
 #Default installation path
 set(CMAKE_INSTALL_PREFIX ${BUILD_DIR})
