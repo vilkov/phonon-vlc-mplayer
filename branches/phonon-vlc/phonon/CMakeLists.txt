@@ -1,6 +1,6 @@
-add_subdirectory(tests)
-add_subdirectory(examples)
-add_subdirectory(experimental)
+#add_subdirectory(tests)
+#add_subdirectory(examples)
+#add_subdirectory(experimental)
 
 set(phonon_LIB_SRCS
    objectdescription.cpp
