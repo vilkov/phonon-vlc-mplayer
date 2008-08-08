@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -30,106 +31,129 @@ static const int ABOUT_TO_FINISH_TIME = 2000;
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-MediaObject::MediaObject(QObject * parent)
-	: QObject(parent) {
-
-	_currentState = Phonon::LoadingState;
-	_videoWidgetId = 0;
-	_prefinishMarkReachedEmitted = false;
-	_aboutToFinishEmitted = false;
+MediaObject::MediaObject( QObject *p_parent )
+	: QObject( p_parent )
+{
+	currentState = Phonon::LoadingState;
+	i_video_widget_id = 0;
+	b_prefinish_mark_reached_emitted = false;
+	b_about_to_finish_emitted = false;
+	i_transition_time = 0;
 
 	//By default, no tick() signal
 	//FIXME: Not implemented yet
-	_tickInterval = 0;
+	i_tick_interval = 0;
 
-	qRegisterMetaType<QMultiMap<QString, QString> >("QMultiMap<QString, QString>");
+	qRegisterMetaType<QMultiMap<QString, QString> >( "QMultiMap<QString, QString>" );
 
-	connect(this, SIGNAL(stateChanged(Phonon::State)), SLOT(stateChangedInternal(Phonon::State)));
+	connect( this, SIGNAL( stateChanged( Phonon::State ) ),
+	               SLOT( stateChangedInternal( Phonon::State ) ) );
 
-	connect(this, SIGNAL(tickInternal(qint64)), SLOT(tickInternalSlot(qint64)));
+	connect( this, SIGNAL( tickInternal( qint64 ) ),
+	               SLOT( tickInternalSlot( qint64 ) ) );
 }
 
-MediaObject::~MediaObject() {
+MediaObject::~MediaObject()
+{
 }
 
-void MediaObject::setVideoWidgetId(int videoWidgetId) {
-	_videoWidgetId = videoWidgetId;
+void MediaObject::setVideoWidgetId(int i_widget_id)
+{
+    i_video_widget_id = i_widget_id;
 }
 
-void MediaObject::play() {
+void MediaObject::play()
+{
 	qDebug() << __FUNCTION__;
 
-	if (_currentState == Phonon::PausedState) {
+	if( currentState == Phonon::PausedState )
+	{
 		resume();
-	} else {
+	} 
+	else
+	{
 		//Play the file
 		playInternal();
 	}
 }
 
-void MediaObject::seek(qint64 milliseconds) {
-	static SeekStack * stack = new SeekStack(this);
+void MediaObject::seek( qint64 milliseconds )
+{
+	static SeekStack *p_stack = new SeekStack( this );
 
-	stack->pushSeek(milliseconds);
+	p_stack->pushSeek( milliseconds );
 
 	qint64 currentTime = this->currentTime();
 	qint64 totalTime = this->totalTime();
 
-	if (currentTime < totalTime - _prefinishMark) {
-		_prefinishMarkReachedEmitted = false;
+	if( currentTime < totalTime - i_prefinish_mark )
+	{
+		b_prefinish_mark_reached_emitted = false;
 	}
-	if (currentTime < totalTime - ABOUT_TO_FINISH_TIME) {
-		_aboutToFinishEmitted = false;
+	if( currentTime < totalTime - ABOUT_TO_FINISH_TIME )
+	{
+		b_about_to_finish_emitted = false;
 	}
 }
 
-void MediaObject::tickInternalSlot(qint64 currentTime) {
+void MediaObject::tickInternalSlot(qint64 currentTime)
+{
 	qint64 totalTime = this->totalTime();
 
-	if (_tickInterval > 0) {
+	if( i_tick_interval > 0 )
+	{
 		//If _tickInternal == 0 means tick() signal is disabled
 		//Default is _tickInternal = 0
-		emit tick(currentTime);
+		emit tick( currentTime );
 	}
 
-	if (_currentState == Phonon::PlayingState) {
-		if (currentTime >= totalTime - _prefinishMark) {
-			if (!_prefinishMarkReachedEmitted) {
-				_prefinishMarkReachedEmitted = true;
-				emit prefinishMarkReached(totalTime - currentTime);
+	if( currentState == Phonon::PlayingState )
+	{
+		if( currentTime >= totalTime - i_prefinish_mark )
+		{
+			if( !b_prefinish_mark_reached_emitted )
+			{
+				b_prefinish_mark_reached_emitted = true;
+				emit prefinishMarkReached( totalTime - currentTime );
 			}
 		}
-		if (currentTime >= totalTime - ABOUT_TO_FINISH_TIME) {
-			if (!_aboutToFinishEmitted) {
+		if( currentTime >= totalTime - ABOUT_TO_FINISH_TIME )
+		{
+			if( !b_about_to_finish_emitted )
+			{
 				//Track is about to finish
-				_aboutToFinishEmitted = true;
+				b_about_to_finish_emitted = true;
 				emit aboutToFinish();
 			}
 		}
 	}
 }
 
-void MediaObject::loadMedia(const QString & filename) {
+void MediaObject::loadMedia(const QString & filename)
+{
 	//Default MediaObject state is Phonon::LoadingState
-	_currentState = Phonon::LoadingState;
+	currentState = Phonon::LoadingState;
 
 	//Loads the media
-	loadMediaInternal(filename);
+	loadMediaInternal( filename );
 }
 
-void MediaObject::resume() {
+void MediaObject::resume()
+{
 	pause();
 }
 
-qint32 MediaObject::tickInterval() const {
-	return _tickInterval;
+qint32 MediaObject::tickInterval() const
+{
+	return i_tick_interval;
 }
 
-void MediaObject::setTickInterval(qint32 tickInterval) {
-	_tickInterval = tickInterval;
+void MediaObject::setTickInterval( qint32 tickInterval)
+{
+	i_tick_interval = tickInterval;
 	/*if (_tickInterval <= 0) {
 		_tickTimer->setInterval(50);
 	} else {
@@ -137,133 +161,145 @@ void MediaObject::setTickInterval(qint32 tickInterval) {
 	}*/
 }
 
-qint64 MediaObject::currentTime() const {
+qint64 MediaObject::currentTime() const
+{
 	qint64 time = -1;
 	Phonon::State st = state();
 
-	switch(st) {
-	case Phonon::PausedState:
-		time = currentTimeInternal();
-		break;
-	case Phonon::BufferingState:
-		time = currentTimeInternal();
-		break;
-	case Phonon::PlayingState:
-		time = currentTimeInternal();
-		break;
-	case Phonon::StoppedState:
-		time = 0;
-		break;
-	case Phonon::LoadingState:
-		time = 0;
-		break;
-	case Phonon::ErrorState:
-		time = -1;
-		break;
-	default:
-		qCritical() << __FUNCTION__ << "Error: unsupported Phonon::State:" << st;
+	switch ( st )
+	{
+        case Phonon::PausedState:
+            time = currentTimeInternal();
+            break;
+        case Phonon::BufferingState:
+            time = currentTimeInternal();
+            break;
+        case Phonon::PlayingState:
+            time = currentTimeInternal();
+            break;
+        case Phonon::StoppedState:
+            time = 0;
+            break;
+        case Phonon::LoadingState:
+            time = 0;
+            break;
+        case Phonon::ErrorState:
+            time = -1;
+            break;
+        default:
+            qCritical() << __FUNCTION__ << "Error: unsupported Phonon::State:" << st;
 	}
 
 	return time;
 }
 
-Phonon::State MediaObject::state() const {
-	return _currentState;
+Phonon::State MediaObject::state() const
+{
+	return currentState;
 }
 
-Phonon::ErrorType MediaObject::errorType() const {
+Phonon::ErrorType MediaObject::errorType() const
+{
 	return Phonon::NormalError;
 }
 
-MediaSource MediaObject::source() const {
-	return _mediaSource;
+MediaSource MediaObject::source() const
+{
+	return mediaSource;
 }
 
-void MediaObject::setSource(const MediaSource & source) {
+void MediaObject::setSource(const MediaSource & source)
+{
 	qDebug() << __FUNCTION__;
 
-	_mediaSource = source;
+	mediaSource = source;
 
-	switch (source.type()) {
-	case MediaSource::Invalid:
-		break;
-	case MediaSource::LocalFile:
-		loadMedia(_mediaSource.fileName());
-		break;
-	case MediaSource::Url:
-		loadMedia(_mediaSource.url().toString());
-		break;
-	case MediaSource::Disc: {
-		switch (source.discType()) {
-		case Phonon::NoDisc:
-			qCritical() << __FUNCTION__ << "Error: the MediaSource::Disc doesn't specify which one (Phonon::NoDisc)";
-			return;
-		case Phonon::Cd:
-			loadMedia(_mediaSource.deviceName());
-			break;
-		case Phonon::Dvd:
-
-#ifdef PHONON_VLC
-			loadMedia("dvd://" + _mediaSource.deviceName());
-#endif	//PHONON_VLC
-
-#ifdef PHONON_MPLAYER
-			loadMedia("dvd://" + QString::number(MPLAYER_DEFAULT_DVD_TITLE));
-#endif	//PHONON_MPLAYER
-
-			break;
-		case Phonon::Vcd:
-			loadMedia(_mediaSource.deviceName());
-			break;
-		default:
-			qCritical() << __FUNCTION__ << "Error: unsupported MediaSource::Disc:" << source.discType();
-			break;
-		}
-		}
-		break;
-	case MediaSource::Stream:
-		break;
-	default:
-		qCritical() << __FUNCTION__ << "Error: unsupported MediaSource:" << source.type();
-		break;
+	switch ( source.type() )
+	{
+        case MediaSource::Invalid:
+            break;
+        case MediaSource::LocalFile:
+            loadMedia( mediaSource.fileName() );
+            break;
+        case MediaSource::Url:
+            loadMedia( mediaSource.url().toString() );
+            break;
+        case MediaSource::Disc:
+            switch ( source.discType() )
+            {
+                case Phonon::NoDisc:
+                    qCritical() << __FUNCTION__
+                                << "Error: the MediaSource::Disc doesn't specify which one (Phonon::NoDisc)";
+                    return;
+                case Phonon::Cd:
+                    loadMedia( mediaSource.deviceName() );
+                    break;
+                case Phonon::Dvd:
+                    loadMedia( "dvd://" + mediaSource.deviceName() );
+                    break;
+                case Phonon::Vcd:
+                    loadMedia( mediaSource.deviceName() );
+                    break;
+                default:
+                    qCritical() << __FUNCTION__ << "Error: unsupported MediaSource::Disc:" << source.discType();
+                    break;
+            }
+            break;
+        case MediaSource::Stream:
+            break;
+        default:
+            qCritical() << __FUNCTION__
+                        << "Error: unsupported MediaSource:"
+                        << source.type();
+            break;
 	}
 }
 
-void MediaObject::setNextSource(const MediaSource & source) {
-	setSource(source);
+void MediaObject::setNextSource(const MediaSource & source)
+{
+	setSource( source );
 }
 
-qint32 MediaObject::prefinishMark() const {
-	return _prefinishMark;
+qint32 MediaObject::prefinishMark() const
+{
+	return i_prefinish_mark;
 }
 
-void MediaObject::setPrefinishMark(qint32 msecToEnd) {
-	_prefinishMark = msecToEnd;
-	if (currentTime() < totalTime() - _prefinishMark) {
+void MediaObject::setPrefinishMark(qint32 msecToEnd)
+{
+	i_prefinish_mark = msecToEnd;
+	if( currentTime() < totalTime() - i_prefinish_mark )
+	{
 		//Not about to finish
-		_prefinishMarkReachedEmitted = false;
+		b_prefinish_mark_reached_emitted = false;
 	}
 }
 
-qint32 MediaObject::transitionTime() const {
-	return 0;
+qint32 MediaObject::transitionTime() const
+{
+	return i_transition_time;
 }
 
-void MediaObject::setTransitionTime(qint32) {
+void MediaObject::setTransitionTime(qint32 time)
+{
+    i_transition_time = time;
 }
 
-void MediaObject::stateChangedInternal(Phonon::State newState) {
-	qDebug() << __FUNCTION__ << "newState:" << newState << "previousState:" << _currentState ;
+void MediaObject::stateChangedInternal(Phonon::State newState)
+{
+	qDebug() << __FUNCTION__ << "newState:" << newState
+	                         << "previousState:" << currentState ;
 
-	if (newState == _currentState) {
+	if( newState == currentState )
+	{
 		//No state changed
 		return;
 	}
 
 	//State changed
-	Phonon::State previousState = _currentState;
-	_currentState = newState;
-	emit stateChanged(_currentState, previousState);
+	Phonon::State previousState = currentState;
+	currentState = newState;
+	emit stateChanged( currentState, previousState );
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

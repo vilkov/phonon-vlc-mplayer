@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_SEEKSTACK_H
-#define PHONON_VLC_MPLAYER_SEEKSTACK_H
+#ifndef PHONON_VLC_SEEKSTACK_H
+#define PHONON_VLC_SEEKSTACK_H
 
 #include "MediaObject.h"
 
@@ -28,22 +29,21 @@ class QTimer;
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 /**
  * A queue of seek commands.
- *
- * @author Tanguy Krotoff
  */
-class SeekStack : public QObject {
+class SeekStack : public QObject
+{
 	Q_OBJECT
 public:
 
-	SeekStack(MediaObject * mediaObject);
+	SeekStack( MediaObject *mediaObject );
 	~SeekStack();
 
-	void pushSeek(qint64 milliseconds);
+	void pushSeek( qint64 milliseconds );
 
 signals:
 
@@ -55,13 +55,13 @@ private slots:
 
 private:
 
-	MediaObject * _mediaObject;
+	MediaObject *p_media_object;
 
-	QTimer * _timer;
+	QTimer *p_timer;
 
-	QStack<qint64> _stack;
+	QStack<qint64> stack;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_SEEKSTACK_H
+#endif	//PHONON_VLC_SEEKSTACK_H

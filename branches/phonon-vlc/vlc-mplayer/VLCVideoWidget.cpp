@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -26,35 +27,41 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-VLCVideoWidget::VLCVideoWidget(QWidget * parent)
-: WidgetNoPaintEvent(parent) {
-
+VLCVideoWidget::VLCVideoWidget( QWidget *p_parent )
+    : WidgetNoPaintEvent( p_parent )
+{
 	//Background color is black
-	setBackgroundColor(Qt::black);
+	setBackgroundColor( Qt::black );
 }
 
-VLCVideoWidget::~VLCVideoWidget() {
+VLCVideoWidget::~VLCVideoWidget()
+{
 }
 
-void VLCVideoWidget::resizeEvent(QResizeEvent * event) {
-	qDebug() << "event->size():" << event->size();
+void VLCVideoWidget::resizeEvent( QResizeEvent *p_event )
+{
+	qDebug() << "resizeEvent" << p_event->size();
 }
 
-void VLCVideoWidget::setAspectRatio(double aspectRatio) {
+void VLCVideoWidget::setAspectRatio( double f_aspect_ratio )
+{
 }
 
-void VLCVideoWidget::setScaleAndCropMode(bool scaleAndCrop) {
+void VLCVideoWidget::setScaleAndCropMode( bool b_scale_and_crop )
+{
 }
 
-void VLCVideoWidget::setVideoSize(const QSize & videoSize) {
-	_videoSize = videoSize;
+void VLCVideoWidget::setVideoSize( const QSize & size )
+{
+	videoSize = size;
 }
 
-QSize VLCVideoWidget::sizeHint() const {
-	return _videoSize;
+QSize VLCVideoWidget::sizeHint() const
+{
+	return videoSize;
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

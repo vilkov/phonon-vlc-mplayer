@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,25 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_MEDIACONTROLLER_H
-#define PHONON_VLC_MPLAYER_MEDIACONTROLLER_H
-
-#include "config.h"
+#ifndef PHONON_VLC_MEDIACONTROLLER_H
+#define PHONON_VLC_MEDIACONTROLLER_H
 
 #include <phonon/addoninterface.h>
 #include <phonon/objectdescription.h>
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 /**
  * Interface for AddonInterface.
  *
- * This class exists only for code factorization between VLC and MPlayer backends.
- * Normally MediaObject inherits directly from AddonInterface, but wait, I don't want
- * 3000LOC classes...
  *
  * This class cannot inherit from QObject has MediaObject already inherit from QObject.
  * This is a Qt limitation: there is no possibility to inherit virtual Qobject :/
@@ -42,62 +38,66 @@ namespace VLC_MPlayer
  * Phonon implementation got the same problem.
  *
  * @see VLCMediaController
- * @see MPlayerMediaController
  * @see VLCMediaObject
- * @see MPlayerMediaObject
  * @see MediaObject
- * @author Tanguy Krotoff
  */
-class MediaController : public AddonInterface {
+class MediaController : public AddonInterface
+{
 public:
 
 	MediaController();
 	virtual ~MediaController();
 
-	bool hasInterface(Interface iface) const;
+	bool hasInterface( Interface iface ) const;
 
-	QVariant interfaceCall(Interface iface, int command, const QList<QVariant> & arguments = QList<QVariant>());
+	QVariant interfaceCall( Interface iface, int i_command, const QList<QVariant> & arguments = QList<QVariant>() );
 
-	//MediaController signals
+	/* MediaController signals */
 	virtual void availableSubtitlesChanged() = 0;
 	virtual void availableAudioChannelsChanged() = 0;
 
 	virtual void availableChaptersChanged() = 0;
 	virtual void availableTitlesChanged() = 0;
 
-	virtual void availableAnglesChanged(int availableAngles) = 0;
-	virtual void angleChanged(int angleNumber) = 0;
-	virtual void chapterChanged(int chapterNumber) = 0;
-	virtual void titleChanged(int titleNumber) = 0;
+	virtual void availableAnglesChanged( int i_available_angles ) = 0;
+	virtual void angleChanged( int i_angle_number ) = 0;
+	virtual void chapterChanged( int i_chapter_number ) = 0;
+	virtual void titleChanged( int i_title_number ) = 0;
 
 protected:
 
-	//AudioChannel
-	virtual void setCurrentAudioChannel(const Phonon::AudioChannelDescription & audioChannel) = 0;
+	/* AudioChannel */
+	virtual void setCurrentAudioChannel( const Phonon::AudioChannelDescription & audioChannel ) = 0;
 	virtual QList<Phonon::AudioChannelDescription> availableAudioChannels() const = 0;
 	virtual Phonon::AudioChannelDescription currentAudioChannel() const = 0;
 
-	//Subtitle
-	virtual void setCurrentSubtitle(const Phonon::SubtitleDescription & subtitle) = 0;
+	/* Subtitle */
+	virtual void setCurrentSubtitle( const Phonon::SubtitleDescription & subtitle ) = 0;
 	virtual QList<Phonon::SubtitleDescription> availableSubtitles() const = 0;
 	virtual Phonon::SubtitleDescription currentSubtitle() const = 0;
 
-	//Angle
-	virtual void setCurrentAngle(int angleNumber) = 0;
+	/* Angle */
+	virtual void setCurrentAngle( int i_angle_number ) = 0;
 	virtual int availableAngles() const = 0;
 	virtual int currentAngle() const = 0;
 
-	//Chapter
-	virtual void setCurrentChapter(const Phonon::ChapterDescription & chapter) = 0;
-	virtual QList<Phonon::ChapterDescription> availableChapters() const = 0;
-	virtual Phonon::ChapterDescription currentChapter() const = 0;
+	/* Chapter */
+	//virtual void setCurrentChapter( const Phonon::ChapterDescription & chapter ) = 0;
+	//virtual QList<Phonon::ChapterDescription> availableChapters() const = 0;
+	//virtual Phonon::ChapterDescription currentChapter() const = 0;
+	virtual void setCurrentChapter( int chapterNumber ) = 0;
+	virtual int availableChapters() const = 0;
+	virtual int currentChapter() const = 0;
 
-	//Title
-	virtual void setCurrentTitle(const Phonon::TitleDescription & title) = 0;
-	virtual QList<Phonon::TitleDescription> availableTitles() const = 0;
-	virtual Phonon::TitleDescription currentTitle() const = 0;
+	/* Title */
+	//virtual void setCurrentTitle( const Phonon::TitleDescription & title ) = 0;
+	//virtual QList<Phonon::TitleDescription> availableTitles() const = 0;
+	//virtual Phonon::TitleDescription currentTitle() const = 0;
+	virtual void setCurrentTitle( int titleNumber ) = 0;
+	virtual int availableTitles() const = 0;
+	virtual int currentTitle() const = 0;
 
-	virtual void setAutoplayTitles(bool autoplay) = 0;
+	virtual void setAutoplayTitles( bool b_autoplay) = 0;
 	virtual bool autoplayTitles() const = 0;
 
 	/**
@@ -107,26 +107,30 @@ protected:
 	 */
 	virtual void clearMediaController();
 
-	Phonon::AudioChannelDescription _currentAudioChannel;
-	QList<Phonon::AudioChannelDescription> _availableAudioChannels;
+	Phonon::AudioChannelDescription current_audio_channel;
+	QList<Phonon::AudioChannelDescription> available_audio_channels;
 
-	Phonon::SubtitleDescription _currentSubtitle;
-	QList<Phonon::SubtitleDescription> _availableSubtitles;
+	Phonon::SubtitleDescription current_subtitle;
+	QList<Phonon::SubtitleDescription> available_subtitles;
 
-	int _currentAngle;
-	int _availableAngles;
+	//Phonon::ChapterDescription current_chapter;
+	//QList<Phonon::ChapterDescription> available_chapters;
+	int current_chapter;
+	int available_chapters;
 
-	Phonon::ChapterDescription _currentChapter;
-	QList<Phonon::ChapterDescription> _availableChapters;
+	//Phonon::TitleDescription current_title;
+	//QList<Phonon::TitleDescription> available_titles;
+	int current_title;
+	int available_titles;
 
-	Phonon::TitleDescription _currentTitle;
-	QList<Phonon::TitleDescription> _availableTitles;
+	int i_current_angle;
+	int i_available_angles;
 
-	bool _autoplayTitles;
+	bool b_autoplay_titles;
 
 private:
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_MEDIACONTROLLER_H
+#endif	//PHONON_VLC_MEDIACONTROLLER_H

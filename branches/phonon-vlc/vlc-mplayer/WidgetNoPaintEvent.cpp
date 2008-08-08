@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,37 +23,39 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-WidgetNoPaintEvent::WidgetNoPaintEvent(QWidget * parent)
-	: QWidget(parent) {
-
+WidgetNoPaintEvent::WidgetNoPaintEvent( QWidget *p_parent )
+	: QWidget( p_parent )
+{
 	//When resizing fill with black (backgroundRole color) the rest is done by paintEvent
-	setAttribute(Qt::WA_OpaquePaintEvent);
+	setAttribute( Qt::WA_OpaquePaintEvent );
 
 	//Disable Qt composition management as MPlayer draws onto the widget directly
-	setAttribute(Qt::WA_PaintOnScreen);
+	setAttribute( Qt::WA_PaintOnScreen );
 
 	//Indicates that the widget has no background, i.e. when the widget receives paint events,
 	//the background is not automatically repainted.
-	setAttribute(Qt::WA_NoSystemBackground);
+	setAttribute( Qt::WA_NoSystemBackground );
 
 	//Required for dvdnav
-	setMouseTracking(true);
+	setMouseTracking( true );
 }
 
-void WidgetNoPaintEvent::paintEvent(QPaintEvent * event) {
+void WidgetNoPaintEvent::paintEvent(QPaintEvent *p_event)
+{
 	//FIXME this makes the video flicker
 	//Makes everything backgroundRole color
-	QPainter painter(this);
-	painter.eraseRect(rect());
+	QPainter painter( this );
+	painter.eraseRect( rect() );
 }
 
-void WidgetNoPaintEvent::setBackgroundColor(const QColor & color) {
+void WidgetNoPaintEvent::setBackgroundColor( const QColor & color )
+{
 	QPalette p = palette();
-	p.setColor(backgroundRole(), color);
-	setPalette(p);
+	p.setColor( backgroundRole(), color );
+	setPalette( p );
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

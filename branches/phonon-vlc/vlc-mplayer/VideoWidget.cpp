@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,19 +20,10 @@
 #include "VideoWidget.h"
 
 #include "MediaObject.h"
+#include "VLCMediaObject.h"
 
-#ifdef PHONON_VLC
-	#include "VLCMediaObject.h"
-
-	#include "vlc_loader.h"
-	#include "vlc_symbols.h"
-#endif	//PHONON_VLC
-
-#ifdef PHONON_MPLAYER
-	#include "MPlayerMediaObject.h"
-
-	#include <mplayer/MPlayerProcess.h>
-#endif	//PHONON_MPLAYER
+#include "vlc_loader.h"
+#include "vlc_symbols.h"
 
 #include <QtGui/QWidget>
 #include <QtGui/QApplication>
@@ -40,247 +32,236 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-VideoWidget::VideoWidget(QWidget * parent)
-	: SinkNode(parent) {
+VideoWidget::VideoWidget( QWidget *p_parent )
+	: SinkNode( p_parent )
+{
+	p_video_widget = new Widget( p_parent );
 
-	_videoWidget = new Widget(parent);
+	aspect_ratio = Phonon::VideoWidget::AspectRatioAuto;
+	scale_mode = Phonon::VideoWidget::FitInView;
 
-	_aspectRatio = Phonon::VideoWidget::AspectRatioAuto;
-	_scaleMode = Phonon::VideoWidget::FitInView;
-
-    _filter_adjust_activated = false;
-	_brightness = 0.0;
-	_contrast = 0.0;
-	_hue = 0.0;
-	_saturation = 0.0;
+    b_filter_adjust_activated = false;
+	f_brightness = 0.0;
+	f_contrast = 0.0;
+	f_hue = 0.0;
+	f_saturation = 0.0;
 }
 
-VideoWidget::~VideoWidget() {
+VideoWidget::~VideoWidget()
+{
 }
 
-void VideoWidget::connectToMediaObject(PrivateMediaObject * mediaObject) {
-	SinkNode::connectToMediaObject(mediaObject);
+void VideoWidget::connectToMediaObject(PrivateMediaObject *mediaObject)
+{
+	SinkNode::connectToMediaObject( mediaObject );
 
-#ifdef PHONON_MPLAYER
-	MPlayerProcess * process = _mediaObject->getMPlayerProcess();
-	connect(process, SIGNAL(videoWidgetSizeChanged(int, int)),
-		SLOT(videoWidgetSizeChanged(int, int)));
-#endif	//PHONON_MPLAYER
+	connect( mediaObject, SIGNAL( videoWidgetSizeChanged( int, int ) ),
+		                  SLOT( videoWidgetSizeChanged( int, int ) ) );
 
-#ifdef PHONON_VLC
-	connect(_mediaObject, SIGNAL(videoWidgetSizeChanged(int, int)),
-		SLOT(videoWidgetSizeChanged(int, int)));
-#endif	//PHONON_VLC
-
-	_mediaObject->setVideoWidgetId((int) _videoWidget->winId());
+	mediaObject->setVideoWidgetId( (int) p_video_widget->winId() );
 }
 
-Phonon::VideoWidget::AspectRatio VideoWidget::aspectRatio() const {
-#ifdef PHONON_VLC
-	if (_vlcCurrentMediaPlayer) {
-		const char * aspectRatio = p_libvlc_video_get_aspect_ratio(_vlcCurrentMediaPlayer, _vlcException);
-		qDebug() << "VideoWidget::aspectRatio():" << aspectRatio;
-	}
-#endif	//PHONON_VLC
-
-	return _aspectRatio;
+Phonon::VideoWidget::AspectRatio VideoWidget::aspectRatio() const
+{
+	return aspect_ratio;
 }
 
-void VideoWidget::setAspectRatio(Phonon::VideoWidget::AspectRatio aspectRatio) {
-	qDebug() << __FUNCTION__ << "aspectRatio:" << aspectRatio;
-
+void VideoWidget::setAspectRatio( Phonon::VideoWidget::AspectRatio aspect )
+{
 	//For VLC:
 	//Accepted formats are x:y (4:3, 16:9, etc.) expressing the global image aspect.
 
-	_aspectRatio = aspectRatio;
-	double ratio = (double) 4 / 3;
+    // finish if no player
+	if( !p_vlc_current_media_player )
+        return;
 
-	switch (_aspectRatio) {
+	aspect_ratio = aspect;
 
-	//Let the decoder find the aspect ratio automatically from the media file (this is the default).
-	case Phonon::VideoWidget::AspectRatioAuto:
+	switch ( aspect_ratio )
+	{
+        //Let the decoder find the aspect ratio automatically from the media file (this is the default).
+        case Phonon::VideoWidget::AspectRatioAuto:
+            p_libvlc_video_set_aspect_ratio( p_vlc_current_media_player, "", p_vlc_exception );
+            checkException();
+            break;
 
-	//Fits the video into the widget making the aspect ratio depend solely on the size of the widget.
-	//This way the aspect ratio is freely resizeable by the user.
-	case Phonon::VideoWidget::AspectRatioWidget:
-#ifdef PHONON_MPLAYER
-		if (_mediaObject) {
-			MPlayerProcess * process = _mediaObject->getMPlayerProcess();
-			ratio = process->mediaData().videoAspectRatio;
-		}
-#endif	//PHONON_MPLAYER
-		break;
+        //Fits the video into the widget making the aspect ratio depend solely on the size of the widget.
+        //This way the aspect ratio is freely resizeable by the user.
+        case Phonon::VideoWidget::AspectRatioWidget:
+            p_libvlc_video_set_aspect_ratio( p_vlc_current_media_player, "", p_vlc_exception );
+            checkException();
+            break;
 
-	case Phonon::VideoWidget::AspectRatio4_3:
-		ratio = (double) 4 / 3;
-		break;
+        case Phonon::VideoWidget::AspectRatio4_3:
+            p_libvlc_video_set_aspect_ratio( p_vlc_current_media_player, "4:3", p_vlc_exception );
+            checkException();
+            break;
 
-	case Phonon::VideoWidget::AspectRatio16_9:
-		ratio = (double) 16 / 9;
-		break;
+        case Phonon::VideoWidget::AspectRatio16_9:
+            p_libvlc_video_set_aspect_ratio( p_vlc_current_media_player, "16:9", p_vlc_exception );
+            checkException();
+            break;
 
-	default:
-		qCritical() << __FUNCTION__ << "error: unsupported AspectRatio:" << aspectRatio;
+        default:
+            qCritical() << __FUNCTION__ << "error: unsupported AspectRatio:" << ( int ) aspect_ratio;
 	}
-
-#ifdef PHONON_MPLAYER
-	_videoWidget->setAspectRatio(ratio);
-#endif	//PHONON_MPLAYER
 }
 
-qreal VideoWidget::brightness() const {
-	return _brightness;
+Phonon::VideoWidget::ScaleMode VideoWidget::scaleMode() const
+{
+	return scale_mode;
 }
 
-void VideoWidget::setBrightness(qreal brightness) {
-	_brightness = brightness;
-
-#ifdef PHONON_VLC
-    // vlc takes brightness in range 0.0 - 2.0
-    float f_brightness = brightness + 1.0;
-	if (_vlcCurrentMediaPlayer) {
-	    if ( !_filter_adjust_activated )
-	    {
-	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
-	        _filter_adjust_activated = true;
-	    }
-		p_libvlc_video_set_brightness(_vlcCurrentMediaPlayer, f_brightness, _vlcException);
-	}
-#endif	//PHONON_VLC
-
-	sendMPlayerCommand("brightness " + QString::number(_brightness * 100) + " 1");
-}
-
-Phonon::VideoWidget::ScaleMode VideoWidget::scaleMode() const {
-	return _scaleMode;
-}
-
-void VideoWidget::setScaleMode(Phonon::VideoWidget::ScaleMode scaleMode) {
+void VideoWidget::setScaleMode( Phonon::VideoWidget::ScaleMode scale )
+{
 	//The ScaleMode enum describes how to treat aspect ratio during resizing of video
 
-	_scaleMode = scaleMode;
+	scale_mode = scale;
 
-	switch (_scaleMode) {
+	switch ( scale_mode ) 
+	{
+        //The video will be fitted to fill the view keeping aspect ratio
+        case Phonon::VideoWidget::FitInView:
+            break;
 
-	//The video will be fitted to fill the view keeping aspect ratio
-	case Phonon::VideoWidget::FitInView:
-#ifdef PHONON_MPLAYER
-		_videoWidget->setScaleAndCropMode(false);
-#endif	//PHONON_MPLAYER
-		break;
+        //The video is scaled
+        case Phonon::VideoWidget::ScaleAndCrop:
+            break;
 
-	//The video is scaled
-	case Phonon::VideoWidget::ScaleAndCrop:
-#ifdef PHONON_MPLAYER
-		_videoWidget->setScaleAndCropMode(true);
-#endif	//PHONON_MPLAYER
-		break;
-
-	default:
-		qWarning() << __FUNCTION__ << "unknow Phonon::VideoWidget::ScaleMode:" << _scaleMode;
+        default:
+            qWarning() << __FUNCTION__
+                       << "unknow Phonon::VideoWidget::ScaleMode:"
+                       << scale_mode;
 	}
 }
 
-qreal VideoWidget::contrast() const {
-	return _contrast;
+qreal VideoWidget::brightness() const 
+{
+	return f_brightness;
 }
 
-void VideoWidget::setContrast(qreal contrast) {
-	_contrast = contrast;
+void VideoWidget::setBrightness( qreal brightness )
+{
+	f_brightness = brightness;
 
-#ifdef PHONON_VLC
+    // vlc takes brightness in range 0.0 - 2.0
+	if( p_vlc_current_media_player )
+	{
+	    if ( !b_filter_adjust_activated )
+	    {
+	        p_libvlc_video_filter_add(p_vlc_current_media_player, ADJUST, p_vlc_exception);
+	        checkException();
+	        b_filter_adjust_activated = true;
+	    }
+		p_libvlc_video_set_brightness( p_vlc_current_media_player, f_brightness + 1.0, p_vlc_exception );
+		checkException();
+	}
+}
+
+
+
+qreal VideoWidget::contrast() const
+{
+	return f_contrast;
+}
+
+void VideoWidget::setContrast( qreal contrast )
+{
+	f_contrast = contrast;
+
     // vlc takes contrast in range 0.0 - 2.0
-    float f_contrast = contrast + 1.0;
-	if (_vlcCurrentMediaPlayer) {
-	    if ( !_filter_adjust_activated )
+    float f_contrast = contrast;
+	if( p_vlc_current_media_player )
+	{
+	    if ( !b_filter_adjust_activated )
 	    {
-	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
-	        _filter_adjust_activated = true;
+	        p_libvlc_video_filter_add( p_vlc_current_media_player, ADJUST, p_vlc_exception );
+	        checkException();
+	        b_filter_adjust_activated = true;
 	    }
-		p_libvlc_video_set_contrast(_vlcCurrentMediaPlayer, f_contrast, _vlcException);
+		p_libvlc_video_set_contrast( p_vlc_current_media_player, f_contrast + 1.0, p_vlc_exception );
+		checkException();
 	}
-#endif	//PHONON_VLC
-
-	sendMPlayerCommand("contrast " + QString::number(_contrast * 100) + " 1");
 }
 
-qreal VideoWidget::hue() const {
-	return _hue;
+qreal VideoWidget::hue() const
+{
+	return f_hue;
 }
 
-void VideoWidget::setHue(qreal hue) {
-	_hue = hue;
+void VideoWidget::setHue(qreal hue)
+{
+	f_hue = hue;
 
-#ifdef PHONON_VLC
-    // vlc takes hue in range 0 - 360
-    int i_hue = (hue + 1.0) * 180;
-	if (_vlcCurrentMediaPlayer) {
-	    if ( !_filter_adjust_activated )
+    // vlc takes hue in range 0 - 360 in INT
+    int i_hue = ( f_hue + 1.0 ) * 180;
+	if( p_vlc_current_media_player )
+	{
+	    if ( !b_filter_adjust_activated )
 	    {
-	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
-	        _filter_adjust_activated = true;
+	        p_libvlc_video_filter_add(p_vlc_current_media_player, ADJUST, p_vlc_exception);
+	        checkException();
+	        b_filter_adjust_activated = true;
 	    }
-		p_libvlc_video_set_hue(_vlcCurrentMediaPlayer, i_hue, _vlcException);
+		p_libvlc_video_set_hue( p_vlc_current_media_player, i_hue, p_vlc_exception );
+		checkException();
 	}
-#endif	//PHONON_VLC
 
-	sendMPlayerCommand("hue " + QString::number(_hue * 100) + " 1");
 }
 
-qreal VideoWidget::saturation() const {
-	return _saturation;
+qreal VideoWidget::saturation() const
+{
+	return f_saturation;
 }
 
-void VideoWidget::setSaturation(qreal saturation) {
-	_saturation = saturation;
+void VideoWidget::setSaturation( qreal saturation )
+{
+	f_saturation = saturation;
 
-#ifdef PHONON_VLC
     // vlc takes brightness in range 0.0 - 3.0
-    float f_saturation = (saturation + 1.0) * 1.5;
-	if (_vlcCurrentMediaPlayer) {
-	    if ( !_filter_adjust_activated )
+	if( p_vlc_current_media_player )
+	{
+	    if ( !b_filter_adjust_activated )
 	    {
-	        p_libvlc_video_filter_add(_vlcCurrentMediaPlayer, ADJUST, _vlcException);
-	        _filter_adjust_activated = true;
+	        p_libvlc_video_filter_add(p_vlc_current_media_player, ADJUST, p_vlc_exception);
+	        checkException();
+	        b_filter_adjust_activated = true;
 	    }
-		p_libvlc_video_set_saturation(_vlcCurrentMediaPlayer, f_saturation, _vlcException);
+		p_libvlc_video_set_saturation(p_vlc_current_media_player, ( f_saturation + 1.0 ) * 1.5, p_vlc_exception);
+		checkException();
 	}
-#endif	//PHONON_VLC
-
-	sendMPlayerCommand("saturation " + QString::number(_saturation * 100) + " 1");
 }
 
-Widget * VideoWidget::widget() {
-	return _videoWidget;
+Widget * VideoWidget::widget()
+{
+	return p_video_widget;
 }
 
-void VideoWidget::videoWidgetSizeChanged(int width, int height) {
-	qDebug() << __FUNCTION__ << "video width" << width << "height:" << height;
+void VideoWidget::videoWidgetSizeChanged(int i_width, int i_height)
+{
+	qDebug() << __FUNCTION__ << "video width" << i_width
+	                         << "height:" << i_height;
 
-	//I spent 2 full days for these few fucking lines of code!
 	//It resizes dynamically the widget + the main window
 	//I didn't find another way
-	//Each line is very important!
-	//If someone finds a better, please tell me!
-	QWidget * parent = qobject_cast<QWidget *>(this->parent());
 
-	QSize videoSize(width, height);
-	videoSize.boundedTo(QApplication::desktop()->availableGeometry().size());
+	QSize videoSize( i_width, i_height );
+	videoSize.boundedTo( QApplication::desktop()->availableGeometry().size() );
 
-	_videoWidget->hide();
-	_videoWidget->setVideoSize(videoSize);
+	p_video_widget->hide();
+	p_video_widget->setVideoSize( videoSize );
 #ifdef Q_OS_WIN
-	QSize previousSize = parent->minimumSize();
-	parent->setMinimumSize(videoSize);
-#endif	//Q_OS_WIN
-	_videoWidget->show();
+    QWidget *p_parent = qobject_cast<QWidget *>( this->parent() );
+	QSize previousSize = p_parent->minimumSize();
+	p_parent->setMinimumSize( videoSize );
+#endif
+	p_video_widget->show();
 #ifdef Q_OS_WIN
-	parent->setMinimumSize(previousSize);
-#endif	//Q_OS_WIN
-	///
+	p_parent->setMinimumSize( previousSize );
+#endif
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

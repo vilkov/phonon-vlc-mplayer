@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,27 +28,31 @@
 #include <QtGui/QWidget>
 
 //Global variables
-libvlc_instance_t * _vlcInstance = NULL;
-libvlc_exception_t * _vlcException = new libvlc_exception_t();
-libvlc_media_player_t * _vlcCurrentMediaPlayer = NULL;
-
-QFuture<void> _initLibVLCFuture;
+libvlc_instance_t * p_vlc_instance = NULL;
+libvlc_exception_t * p_vlc_exception = new libvlc_exception_t();
+libvlc_media_player_t * p_vlc_current_media_player = NULL;
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-void initLibVLC() {
+void initLibVLC()
+{
 	//Global variables
-	_vlcInstance = NULL;
-	_vlcException = new libvlc_exception_t();
+	p_vlc_instance = NULL;
+	p_vlc_exception = new libvlc_exception_t();
 
 	//Complete list of VLC command line options:
 	//http://wiki.videolan.org/VLC_command-line_help
 	const char * vlcArgc[] = {
 		getVLCPath().toAscii().constData(),
 		"--plugin-path=", getVLCPluginsPath().toAscii().constData(),
+#ifdef CMAKE_CXX_FLAGS_DEBUG
+        "-vvv",
+#else
+        "-vvv",
+#endif
 		"--intf=dummy",
 		"--no-media-library",
 		"--no-one-instance",
@@ -57,10 +62,10 @@ void initLibVLC() {
 		"--no-video-title-show"
 	};
 
-	p_libvlc_exception_init(_vlcException);
+	p_libvlc_exception_init( p_vlc_exception );
 
 	//Init VLC modules, should be done only once
-	_vlcInstance = p_libvlc_new(sizeof(vlcArgc) / sizeof(*vlcArgc), vlcArgc, _vlcException);
+	p_vlc_instance = p_libvlc_new( sizeof( vlcArgc ) / sizeof( *vlcArgc ), vlcArgc, p_vlc_exception );
 	checkException();
 
 	//FIXME Cannot do that: otherwise does not load VLC plugins
@@ -70,16 +75,19 @@ void initLibVLC() {
 	qDebug() << "VLC loaded";
 }
 
-void releaseLibVLC() {
-	p_libvlc_release(_vlcInstance);
+void releaseLibVLC()
+{
+	p_libvlc_release( p_vlc_instance );
 	unloadLibVLC();
 }
 
-void checkException() {
-	if (p_libvlc_exception_raised(_vlcException)) {
-		qDebug() << "libvlc exception:" << p_libvlc_exception_get_message(_vlcException);
-		p_libvlc_exception_clear(_vlcException);
+void checkException()
+{
+	if( p_libvlc_exception_raised( p_vlc_exception ) )
+	{
+		qDebug() << "libvlc exception:" << p_libvlc_exception_get_message( p_vlc_exception );
+		p_libvlc_exception_clear( p_vlc_exception );
 	}
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

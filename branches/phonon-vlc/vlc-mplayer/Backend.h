@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_BACKEND_H
-#define PHONON_VLC_MPLAYER_BACKEND_H
+#ifndef PHONON_VLC_BACKEND_H
+#define PHONON_VLC_BACKEND_H
 
 #include <phonon/objectdescription.h>
 #include <phonon/backendinterface.h>
@@ -27,42 +28,48 @@
 #include <QtCore/QStringList>
 #include <QtCore/QObject>
 
+#include "DeviceManager.h"
+#include "AudioOutput.h"
+
+#ifdef MAKE_PHONON_VLC_LIB /* We are building this library */
+# define PHONON_VLC_EXPORT Q_DECL_EXPORT
+#else /* We are using this library */
+# define PHONON_VLC_EXPORT Q_DECL_IMPORT
+#endif
+
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 class EffectManager;
 
-/**
- * VLC backend class.
- *
- * @author Tanguy Krotoff
- */
-class Backend : public QObject, public BackendInterface {
+class Backend : public QObject, public BackendInterface 
+{
 	Q_OBJECT
-	Q_INTERFACES(Phonon::BackendInterface)
+	Q_INTERFACES( Phonon::BackendInterface )
 public:
 
-	Backend(QObject * parent = NULL, const QVariantList & args = QVariantList());
+	Backend( QObject * p_parent = NULL, const QVariantList & args = QVariantList() );
 	~Backend();
 
-	QObject * createObject(BackendInterface::Class, QObject * parent, const QList<QVariant> & args);
+	QObject * createObject( BackendInterface::Class, QObject * p_parent, const QList<QVariant> & args );
+	DeviceManager *getDeviceManager() { return p_deviceManager; }
 
 	bool supportsVideo() const;
 	bool supportsOSD() const;
-	bool supportsFourcc(quint32 fourcc) const;
+	bool supportsFourcc( quint32 fourcc ) const;
 	bool supportsSubtitles() const;
 
 	void freeSoundcardDevices();
 
-	QList<int> objectDescriptionIndexes(ObjectDescriptionType type) const;
-	QHash<QByteArray, QVariant> objectDescriptionProperties(ObjectDescriptionType type, int index) const;
+	QList<int> objectDescriptionIndexes( ObjectDescriptionType type ) const;
+	QHash<QByteArray, QVariant> objectDescriptionProperties( ObjectDescriptionType type, int i_index ) const;
 
-	bool startConnectionChange(QSet<QObject *> nodes);
-	bool connectNodes(QObject * source, QObject * sink);
-	bool disconnectNodes(QObject * source, QObject * sink);
-	bool endConnectionChange(QSet<QObject *> nodes);
+	bool startConnectionChange( QSet<QObject *> nodes );
+	bool connectNodes( QObject * p_source, QObject * p_sink );
+	bool disconnectNodes( QObject * p_source, QObject * p_sink );
+	bool endConnectionChange( QSet<QObject *> nodes );
 
 public slots:
 
@@ -78,15 +85,17 @@ public slots:
 
 signals:
 
-	void objectDescriptionChanged(ObjectDescriptionType);
+	void objectDescriptionChanged( ObjectDescriptionType );
 
 private:
 
-	mutable QStringList _supportedMimeTypes;
+	mutable QStringList supportedMimeTypes;
+	QList<QPointer<AudioOutput> > audioOutputs;
 
-	EffectManager * _effectManager;
+	EffectManager * p_effectManager;
+	DeviceManager * p_deviceManager;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_BACKEND_H
+#endif	//PHONON_VLC_BACKEND_H

@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_EFFECTMANAGER_H
-#define PHONON_VLC_MPLAYER_EFFECTMANAGER_H
+#ifndef PHONON_VLC_EFFECTMANAGER_H
+#define PHONON_VLC_EFFECTMANAGER_H
 
 #include <phonon/effectinterface.h>
 #include <phonon/effectparameter.h>
@@ -28,55 +29,48 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-class EffectInfo {
+class EffectInfo
+{
 public:
 
-	enum Type {
+	enum Type
+	{
 		AudioEffect,
 		VideoEffect
 	};
 
-	EffectInfo(const QString & name, int filter, Type type) {
-		_name = name;
-		_filter = filter;
-		_type = type;
+	EffectInfo( const QString & n, int i_filt, Type t, const QString &desc = "", const QString &auth = "" )
+	{
+		name = n;
+		i_filter = i_filt;
+		type = t;
+		description = desc;
+		author = auth;
 	}
 
-	QString getName() const {
-		return _name;
-	}
-
-	int getFilter() const {
-		return _filter;
-	}
-	
-
-	Type getType() const {
-		return _type;
-	}
+	QString getName() const { return name; }
+	QString getDescription() const	{ return description; }
+	QString getAuthor() const	{ return author; }
+	int getFilter() const { return i_filter; }
+	Type getType() const { return type; }
 
 private:
 
-	QString _name;
-
-	int _filter;
-
-	Type _type;
+	QString name, description, author;
+	int i_filter;
+	Type type;
 };
 
-/**
- *
- *
- * @author Tanguy Krotoff
- */
-class EffectManager : public QObject {
+
+class EffectManager : public QObject
+{
 	Q_OBJECT
 public:
 
-	EffectManager(QObject * parent);
+	EffectManager( QObject *p_parent );
 	~EffectManager();
 
 	QList<EffectInfo *> getEffectList() const;
@@ -85,10 +79,10 @@ public:
 
 private:
 
-	QList<EffectInfo *> _effectList;
+	QList<EffectInfo *> effectList;
     bool b_equalizer_enabled;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_EFFECTMANAGER_H
+#endif	//PHONON_VLC_EFFECTMANAGER_H

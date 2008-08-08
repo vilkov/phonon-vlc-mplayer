@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,18 +24,12 @@
 #include "AudioOutput.h"
 #include "EffectManager.h"
 #include "Effect.h"
-#include "config.h"
+#include "SinkNode.h"
 
-#ifdef PHONON_VLC
-	#include "vlc_loader.h"
-	#include "vlc_symbols.h"
+#include "vlc_loader.h"
+#include "vlc_symbols.h"
 
-	#include "VLCMediaObject.h"
-#endif	//PHONON_VLC
-
-#ifdef PHONON_MPLAYER
-	#include "MPlayerMediaObject.h"
-#endif	//PHONON_MPLAYER
+#include "VLCMediaObject.h"
 
 #include <QtCore/QByteArray>
 #include <QtCore/QSet>
@@ -43,126 +38,98 @@
 #include <QtCore/QtConcurrentRun>
 #include <QtCore/QFutureWatcher>
 
-#ifdef KDE4_FOUND
-	#include <kpluginfactory.h>
-	#include <kpluginloader.h>
-#endif	//KDE4_FOUND
 
-#ifdef PHONON_VLC
-#ifdef KDE4_FOUND
-	K_PLUGIN_FACTORY(VLCBackendFactory, registerPlugin<Phonon::VLC_MPlayer::Backend>();)
-	K_EXPORT_PLUGIN(VLCBackendFactory("vlcbackend"))
-#else
-	Q_EXPORT_PLUGIN2(phonon_vlc, Phonon::VLC_MPlayer::Backend);
-#endif	//KDE4_FOUND
-#endif	//PHONON_VLC
+Q_EXPORT_PLUGIN2( phonon_vlc, Phonon::VLC::Backend );
 
-#ifdef PHONON_MPLAYER
-#ifdef KDE4_FOUND
-	K_PLUGIN_FACTORY(MPlayerBackendFactory, registerPlugin<Phonon::VLC_MPlayer::Backend>();)
-	K_EXPORT_PLUGIN(MPlayerBackendFactory("mplayerbackend"))
-#else
-	Q_EXPORT_PLUGIN2(phonon_mplayer, Phonon::VLC_MPlayer::Backend);
-#endif	//KDE4_FOUND
-#endif	//PHONON_MPLAYER
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-Backend::Backend(QObject * parent, const QVariantList & args)
-	: QObject(parent) {
-
+Backend::Backend( QObject * p_parent, const QVariantList & args )
+	: QObject( p_parent ),
+	  p_effectManager( NULL ),
+	  p_deviceManager( NULL )
+{
 	qDebug() << "Phonon version:" << Phonon::phononVersion();
 
-#ifdef PHONON_VLC
-	setProperty("identifier", QLatin1String("phonon_vlc"));
-	setProperty("backendName", QLatin1String("VLC"));
-	setProperty("backendComment", QLatin1String("VLC plugin for Phonon"));
-	setProperty("backendVersion", QLatin1String("0.1"));
-	setProperty("backendWebsite", QLatin1String("http://multimedia.kde.org/"));
+	setProperty( "identifier", QLatin1String( "phonon_vlc" ) );
+	setProperty( "backendName", QLatin1String( "VLC" ) );
+	setProperty( "backendComment", QLatin1String( "VLC plugin for Phonon" ) );
+	setProperty( "backendVersion", QLatin1String( "0.1") );
+	setProperty( "backendWebsite", QLatin1String( "http://multimedia.kde.org/" ) );
 
 	qDebug() << "Loading VLC...";
 
-	//Before everything else
-	//QtConcurrent runs initLibVLC() in another thread
-	//Otherwise it takes too long to load all the VLC plugins
-	_initLibVLCFuture = QtConcurrent::run(initLibVLC);
+	//this can take some time
+	initLibVLC();
 
-#endif	//PHONON_VLC
-
-#ifdef PHONON_MPLAYER
-	setProperty("identifier", QLatin1String("phonon_mplayer"));
-	setProperty("backendName", QLatin1String("MPlayer"));
-	setProperty("backendComment", QLatin1String("MPlayer plugin for Phonon"));
-	setProperty("backendVersion", QLatin1String("0.1"));
-	setProperty("backendWebsite", QLatin1String("http://multimedia.kde.org/"));
-
-	qDebug() << "Using MPlayer version:" << "not yet implemented";
-#endif	//PHONON_MPLAYER
-
-	_effectManager = new EffectManager(this);
+	p_effectManager = new EffectManager( this );
+	p_deviceManager = new DeviceManager( this );
 }
 
 Backend::~Backend() {
 	//releaseLibVLC();
-	delete _effectManager;
+	delete p_effectManager;
 }
 
-QObject * Backend::createObject(BackendInterface::Class c, QObject * parent, const QList<QVariant> & args) {
-	switch (c) {
-	case MediaObjectClass:
-
-#ifdef PHONON_MPLAYER
-		return new MPlayerMediaObject(parent);
-#endif	//PHONON_MPLAYER
-
-#ifdef PHONON_VLC
-		return new VLCMediaObject(parent);
-#endif	//PHONON_VLC
-
-	/*case VolumeFaderEffectClass:
-		return new VolumeFaderEffect(parent);
-	*/
-	case AudioOutputClass:
-		return new AudioOutput(parent);
-	/*case AudioDataOutputClass:
-		return new AudioDataOutput(parent);
-	case VisualizationClass:
-		return new Visualization(parent);
-	case VideoDataOutputClass:
-		return new VideoDataOutput(parent);*/
-	case EffectClass: {
-		return new Effect(_effectManager, args[0].toInt(), parent);
-	}
-	case VideoWidgetClass:
-		return new VideoWidget(qobject_cast<QWidget *>(parent));
+QObject * Backend::createObject( BackendInterface::Class c, QObject * p_parent, const QList<QVariant> & args )
+{
+	switch( c )
+	{
+	    case MediaObjectClass:
+		    return new VLCMediaObject( p_parent );
+        /*case VolumeFaderEffectClass:
+            return new VolumeFaderEffect(parent);
+        */
+        case AudioOutputClass:
+        {
+            AudioOutput *p_ao = new AudioOutput( this, p_parent );
+            audioOutputs.append( p_ao );
+            return p_ao;
+        }
+        /*case AudioDataOutputClass:
+            return new AudioDataOutput(parent);
+        case VisualizationClass:
+            return new Visualization(parent);
+        case VideoDataOutputClass:
+            return new VideoDataOutput(parent);*/
+        case EffectClass: 
+            return new Effect( p_effectManager, args[0].toInt(), p_parent );
+        case VideoWidgetClass:
+            return new VideoWidget( qobject_cast<QWidget *>( p_parent ) );
 	}
 
 	return NULL;
 }
 
-bool Backend::supportsVideo() const {
+bool Backend::supportsVideo() const
+{
 	return true;
 }
 
-bool Backend::supportsOSD() const {
+bool Backend::supportsOSD() const
+{
 	return true;
 }
 
-bool Backend::supportsFourcc(quint32 fourcc) const {
+bool Backend::supportsFourcc( quint32 fourcc ) const
+{
 	return true;
 }
 
-bool Backend::supportsSubtitles() const {
+bool Backend::supportsSubtitles() const
+{
 	return true;
 }
 
-QStringList Backend::availableMimeTypes() const {
-	if (_supportedMimeTypes.isEmpty()) {
+QStringList Backend::availableMimeTypes() const
+{
+	if( supportedMimeTypes.isEmpty() )
+	{
 		//Audio mime types
-		_supportedMimeTypes
+		supportedMimeTypes
 			<< "audio/x-m4a"
 			<< "audio/x-aiff"
 			<< "audio/aiff"
@@ -197,7 +164,7 @@ QStringList Backend::availableMimeTypes() const {
 			<< "audio/x-ms-wma";
 
 		//Video mime types
-		_supportedMimeTypes
+		supportedMimeTypes
 			<< "video/quicktime"
 			<< "video/x-quicktime"
 			<< "video/mkv"
@@ -217,7 +184,7 @@ QStringList Backend::availableMimeTypes() const {
 			<< "video/avi";
 
 		//Application mime types
-		_supportedMimeTypes
+		supportedMimeTypes
 			<< "application/x-annodex"
 			<< "application/x-quicktimeplayer"
 			<< "application/ogg"
@@ -226,97 +193,113 @@ QStringList Backend::availableMimeTypes() const {
 			<< "application/x-flash-video";
 
 		//Image mime types
-		_supportedMimeTypes
+		supportedMimeTypes
 			<< "image/x-ilbm"
 			<< "image/ilbm"
 			<< "image/png"
 			<< "image/x-png";
 	}
 
-	return _supportedMimeTypes;
+	return supportedMimeTypes;
 }
 
-QList<int> Backend::objectDescriptionIndexes(ObjectDescriptionType type) const {
-	//qDebug() << __FUNCTION__ << "";
-
+QList<int> Backend::objectDescriptionIndexes( ObjectDescriptionType type ) const
+{
 	QList<int> list;
 
-	switch(type) {
-	case Phonon::AudioOutputDeviceType:
-		list.append(1);
-		break;
-	/*case Phonon::AudioCaptureDeviceType:
-		break;
-	case Phonon::VideoOutputDeviceType:
-		break;
-	case Phonon::VideoCaptureDeviceType:
-		break;
-	case Phonon::VisualizationType:
-		break;
-	case Phonon::AudioCodecType:
-		break;
-	case Phonon::VideoCodecType:
-		break;
-	case Phonon::ContainerFormatType:
-		break;*/
+	switch( type )
+	{
+        case Phonon::AudioOutputDeviceType:
+        {
+            QList<AudioDevice> deviceList = p_deviceManager->audioOutputDevices();
+            for( int dev = 0 ; dev < deviceList.size() ; ++dev )
+                list.append(deviceList[dev].id);
+            break;
+        }
+        /*case Phonon::AudioCaptureDeviceType:
+            break;
+        case Phonon::VideoOutputDeviceType:
+            break;
+        case Phonon::VideoCaptureDeviceType:
+            break;
+        case Phonon::VisualizationType:
+            break;
+        case Phonon::AudioCodecType:
+            break;
+        case Phonon::VideoCodecType:
+            break;
+        case Phonon::ContainerFormatType:
+            break;
+        case Phonon::AudioChannelType:
+            break;
+        case Phonon::SubtitleType:
+            break;
+        case Phonon::ChapterType:
+            break;
+        case Phonon::TitleType:
+            break;
+        */
 
-	case Phonon::EffectType:
-		QList<EffectInfo *> effectList = _effectManager->getEffectList();
-		for (int effect = 0; effect < effectList.size(); ++effect) {
-			list.append(effect);
-		}
-		break;
-
+        case Phonon::EffectType:
+        {
+            QList<EffectInfo *> effectList = p_effectManager->getEffectList();
+            for ( int i_effect = 0; i_effect < effectList.size(); ++i_effect )
+                list.append( i_effect );
+            break;
+        }
 	}
 
 	return list;
 }
 
-QHash<QByteArray, QVariant> Backend::objectDescriptionProperties(ObjectDescriptionType type, int index) const {
-
+QHash<QByteArray, QVariant> Backend::objectDescriptionProperties( ObjectDescriptionType type, int i_index) const
+{
 	QHash<QByteArray, QVariant> ret;
 
-	switch (type) {
-	case Phonon::AudioOutputDeviceType:
-		//For MPlayer:
-		//mplayer *.mp3
-		//mplayer -ao oss *.mp3
-		//mplayer -ao alsa *.mp3
-		//mplayer -ao oss:/dev/dsp *.mp3
-		//mplayer -ao alsa:device=hw=0.0 *.mp3
-		//mplayer -ao oss:/dev/dsp1 *.mp3
-		//mplayer -ao alsa:device=hw=1.0 *.mp3
-		//See http://linux.dsplabs.com.au/mplayer-multiple-sound-cards-select-audio-device-p77/
-		//mplayer -ao dsound:device=0
-		ret.insert("device", "0");
-		break;
-	/*case Phonon::AudioCaptureDeviceType:
-		break;
-	case Phonon::VideoOutputDeviceType:
-		break;
-	case Phonon::VideoCaptureDeviceType:
-		break;
-	case Phonon::VisualizationType:
-		break;
-	case Phonon::AudioCodecType:
-		break;
-	case Phonon::VideoCodecType:
-		break;
-	case Phonon::ContainerFormatType:
-		break;
-	*/
+	switch ( type )
+	{
+        case Phonon::AudioOutputDeviceType:
+        {
+            QList<AudioDevice> audioDevices = p_deviceManager->audioOutputDevices();
+            if( i_index >= 0 && i_index < audioDevices.size() )
+            {
+                ret.insert( "name", audioDevices[i_index].nameId );
+                ret.insert( "description", audioDevices[i_index].description );
+                ret.insert( "icon", QLatin1String( "audio-card" ) );
+            }
+            break;
+        }
+        /*case Phonon::AudioCaptureDeviceType:
+            break;
+        case Phonon::VideoOutputDeviceType:
+            break;
+        case Phonon::VideoCaptureDeviceType:
+            break;
+        case Phonon::VisualizationType:
+            break;
+        case Phonon::AudioCodecType:
+            break;
+        case Phonon::VideoCodecType:
+            break;
+        case Phonon::ContainerFormatType:
+            break;
+        */
+        case Phonon::EffectType: 
+        {
+            QList<EffectInfo *> effectList = p_effectManager->getEffectList();
 
-	case Phonon::EffectType: {
-		QList<EffectInfo *> effectList = _effectManager->getEffectList();
-		if (index >= 0 && index <= effectList.size()) {
-			const EffectInfo * effect = effectList[index];
-			ret.insert("name", effect->getName());
-			ret.insert("filter", effect->getFilter());
-		} else
-			Q_ASSERT(1); // Since we use list position as ID, this should not happen
+            if( i_index >= 0 && i_index <= effectList.size() )
+            {
+                const EffectInfo *effect = effectList[ i_index ];
+                ret.insert( "name", effect->getName() );
+                ret.insert( "description", effect->getDescription() );
+                ret.insert( "author", effect->getAuthor() );
+            } 
+            else
+                Q_ASSERT(1); // Since we use list position as ID, this should not happen
 
-		break;
-	}
+            break;
+	    }
 
 	default:
 		qCritical() << __FUNCTION__ << "Unknow ObjectDescriptionType:" << type;
@@ -325,9 +308,11 @@ QHash<QByteArray, QVariant> Backend::objectDescriptionProperties(ObjectDescripti
 	return ret;
 }
 
-bool Backend::startConnectionChange(QSet<QObject *> nodes) {
+bool Backend::startConnectionChange( QSet<QObject *> nodes )
+{
 	qDebug() << __FUNCTION__ << "";
-	foreach (QObject * node, nodes) {
+	foreach (QObject * node, nodes)
+	{
 		qDebug() << "node:" << node->metaObject()->className();
 	}
 
@@ -337,8 +322,9 @@ bool Backend::startConnectionChange(QSet<QObject *> nodes) {
 	return true;
 }
 
-bool Backend::connectNodes(QObject * source, QObject * sink) {
-	qDebug() << __FUNCTION__ << source->metaObject()->className() << sink->metaObject()->className();
+bool Backend::connectNodes( QObject * p_source, QObject * p_sink )
+{
+	qDebug() << __FUNCTION__ << p_source->metaObject()->className() << p_sink->metaObject()->className();
 
 	//Example:
 	//source = Phonon::VLC_MPlayer::MediaObject
@@ -356,17 +342,20 @@ bool Backend::connectNodes(QObject * source, QObject * sink) {
 	//source = Phonon::VLC_MPlayer::Effect
 	//sink = Phonon::VLC_MPlayer::AudioOutput
 
-	SinkNode * sinkNode = qobject_cast<SinkNode *>(sink);
-	if (sinkNode) {
-		PrivateMediaObject * mediaObject = qobject_cast<PrivateMediaObject *>(source);
-		if (mediaObject) {
+	SinkNode *p_sinkNode = qobject_cast<SinkNode *>( p_sink );
+	if( p_sinkNode )
+	{
+		PrivateMediaObject * p_media_object = qobject_cast<PrivateMediaObject *>( p_source );
+		if( p_media_object )
+		{
 			//Connects the SinkNode to a MediaObject
-			sinkNode->connectToMediaObject(mediaObject);
+			p_sinkNode->connectToMediaObject( p_media_object );
 			return true;
-		} else {
+		}
+		else
+		{
 			//FIXME try to find a better way...
-			Effect * effect = qobject_cast<Effect * >(source);
-			//Nothing todo, MPlayer does not support this kind of connection
+			//Effect * p_effect = qobject_cast<Effect * >( p_source );
 			return true;
 		}
 	}
@@ -375,20 +364,24 @@ bool Backend::connectNodes(QObject * source, QObject * sink) {
 	return false;
 }
 
-bool Backend::disconnectNodes(QObject * source, QObject * sink) {
-	qDebug() << __FUNCTION__ << source->metaObject()->className() << sink->metaObject()->className();
+bool Backend::disconnectNodes( QObject * p_source, QObject * p_sink )
+{
+	qDebug() << __FUNCTION__ << p_source->metaObject()->className() << p_sink->metaObject()->className();
 
-	SinkNode * sinkNode = qobject_cast<SinkNode *>(sink);
-	if (sinkNode) {
-		PrivateMediaObject * mediaObject = qobject_cast<PrivateMediaObject *>(source);
-		if (mediaObject) {
+	SinkNode * p_sinkNode = qobject_cast<SinkNode *>( p_sink );
+	if( p_sinkNode )
+	{
+		PrivateMediaObject * p_media_object = qobject_cast<PrivateMediaObject *>( p_source );
+		if( p_media_object )
+		{
 			//Disconnects the SinkNode from a MediaObject
-			sinkNode->disconnectFromMediaObject(mediaObject);
+			p_sinkNode->disconnectFromMediaObject( p_media_object );
 			return true;
-		} else {
+		}
+		else
+		{
 			//FIXME try to find a better way...
-			Effect * effect = qobject_cast<Effect * >(source);
-			//Nothing todo, MPlayer does not support this kind of connection
+			//Effect * p_effect = qobject_cast<Effect * >( p_source );
 			return true;
 		}
 
@@ -398,29 +391,28 @@ bool Backend::disconnectNodes(QObject * source, QObject * sink) {
 	return false;
 }
 
-bool Backend::endConnectionChange(QSet<QObject *> nodes) {
+bool Backend::endConnectionChange( QSet<QObject *> nodes )
+{
 	qDebug() << __FUNCTION__;
-	foreach (QObject * node, nodes) {
-		qDebug() << "node:" << node->metaObject()->className();
+	foreach ( QObject * p_node, nodes )
+	{
+		qDebug() << "node:" << p_node->metaObject()->className();
 	}
 
 	return true;
 }
 
-void Backend::freeSoundcardDevices() {
+void Backend::freeSoundcardDevices()
+{
 }
 
-QString Backend::toString() const {
-#ifdef PHONON_VLC
-	return "VLC Phonon Backend by Tanguy Krotoff <tkrotoff@gmail.com>\n";
+QString Backend::toString() const
+{
+	return "VLC Phonon Backend";
 		/*"libvlc version=" + QString(p_libvlc_get_version()) + "\n"
 		"libvlc changeset=" + QString(p_libvlc_get_changeset()) + "\n"
 		"libvlc compiler=" + QString(p_libvlc_get_compiler());*/
-#endif	//PHONON_VLC
 
-#ifdef PHONON_MPLAYER
-	return "MPlayer Phonon Backend by Tanguy Krotoff <tkrotoff@gmail.com>";
-#endif	//PHONON_MPLAYER
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

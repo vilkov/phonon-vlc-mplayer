@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,47 +21,34 @@
 
 #include "MediaObject.h"
 
-#ifdef PHONON_MPLAYER
-	#include "MPlayerMediaObject.h"
-
-	#include <mplayer/MPlayerProcess.h>
-#endif	//PHONON_MPLAYER
-
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-SinkNode::SinkNode(QObject * parent)
-	: QObject(parent) {
-
-	_mediaObject = NULL;
+SinkNode::SinkNode( QObject *p_parent )
+	: QObject( p_parent )
+{
+	p_media_object = NULL;
 }
 
-SinkNode::~SinkNode() {
+SinkNode::~SinkNode()
+{
 }
 
-void SinkNode::connectToMediaObject(PrivateMediaObject * mediaObject) {
-	if (_mediaObject) {
-		qCritical() << __FUNCTION__ << "_mediaObject already connected";
-	}
+void SinkNode::connectToMediaObject(PrivateMediaObject * mediaObject)
+{
+	if( p_media_object )
+		qCritical() << __FUNCTION__ << "p_media_object already connected";
 
-	_mediaObject = mediaObject;
+	p_media_object = mediaObject;
 }
 
-void SinkNode::disconnectFromMediaObject(PrivateMediaObject * mediaObject) {
-	if (_mediaObject != mediaObject) {
+void SinkNode::disconnectFromMediaObject( PrivateMediaObject * mediaObject )
+{
+	if( p_media_object != mediaObject )
 		qCritical() << __FUNCTION__ << "SinkNode was not connected to mediaObject";
-	}
 }
 
-void SinkNode::sendMPlayerCommand(const QString & command) const {
-#ifdef PHONON_MPLAYER
-	if (_mediaObject) {
-		MPlayerProcess * process = _mediaObject->getMPlayerProcess();
-		process->sendCommand(command);
-	}
-#endif	//PHONON_MPLAYER
-}
 
 }}	//Namespace Phonon::VLC_MPlayer

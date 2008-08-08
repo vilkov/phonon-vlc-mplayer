@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,43 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WIDGETNOPAINTEVENT_H
-#define WIDGETNOPAINTEVENT_H
+#ifndef PHONON_VLC_WIDGETNOPAINTEVENT_H
+#define PHONON_VLC_WIDGETNOPAINTEVENT_H
 
 #include <QtGui/QWidget>
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 /**
  * Utility class: special widget for playing videos.
  *
  * Does not handle paintEvent()
- *
- * @author Tanguy Krotoff
  */
-class WidgetNoPaintEvent : public QWidget {
+class WidgetNoPaintEvent : public QWidget
+{
 	Q_OBJECT
 public:
 
-	WidgetNoPaintEvent(QWidget * parent);
+	WidgetNoPaintEvent( QWidget *p_parent );
 
 	/**
 	 * Sets the background color.
 	 *
-	 * This is compulsary otherwise MPlayerWindow won't display MPlayer video.
-	 *
 	 * I don't know which one is best: 0x020202 or Qt::black...
 	 */
-	void setBackgroundColor(const QColor & color);
+	void setBackgroundColor( const QColor & color );
 
 private:
 
-	void paintEvent(QPaintEvent * event);
+	void paintEvent( QPaintEvent *p_event );
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//WIDGETNOPAINTEVENT_H
+#endif	//PHONON_VLC_WIDGETNOPAINTEVENT_H

@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_VLCVIDEOWIDGET_H
-#define PHONON_VLC_MPLAYER_VLCVIDEOWIDGET_H
+#ifndef PHONON_VLC_VLCVIDEOWIDGET_H
+#define PHONON_VLC_VLCVIDEOWIDGET_H
 
-#include "../WidgetNoPaintEvent.h"
+#include "WidgetNoPaintEvent.h"
 
 #include <QtGui/QWidget>
 
@@ -27,33 +28,32 @@ class QResizeEvent;
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 /**
  * Widget where to show VLC video.
- *
- * @author Tanguy Krotoff
  */
-class VLCVideoWidget : public WidgetNoPaintEvent {
+class VLCVideoWidget : public WidgetNoPaintEvent
+{
 	Q_OBJECT
 public:
 
-	VLCVideoWidget(QWidget * parent);
+	VLCVideoWidget( QWidget *p_parent );
 	~VLCVideoWidget();
 
-	void setVideoSize(const QSize & videoSize);
-	void setAspectRatio(double aspectRatio);
-	void setScaleAndCropMode(bool scaleAndCrop);
+	void setVideoSize( const QSize & videoSize );
+	void setAspectRatio( double f_aspect_ratio );
+	void setScaleAndCropMode( bool b_scale_and_crop );
 
 	QSize sizeHint() const;
 
 private:
 
-	void resizeEvent(QResizeEvent * event);
+	void resizeEvent( QResizeEvent *p_event );
 
 	/** Original size of the video, needed for sizeHint(). */
-	QSize _videoSize;
+	QSize videoSize;
 };
 
 }}	//Namespace Phonon::VLC_MPlayer

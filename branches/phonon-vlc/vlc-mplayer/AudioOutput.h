@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_AUDIOOUTPUT_H
-#define PHONON_VLC_MPLAYER_AUDIOOUTPUT_H
+#ifndef PHONON_VLC_AUDIOOUTPUT_H
+#define PHONON_VLC_AUDIOOUTPUT_H
 
 #include "SinkNode.h"
 
@@ -25,37 +26,46 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
+    class Backend;
 
 /**
  *
  *
  * @author Tanguy Krotoff
  */
-class AudioOutput : public SinkNode, public AudioOutputInterface {
+class AudioOutput : public SinkNode, public AudioOutputInterface
+{
 	Q_OBJECT
-	Q_INTERFACES(Phonon::AudioOutputInterface)
+	Q_INTERFACES( Phonon::AudioOutputInterface )
 public:
 
-	AudioOutput(QObject * parent);
+	AudioOutput( Backend *p_back, QObject * p_parent );
 	~AudioOutput();
 
 	qreal volume() const;
-	void setVolume(qreal volume);
+	void setVolume( qreal volume );
 
 	int outputDevice() const;
-	bool setOutputDevice(int);
-	bool setOutputDevice(const Phonon::AudioOutputDevice & device);
+	bool setOutputDevice( int );
+#if (PHONON_VERSION >= PHONON_VERSION_CHECK(4, 2, 0))
+    bool setOutputDevice(const AudioOutputDevice & device);
+#endif
 
 signals:
 
-	void volumeChanged(qreal volume);
+	void volumeChanged( qreal volume );
+	void audioDeviceFailed();
 
 private:
 
+    qreal f_volume;
+    int i_device;
+    Backend *p_backend;
+
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_AUDIOOUTPUT_H
+#endif	//PHONON_VLC_AUDIOOUTPUT_H

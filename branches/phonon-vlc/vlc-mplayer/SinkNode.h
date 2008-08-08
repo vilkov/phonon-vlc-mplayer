@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,55 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_SINKNODE_H
-#define PHONON_VLC_MPLAYER_SINKNODE_H
+#ifndef PHONON_VLC_SINKNODE_H
+#define PHONON_VLC_SINKNODE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-#ifdef PHONON_VLC
-	//#include "VLCMediaObject.h"
-	class VLCMediaObject;
-	typedef VLCMediaObject PrivateMediaObject;
-#endif	//PHONON_VLC
+class VLCMediaObject;
+typedef VLCMediaObject PrivateMediaObject;
 
-#ifdef PHONON_MPLAYER
-	//#include "MPlayerMediaObject.h"
-	class MPlayerMediaObject;
-	typedef MPlayerMediaObject PrivateMediaObject;
-#endif	//PHONON_MPLAYER
-
-/**
- *
- *
- * @author Tanguy Krotoff
- */
-class SinkNode : public QObject {
+class SinkNode : public QObject 
+{
 	Q_OBJECT
 public:
 
-	SinkNode(QObject * parent);
+	SinkNode( QObject *p_parent );
 	virtual ~SinkNode();
 
-	virtual void connectToMediaObject(PrivateMediaObject * mediaObject);
+	virtual void connectToMediaObject( PrivateMediaObject *mediaObject );
 
-	virtual void disconnectFromMediaObject(PrivateMediaObject * mediaObject);
+	virtual void disconnectFromMediaObject( PrivateMediaObject *mediaObject );
 
 protected:
 
-	void sendMPlayerCommand(const QString & command) const;
-
-	PrivateMediaObject * _mediaObject;
+	PrivateMediaObject *p_media_object;
 
 private:
 
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_SINKNODE_H
+#endif	//PHONON_VLC_SINKNODE_H

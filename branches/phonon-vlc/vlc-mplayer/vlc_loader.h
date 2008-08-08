@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,28 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_VLC_LOADER_H
-#define PHONON_VLC_MPLAYER_VLC_LOADER_H
+#ifndef PHONON_VLC_VLC_LOADER_H
+#define PHONON_VLC_VLC_LOADER_H
 
 #include <vlc/vlc.h>
 
 #include <QtCore/QFuture>
 
 /** Libvlc instance global variable. */
-extern libvlc_instance_t * _vlcInstance;
+extern libvlc_instance_t *p_vlc_instance;
 
 /** Libvlc exception handling global variable. */
-extern libvlc_exception_t * _vlcException;
+extern libvlc_exception_t *p_vlc_exception;
 
 /** Libvlc media player global variable. */
-extern libvlc_media_player_t * _vlcCurrentMediaPlayer;
-
-/** QFuture permits to run initLibVLC() in another thread. Global variable. */
-extern QFuture<void> _initLibVLCFuture;
+extern libvlc_media_player_t *p_vlc_current_media_player;
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 /**
@@ -59,6 +57,6 @@ void initLibVLC();
  */
 void releaseLibVLC();
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_VLC_LOADER_H
+#endif	//PHONON_VLC_VLC_LOADER_H

@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,64 +18,102 @@
  */
 
 #include "AudioOutput.h"
+#include "DeviceManager.h"
+#include "Backend.h"
 
 #include "MediaObject.h"
+#include "VLCMediaObject.h"
 
-#ifdef PHONON_VLC
-	#include "VLCMediaObject.h"
-
-	#include "vlc_loader.h"
-	#include "vlc_symbols.h"
-#endif	//PHONON_VLC
+#include "vlc_loader.h"
+#include "vlc_symbols.h"
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-AudioOutput::AudioOutput(QObject * parent)
-	: SinkNode(parent) {
-
-	_mediaObject = NULL;
+AudioOutput::AudioOutput( Backend *p_back, QObject * p_parent )
+	: SinkNode( p_parent ),
+      f_volume( 1.0 ),
+	  p_backend( p_back )
+{
+    p_media_object = NULL;
 }
 
-AudioOutput::~AudioOutput() {
+AudioOutput::~AudioOutput() 
+{
 }
 
-qreal AudioOutput::volume() const {
-	qreal volume = 1;
+qreal AudioOutput::volume() const
+{
+	return f_volume;
+}
 
-#ifdef PHONON_VLC
-	if (_vlcCurrentMediaPlayer) {
-		volume = p_libvlc_audio_get_volume(_vlcInstance, _vlcException) / 100;
+void AudioOutput::setVolume( qreal volume ) 
+{
+    if( p_vlc_instance )
+    {
+		p_libvlc_audio_set_volume( p_vlc_instance, (int) ( f_volume * 100 ), p_vlc_exception );
 		checkException();
+		f_volume = volume;
+		emit volumeChanged( f_volume );
 	}
-#endif	//PHONON_VLC
-
-	return volume;
 }
 
-void AudioOutput::setVolume(qreal volume) {
-#ifdef PHONON_VLC
-	if (_vlcInstance) {
-		p_libvlc_audio_set_volume(_vlcInstance, (int) (volume * 100), _vlcException);
-		checkException();
-	}
-#endif	//PHONON_VLC
-
-	sendMPlayerCommand("volume " + QString::number(volume * 100) + " 1");
+int AudioOutput::outputDevice() const
+{
+	return i_device;
 }
 
-int AudioOutput::outputDevice() const {
-	return 0;
-}
+bool AudioOutput::setOutputDevice( int device )
+{
+    if( i_device == device )
+        return true;
 
-bool AudioOutput::setOutputDevice(int device) {
+    const QList<AudioDevice> deviceList = p_backend->getDeviceManager()->audioOutputDevices();
+    if( device >= 0 && device < deviceList.size() )
+    {
+        i_device = device;
+        const QByteArray deviceName = deviceList.at( device ).nameId;
+        if( deviceName == DEFAULT_ID )
+        {
+            libvlc_audio_device_set( p_vlc_instance, DEFAULT, p_vlc_exception );
+            checkException();
+        }
+        else if( deviceName.startsWith( ALSA_ID ) )
+        {
+            printf("setting ALSA %s\n", deviceList.at( device ).hwId.data() );
+            libvlc_audio_device_set( p_vlc_instance, ALSA, p_vlc_exception );
+            checkException();
+            libvlc_audio_alsa_device_set( p_vlc_instance, deviceList.at( device ).hwId, p_vlc_exception );
+            checkException();
+        }
+        else if( deviceName == OSS_ID )
+        {
+            libvlc_audio_device_set( p_vlc_instance, OSS, p_vlc_exception );
+            checkException();
+        }
+        else if( deviceName == SDL_ID )
+        {
+            libvlc_audio_device_set( p_vlc_instance, SDL, p_vlc_exception );
+            checkException();
+        }
+        else if( deviceName == DIRECTX_ID )
+        {
+            libvlc_audio_device_set( p_vlc_instance, DIRECTX, p_vlc_exception );
+            checkException();
+        }
+        else
+            return false;
+    }
 	return true;
 }
 
-bool AudioOutput::setOutputDevice(const Phonon::AudioOutputDevice & device) {
+#if (PHONON_VERSION >= PHONON_VERSION_CHECK(4, 2, 0))
+bool AudioOutput::setOutputDevice( const Phonon::AudioOutputDevice & device )
+{
 	return true;
 }
+#endif
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

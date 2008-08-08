@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_MEDIAOBJECT_H
-#define PHONON_VLC_MPLAYER_MEDIAOBJECT_H
+#ifndef PHONON_VLC_MEDIAOBJECT_H
+#define PHONON_VLC_MEDIAOBJECT_H
 
 #include <phonon/mediaobjectinterface.h>
 
@@ -25,103 +26,98 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
-
-static const int MPLAYER_DEFAULT_DVD_TITLE = 1;
 
 class SeekStack;
 
-/**
- *
- *
- * @author Tanguy Krotoff
- */
-class MediaObject : public QObject, public MediaObjectInterface {
+class MediaObject : public QObject, public MediaObjectInterface
+{
 	Q_OBJECT
 	friend class SeekStack;
 public:
 
-	MediaObject(QObject * parent);
+	MediaObject( QObject *p_parent );
 	virtual ~MediaObject();
 
 	/**
-	 * Widget Id where VLC or MPlayer will show the videos.
+	 * Widget Id where VLC will show the videos.
 	 */
-	void setVideoWidgetId(int videoWidgetId);
+	void setVideoWidgetId( int i_widget_id );
 
 	void play();
-	void seek(qint64 milliseconds);
+	void seek( qint64 milliseconds );
 
 	qint32 tickInterval() const;
-	void setTickInterval(qint32 tickInterval);
+	void setTickInterval( qint32 tickInterval );
 
 	qint64 currentTime() const;
 	Phonon::State state() const;
 	Phonon::ErrorType errorType() const;
 	MediaSource source() const;
-	void setSource(const MediaSource & source);
-	void setNextSource(const MediaSource & source);
+	void setSource( const MediaSource & source );
+	void setNextSource( const MediaSource & source );
 
 	qint32 prefinishMark() const;
-	void setPrefinishMark(qint32 msecToEnd);
+	void setPrefinishMark( qint32 msecToEnd );
 
 	qint32 transitionTime() const;
-	void setTransitionTime(qint32);
+	void setTransitionTime( qint32 );
 
 signals:
 
 	void aboutToFinish();
-	//void bufferStatus(int percentFilled);
-	//void currentSourceChanged(const MediaSource & newSource);
+	//void bufferStatus( int i_percent_filled );
+	//void currentSourceChanged( const MediaSource & newSource );
 	void finished();
-	void hasVideoChanged(bool hasVideo);
-	void metaDataChanged(const QMultiMap<QString, QString> & metaData);
-	void prefinishMarkReached(qint32 msecToEnd);
-	void seekableChanged(bool isSeekable);
-	void stateChanged(Phonon::State newState, Phonon::State oldState);
-	void tick(qint64 time);
-	void totalTimeChanged(qint64 newTotalTime);
+	void hasVideoChanged( bool b_has_video );
+	void metaDataChanged( const QMultiMap<QString, QString> & metaData );
+	void prefinishMarkReached( qint32 msecToEnd );
+	void seekableChanged( bool b_is_seekable );
+	void stateChanged( Phonon::State newState, Phonon::State oldState );
+	void tick( qint64 time );
+	void totalTimeChanged( qint64 newTotalTime );
 
-	//Signal from MPlayerMediaObject and VLCMediaObject
-	void stateChanged(Phonon::State newState);
+	//Signal from VLCMediaObject
+	void stateChanged( Phonon::State newState );
 
-	void tickInternal(qint64 time);
+	void tickInternal( qint64 time );
 
 protected:
 
-	virtual void loadMediaInternal(const QString & filename) = 0;
+	virtual void loadMediaInternal( const QString & filename ) = 0;
 	virtual void playInternal() = 0;
-	virtual void seekInternal(qint64 milliseconds) = 0;
+	virtual void seekInternal( qint64 milliseconds ) = 0;
 
 	virtual qint64 currentTimeInternal() const = 0;
 
-	int _videoWidgetId;
+	int i_video_widget_id;
 
 private slots:
 
-	void stateChangedInternal(Phonon::State newState);
+	void stateChangedInternal( Phonon::State newState );
 
-	void tickInternalSlot(qint64 time);
+	void tickInternalSlot( qint64 time );
 
 private:
 
-	void loadMedia(const QString & filename);
+	void loadMedia( const QString & filename );
 
 	void resume();
 
-	MediaSource _mediaSource;
+	MediaSource mediaSource;
 
-	Phonon::State _currentState;
+	Phonon::State currentState;
 
-	qint32 _prefinishMark;
-	bool _prefinishMarkReachedEmitted;
+	qint32 i_prefinish_mark;
+	bool b_prefinish_mark_reached_emitted;
 
-	bool _aboutToFinishEmitted;
+	bool b_about_to_finish_emitted;
 
-	qint32 _tickInterval;
+	qint32 i_tick_interval;
+	qint32 i_transition_time;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_MEDIAOBJECT_H
+#endif	//PHONON_VLC_MEDIAOBJECT_H

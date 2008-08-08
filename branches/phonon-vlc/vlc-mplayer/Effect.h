@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_EFFECT_H
-#define PHONON_VLC_MPLAYER_EFFECT_H
+#ifndef PHONON_VLC_EFFECT_H
+#define PHONON_VLC_EFFECT_H
 
 #include "SinkNode.h"
 #include "EffectManager.h"
@@ -27,43 +28,39 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-class MediaObject;
 class EffectManager;
 
-/**
- *
- *
- * @author Tanguy Krotoff
- */
-class Effect : public SinkNode, public EffectInterface {
+
+class Effect : public SinkNode, public EffectInterface
+{
 	Q_OBJECT
-	Q_INTERFACES(Phonon::EffectInterface)
+	Q_INTERFACES( Phonon::EffectInterface )
 public:
 
-	Effect(EffectManager * effectManager, int effectId, QObject * parent);
+	Effect( EffectManager *p_em, int i_effectId, QObject *p_parent);
 	~Effect();
 
 	QList<EffectParameter> parameters() const;
 
-	QVariant parameterValue(const EffectParameter & param) const;
+	QVariant parameterValue( const EffectParameter & param ) const;
 
-	void setParameterValue(const EffectParameter & param, const QVariant & newValue);
+	void setParameterValue( const EffectParameter & param, const QVariant & newValue );
 
-	void connectToMediaObject(PrivateMediaObject * mediaObject);
+	void connectToMediaObject( PrivateMediaObject *p_media_object );
 
-	void disconnectFromMediaObject(PrivateMediaObject * mediaObject);
+	void disconnectFromMediaObject( PrivateMediaObject *p_media_object );
 
 private:
 
-	int _effectFilter;
-
-	EffectInfo::Type _effectType;
-
+    EffectManager *p_effectManager;
+	int i_effect_filter;
+	EffectInfo::Type effect_type;
+	QList<Phonon::EffectParameter> parameterList;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_EFFECT_H
+#endif	//PHONON_VLC_EFFECT_H

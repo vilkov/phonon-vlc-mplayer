@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,14 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_VLCMEDIAOBJECT_H
-#define PHONON_VLC_MPLAYER_VLCMEDIAOBJECT_H
+#ifndef PHONON_VLC_VLCMEDIAOBJECT_H
+#define PHONON_VLC_VLCMEDIAOBJECT_H
 
 #include "VLCMediaController.h"
 
-#include "../MediaObject.h"
+#include "MediaObject.h"
 
 #include <phonon/mediaobjectinterface.h>
+#include <phonon/addoninterface.h>
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -31,7 +33,7 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
 /**
@@ -45,14 +47,14 @@ namespace VLC_MPlayer
  * Take care of libvlc events via libvlc_callback()
  *
  * @see MediaObject
- * @author Tanguy Krotoff
  */
-class VLCMediaObject : public MediaObject, public VLCMediaController {
+class VLCMediaObject : public MediaObject, public VLCMediaController
+{
 	Q_OBJECT
-	Q_INTERFACES(Phonon::MediaObjectInterface Phonon::AddonInterface)
+	Q_INTERFACES( Phonon::MediaObjectInterface  Phonon::AddonInterface )
 public:
 
-	VLCMediaObject(QObject * parent);
+	VLCMediaObject( QObject * parent );
 	~VLCMediaObject();
 
 	void pause();
@@ -74,23 +76,23 @@ signals:
 	void availableChaptersChanged();
 	void availableTitlesChanged();
 
-	void availableAnglesChanged(int availableAngles);
-	void angleChanged(int angleNumber);
-	void chapterChanged(int chapterNumber);
-	void titleChanged(int titleNumber);
+	void availableAnglesChanged( int availableAngles );
+	void angleChanged( int angleNumber );
+	void chapterChanged( int chapterNumber );
+	void titleChanged( int titleNumber );
 
 	/**
 	 * New widget size computed by VLC.
 	 *
 	 * Should be applied to the widget that contains the VLC video.
 	 */
-	void videoWidgetSizeChanged(int width, int height);
+	void videoWidgetSizeChanged( int i_width, int i_height );
 
 protected:
 
-	void loadMediaInternal(const QString & filename);
+	void loadMediaInternal( const QString & filename );
 	void playInternal();
-	void seekInternal(qint64 milliseconds);
+	void seekInternal( qint64 milliseconds );
 
 	qint64 currentTimeInternal() const;
 
@@ -122,33 +124,33 @@ private:
 	 * @see connectToAllVLCEvents()
 	 * @see libvlc_event_attach()
 	 */
-	static void libvlc_callback(const libvlc_event_t * event, void * user_data);
+	static void libvlc_callback( const libvlc_event_t *p_event, void *p_user_data );
 
 	void unloadMedia();
 
 	void setVLCWidgetId();
 
 	//MediaPlayer
-	//libvlc_media_player_t * _vlcMediaPlayer;
-	libvlc_event_manager_t * _vlcMediaPlayerEventManager;
+	//libvlc_media_player_t * p_vlc_media_player;
+	libvlc_event_manager_t * p_vlc_media_player_event_manager;
 
 	//Media
-	libvlc_media_t * _vlcMedia;
-	libvlc_event_manager_t * _vlcMediaEventManager;
+	libvlc_media_t * p_vlc_media;
+	libvlc_event_manager_t * p_vlc_media_event_manager;
 
 	//MediaDiscoverer
-	libvlc_media_discoverer_t * _vlcMediaDiscoverer;
-	libvlc_event_manager_t * _vlcMediaDiscovererEventManager;
+	libvlc_media_discoverer_t * p_vlc_media_discoverer;
+	libvlc_event_manager_t * p_vlc_media_discoverer_event_manager;
 
-	bool _playRequestReached;
+	bool b_play_request_reached;
 
-	qint64 _totalTime;
+	qint64 i_total_time;
 
-	bool _hasVideo;
+	bool b_has_video;
 
-	bool _seekable;
+	bool b_seekable;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_VLCMEDIAOBJECT_H
+#endif

@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -32,7 +33,7 @@
 	char currentDirectory[MAX_PATH];
 #endif	//Q_OS_WIN
 
-static QLibrary * _libvlc_control = NULL;
+static QLibrary * p_libvlc_control = NULL;
 
 /**
  * Only under Windows.
@@ -42,10 +43,12 @@ static QLibrary * _libvlc_control = NULL;
  * @see setCurrentDirectory()
  * @see changeBackToCurrentDirectory()
  */
-void saveCurrentDirectory() {
+void saveCurrentDirectory()
+{
 #ifdef Q_OS_WIN
-	DWORD dwRet = GetCurrentDirectoryA(MAX_PATH, currentDirectory);
-	if (dwRet == 0 || dwRet > MAX_PATH) {
+	DWORD dwRet = GetCurrentDirectoryA( MAX_PATH, currentDirectory );
+	if ( dwRet == 0 || dwRet > MAX_PATH )
+	{
 		qFatal("GetCurrentDirectory() failed (%d)", GetLastError());
 	}
 #endif	//Q_OS_WIN
@@ -59,22 +62,25 @@ void saveCurrentDirectory() {
  * @see saveCurrentDirectory()
  * @see changeBackToCurrentDirectory()
  */
-void setCurrentDirectory(const char * dir) {
+void setCurrentDirectory( const char * dir )
+{
 #ifdef Q_OS_WIN
 	//Change current directory in order to load all the *.dll (libvlc.dll + all the plugins)
-	if (!SetCurrentDirectoryA(dir)) {
-		qFatal("SetCurrentDirectory() failed (%d)\n", GetLastError());
+	if( !SetCurrentDirectoryA( dir ) )
+	{
+		qFatal( "SetCurrentDirectory() failed (%d)\n", GetLastError() );
 	}
 #endif	//Q_OS_WIN
 }
 
 QString getVLCPath() {
-	static const char * libvlc_control_name = "libvlc";
-	static const char * libvlc_control_functionToTest = "libvlc_exception_init";
+	static const char *psz_libvlc_control_name = "libvlc";
+	static const char *psz_libvlc_control_functionToTest = "libvlc_exception_init";
 
 	static QString libvlc_path;
 
-	if (!libvlc_path.isEmpty()) {
+	if( !libvlc_path.isEmpty() )
+	{
 		return libvlc_path;
 	}
 
@@ -88,56 +94,62 @@ QString getVLCPath() {
 #endif	//Q_OS_LINUX
 
 #ifdef Q_OS_WIN
-	static const char * libvlc_version = "0.9";
+	static const char *psz_libvlc_version = "0.9";
 
 	saveCurrentDirectory();
 
 	//QSettings allows us to read the Windows registry
 	//Check if there is a standard VLC installation under Windows
 	//If there is a VLC Windows installation, check we get the good version i.e 0.9
-	QSettings settings(QSettings::SystemScope, "VideoLAN", "VLC");
-	if (settings.value("Version").toString().contains(libvlc_version)) {
+	QSettings settings( QSettings::SystemScope, "VideoLAN", "VLC" );
+	if( settings.value("Version").toString().contains( psz_libvlc_version ) )
+	{
 		QString vlcInstallDir = settings.value("InstallDir").toString();
 		pathList << vlcInstallDir;
 
-		setCurrentDirectory(vlcInstallDir.toAscii().constData());
+		setCurrentDirectory( vlcInstallDir.toAscii().constData() );
 	}
 #endif	//Q_OS_WIN
 
-	_libvlc_control = new QLibrary();
-	foreach (libvlc_path, pathList) {
-		_libvlc_control->setFileName(libvlc_path + QDir::separator() + libvlc_control_name);
+	p_libvlc_control = new QLibrary();
+	foreach ( libvlc_path, pathList )
+	{
+		p_libvlc_control->setFileName( libvlc_path + QDir::separator() + psz_libvlc_control_name );
 
-		if (_libvlc_control->load() && _libvlc_control->resolve(libvlc_control_functionToTest)) {
+		if( p_libvlc_control->load() && p_libvlc_control->resolve( psz_libvlc_control_functionToTest ) )
+		{
 			qDebug() << "VLC path found:" << libvlc_path;
 			return libvlc_path;
 		}
-		qDebug() << "Warning:" << _libvlc_control->errorString();
+		qDebug() << "Warning:" << p_libvlc_control->errorString();
 	}
 
 	unloadLibVLC();
-	qFatal("Cannot find '%s' on your system", libvlc_control_name);
+	qFatal(" Cannot find '%s' on your system", psz_libvlc_control_name );
 	return libvlc_path;
 }
 
-void changeBackToCurrentDirectory() {
+void changeBackToCurrentDirectory()
+{
 #ifdef Q_OS_WIN
 	//Change back current directory
-	if (!SetCurrentDirectoryA(currentDirectory)) {
+	if( !SetCurrentDirectoryA(currentDirectory) )
+	{
 		qFatal("SetCurrentDirectory() failed (%d)\n", GetLastError());
 	}
 #endif	//Q_OS_WIN
 }
 
-QString getVLCPluginsPath() {
+QString getVLCPluginsPath()
+{
 	QString vlcPath = getVLCPath();
 
 #ifdef Q_OS_WIN
-	QString vlcPluginsPath(vlcPath + "/plugins");
+	QString vlcPluginsPath( vlcPath + "/plugins" );
 #endif	//Q_OS_WIN
 
 #ifdef Q_OS_LINUX
-	QString vlcPluginsPath(vlcPath + "/vlc");
+	QString vlcPluginsPath( vlcPath + "/vlc" );
 #endif	//Q_OS_LINUX
 
 	qDebug() << "VLC plugins path:" << vlcPluginsPath;
@@ -145,26 +157,31 @@ QString getVLCPluginsPath() {
 	return vlcPluginsPath;
 }
 
-void * resolve(const char * name) {
-	if (!_libvlc_control) {
-		qFatal("_libvlc_control cannot be NULL");
+void * resolve( const char *psz_name )
+{
+	if( !p_libvlc_control )
+	{
+		qFatal( "p_libvlc_control cannot be NULL" );
 	}
 
-	if (!_libvlc_control->isLoaded()) {
-		qFatal("Library '%s' not loaded", _libvlc_control->fileName().toAscii().constData());
+	if( !p_libvlc_control->isLoaded() )
+	{
+		qFatal("Library '%s' not loaded", p_libvlc_control->fileName().toAscii().constData());
 		return NULL;
 	}
 
-	void * func = _libvlc_control->resolve(name);
-	if (!func) {
-		qFatal("Cannot resolve '%s' in library '%s'", name, _libvlc_control->fileName().toAscii().constData());
+	void * func = p_libvlc_control->resolve( psz_name );
+	if( !func )
+	{
+		qFatal("Cannot resolve '%s' in library '%s'", psz_name, p_libvlc_control->fileName().toAscii().constData());
 	}
 
 	return func;
 }
 
-void unloadLibVLC() {
-	_libvlc_control->unload();
-	delete _libvlc_control;
-	_libvlc_control = NULL;
+void unloadLibVLC()
+{
+	p_libvlc_control->unload();
+	delete p_libvlc_control;
+	p_libvlc_control = NULL;
 }

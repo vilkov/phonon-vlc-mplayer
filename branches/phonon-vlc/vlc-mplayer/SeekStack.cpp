@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,63 +24,63 @@
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-SeekStack::SeekStack(MediaObject * mediaObject)
-	: QObject(mediaObject) {
+SeekStack::SeekStack( MediaObject *mediaObject )
+	: QObject( mediaObject )
+{
+	p_media_object = mediaObject;
 
-	_mediaObject = mediaObject;
-
-	_timer = new QTimer(this);
-	connect(_timer, SIGNAL(timeout()), SLOT(popSeek()));
-	_timer->setInterval(1000);
+	p_timer = new QTimer(this);
+	connect( p_timer, SIGNAL( timeout() ),
+	                  SLOT( popSeek() ) );
+	p_timer->setInterval( 1000 );
 }
 
-SeekStack::~SeekStack() {
+SeekStack::~SeekStack()
+{
 }
 
-void SeekStack::pushSeek(qint64 milliseconds) {
+void SeekStack::pushSeek( qint64 milliseconds )
+{
 	qDebug() << __FUNCTION__ << "seek:" << milliseconds;
 
-	disconnect(_mediaObject, SIGNAL(tickInternal(qint64)),
-		_mediaObject, SLOT(tickInternalSlot(qint64)));
+	disconnect( p_media_object, SIGNAL( tickInternal( qint64 ) ),
+		        p_media_object, SLOT( tickInternalSlot( qint64 ) ) );
 
-	_stack.push(milliseconds);
+	stack.push( milliseconds );
 
-	if (!_timer->isActive()) {
-		_timer->start();
+	if( !p_timer->isActive() )
+	{
+		p_timer->start();
 		popSeek();
 	}
 }
 
-void SeekStack::popSeek() {
-	if (_stack.isEmpty()) {
-		_timer->stop();
+void SeekStack::popSeek()
+{
+	if( stack.isEmpty() )
+	{
+		p_timer->stop();
 		reconnectTickSignal();
 		return;
 	}
 
-	int milliseconds = _stack.pop();
-	_stack.clear();
+	int i_milliseconds = stack.pop();
+	stack.clear();
 
-	qDebug() << __FUNCTION__ << "real seek:" << milliseconds;
+	qDebug() << __FUNCTION__ << "real seek:" << i_milliseconds;
 
-	_mediaObject->seekInternal(milliseconds);
+	p_media_object->seekInternal( i_milliseconds );
 
-#ifdef PHONON_MPLAYER
-	//MPlayer takes some time before to send back the proper current time
-	QTimer::singleShot(200, this, SLOT(reconnectTickSignal()));
-#endif	//PHONON_MPLAYER
-
-#ifdef PHONON_VLC
 	reconnectTickSignal();
-#endif	//PHONON_VLC
 }
 
-void SeekStack::reconnectTickSignal() {
-	connect(_mediaObject, SIGNAL(tickInternal(qint64)),
-		_mediaObject, SLOT(tickInternalSlot(qint64)));
+void SeekStack::reconnectTickSignal()
+{
+	connect( p_media_object, SIGNAL( tickInternal( qint64 ) ),
+		     p_media_object, SLOT( tickInternalSlot( qint64 ) ) );
 }
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC

@@ -1,6 +1,7 @@
 /*
- * VLC and MPlayer backends for the Phonon library
+ * VLC backend for the Phonon library
  * Copyright (C) 2007-2008  Tanguy Krotoff <tkrotoff@gmail.com>
+ *               2008       Lukas Durfina <lukas.durfina@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,85 +17,73 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PHONON_VLC_MPLAYER_VIDEOWIDGET_H
-#define PHONON_VLC_MPLAYER_VIDEOWIDGET_H
+#ifndef PHONON_VLC_VIDEOWIDGET_H
+#define PHONON_VLC_VIDEOWIDGET_H
 
 #include "SinkNode.h"
 
 #include <phonon/videowidgetinterface.h>
 
-#ifdef PHONON_VLC
-	#include "VLCVideoWidget.h"
-	typedef Phonon::VLC_MPlayer::VLCVideoWidget Widget;
-#endif	//PHONON_VLC
+#include "VLCVideoWidget.h"
+typedef Phonon::VLC::VLCVideoWidget Widget;
 
-#ifdef PHONON_MPLAYER
-	#include "MPlayerVideoWidget.h"
-	typedef Phonon::VLC_MPlayer::MPlayerVideoWidget Widget;
-#endif	//PHONON_MPLAYER
 
 namespace Phonon
 {
-namespace VLC_MPlayer
+namespace VLC
 {
 
-/**
- *
- *
- * @author Tanguy Krotoff
- */
-class VideoWidget : public SinkNode, public VideoWidgetInterface {
+
+class VideoWidget : public SinkNode, public VideoWidgetInterface
+{
 	Q_OBJECT
-	Q_INTERFACES(Phonon::VideoWidgetInterface)
+	Q_INTERFACES( Phonon::VideoWidgetInterface )
 public:
 
-	VideoWidget(QWidget * parent);
+	VideoWidget( QWidget *p_parent );
 	~VideoWidget();
 
-	void connectToMediaObject(PrivateMediaObject * mediaObject);
+	void connectToMediaObject( PrivateMediaObject * mediaObject );
 
 	Phonon::VideoWidget::AspectRatio aspectRatio() const;
-	void setAspectRatio(Phonon::VideoWidget::AspectRatio aspectRatio);
-
-	qreal brightness() const;
-	void setBrightness(qreal brightness);
+	void setAspectRatio( Phonon::VideoWidget::AspectRatio aspect );
 
 	Phonon::VideoWidget::ScaleMode scaleMode() const;
-	void setScaleMode(Phonon::VideoWidget::ScaleMode scaleMode);
+	void setScaleMode(Phonon::VideoWidget::ScaleMode scale);
+
+	qreal brightness() const;
+	void setBrightness( qreal brightness );
 
 	qreal contrast() const;
-	void setContrast(qreal contrast);
+	void setContrast( qreal contrast );
 
 	qreal hue() const;
-	void setHue(qreal hue);
+	void setHue( qreal hue );
 
 	qreal saturation() const;
-	void setSaturation(qreal saturation);
+	void setSaturation( qreal saturation );
 
 	Widget * widget();
 
 private slots:
 
-	/**
-	 * @see MPlayerProcess::videoWidgetSizeChanged()
-	 */
-	void videoWidgetSizeChanged(int width, int height);
+	void videoWidgetSizeChanged( int width, int height );
 
 private:
 
-	Widget * _videoWidget;
+	Widget *p_video_widget;
 
-	Phonon::VideoWidget::AspectRatio _aspectRatio;
+	Phonon::VideoWidget::AspectRatio aspect_ratio;
 
-	Phonon::VideoWidget::ScaleMode _scaleMode;
+	Phonon::VideoWidget::ScaleMode scale_mode;
 
-    bool  _filter_adjust_activated;
-    qreal _brightness;
-	qreal _contrast;
-	qreal _hue;
-	qreal _saturation;
+    bool  b_filter_adjust_activated;
+    qreal f_brightness;
+	qreal f_contrast;
+	qreal f_hue;
+	qreal f_saturation;
 };
 
-}}	//Namespace Phonon::VLC_MPlayer
+}}	//Namespace Phonon::VLC
 
-#endif	//PHONON_VLC_MPLAYER_VIDEOWIDGET_H
+#endif	//PHONON_VLC_VIDEOWIDGET_H
