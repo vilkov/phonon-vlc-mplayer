@@ -1,7 +1,7 @@
 #Mininum required CMake version
 cmake_minimum_required(VERSION 2.6)
 
-project(phonon-vlc-mplayer)
+project(phonon-vlc)
 
 include(CMakeLists-owbuild.txt)
 
@@ -69,8 +69,7 @@ if (WIN32)
 endif (WIN32)
 
 add_subdirectory(phonon)
-add_subdirectory(vlc-mplayer)
-#add_subdirectory(ds9)
+add_subdirectory(vlc)
 
 
 include(CPackConfig.txt)
