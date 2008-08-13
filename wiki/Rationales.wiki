@@ -20,12 +20,12 @@ Goals:
 Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mostly a Windows users beside using GNU/Linux for about 10 years).
 
 Compared to VLC (version 0.8.6 time of writing), SMPlayer has a much better GUI based on the [http://trolltech.com/ Qt] toolkit. (VLC 0.8.6 was based on [http://wxwidgets.org/ wxWidgets] before moving to Qt toolkit for 0.9 release).
-Of course I've started to look at SMPlayer source code and found that there were no separation between the engine (which uses the very good [http://www.mplayerhq.hu/ MPlayer]) and the GUI.
+Of course, as a developer, I've started to look at SMPlayer source code and found that there were no separation between the engine (which uses the very good [http://www.mplayerhq.hu/ MPlayer]) and the GUI.
 At the same time, [http://phonon.kde.org/ Phonon], a multimedia API for Qt4, started to get mature and I was seduced by this thin multimedia layer where you can implement different backends (!DirectShow, Xine, GStreamer...)
 
 I sent few [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00803040503n68b72f33i49524d5405f7d777%40mail.gmail.com&forum_name=smplayer-development mails] to Ricardo Villalba, the SMPlayer author, about patching his video player for using Phonon instead of his own engine. He was pretty interested at first and I sent to him several [http://sourceforge.net/mailarchive/forum.php?thread_name=129f18a00804220111g7a92ead8l493c1c549c6391c2%40mail.gmail.com&forum_name=smplayer-development patches] and even submit experimental VLC and MPlayer backends for Phonon inside SMPlayer SVN repository.
 
-Unfortunalty, [http://smplayer.berlios.de/forums/viewtopic.php?pid=1668#p1668 "SMPlayer is so oriented to MPlayer that probably it would be necessary to rewrite it again from zero to use Phonon instead, and currently Phonon is very basic and doesn't allow all things that MPlayer can do."]
+Unfortunately, [http://smplayer.berlios.de/forums/viewtopic.php?pid=1668#p1668 "SMPlayer is so oriented to MPlayer that probably it would be necessary to rewrite it again from zero to use Phonon instead, and currently Phonon is very basic and doesn't allow all things that MPlayer can do."]
 
 So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplayer.googlecode.com/ and decided to create a simple media player in order to test my new backends...
 
@@ -58,7 +58,7 @@ Free as in free speech, not as in free beer. Source code is under GPLv3+
 
 == Skins support ==
 
-I don't like skins, I like good OS integration and this is what Qt brings.
+I'm not a big skins fan, I prefer good OS integration and this is what Qt brings.
 If someone wants skins support, Qt CSS support is [http://doc.trolltech.com/main-snapshot/stylesheet.html here].
 
 == Phonon ==
