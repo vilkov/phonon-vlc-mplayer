@@ -40,6 +40,7 @@ Effect::Effect( EffectManager *p_em, int i_effectId, QObject *p_parent )
 	{
 		i_effect_filter = effects[ i_effectId ]->getFilter();
 		effect_type = effects[ i_effectId ]->getType();
+        setupEffectParams();
 	}
 	else
 	{
@@ -50,6 +51,7 @@ Effect::Effect( EffectManager *p_em, int i_effectId, QObject *p_parent )
 
 Effect::~Effect()
 {
+    parameterList.clear();
 }
 
 void Effect::connectToMediaObject( PrivateMediaObject *p_media_object )
@@ -59,14 +61,13 @@ void Effect::connectToMediaObject( PrivateMediaObject *p_media_object )
 	switch ( effect_type )
 	{
         case EffectInfo::AudioEffect:
-            p_effectManager->enableEqualizerEffects();
-            p_libvlc_audio_equalizer_set_preset( p_vlc_instance, ( libvlc_audio_preset_names_t ) i_effect_filter,
-                                                 p_vlc_exception );
+            libvlc_audio_filter_add( p_vlc_instance, ( libvlc_audio_filter_names_t ) i_effect_filter,
+                                     p_vlc_exception );
             checkException();
             break;
         case EffectInfo::VideoEffect:
-            p_libvlc_video_filter_add( p_vlc_current_media_player, ( libvlc_video_filter_names_t ) i_effect_filter,
-                                       p_vlc_exception);
+            libvlc_video_filter_add( p_vlc_current_media_player, ( libvlc_video_filter_names_t ) i_effect_filter,
+                                     p_vlc_exception);
             checkException();
             break;
 	}
@@ -79,19 +80,110 @@ void Effect::disconnectFromMediaObject( PrivateMediaObject *p_media_object )
 	switch ( effect_type )
 	{
         case EffectInfo::AudioEffect:
+            libvlc_audio_filter_remove( p_vlc_instance, ( libvlc_audio_filter_names_t ) i_effect_filter,
+                                        p_vlc_exception );
+            checkException();
             break;
         case EffectInfo::VideoEffect:
-            p_libvlc_video_filter_remove( p_vlc_current_media_player, ( libvlc_video_filter_names_t ) i_effect_filter,
-                                          p_vlc_exception );
+            libvlc_video_filter_remove( p_vlc_current_media_player, ( libvlc_video_filter_names_t ) i_effect_filter,
+                                        p_vlc_exception );
             checkException();
             break;
 	}
 }
 
+void Effect::setupEffectParams()
+{
+    libvlc_filter_parameter_list_t *p_list;
+	switch ( effect_type )
+	{
+	    case EffectInfo::AudioEffect:
+            p_list = libvlc_audio_filter_get_parameters(
+                p_vlc_instance, (libvlc_video_filter_names_t) i_effect_filter,
+                p_vlc_exception );
+            checkException();
+	        break;
+	    case EffectInfo::VideoEffect:
+            p_list = libvlc_video_filter_get_parameters(
+                p_vlc_instance, (libvlc_video_filter_names_t) i_effect_filter,
+                p_vlc_exception );
+            checkException();
+	}
+	if( !p_list )
+	    return;
+
+    int i_index = 0;
+    libvlc_filter_parameter_list_t *p_parameter_list = p_list;
+    while( p_parameter_list )
+    {
+        switch( p_parameter_list->var_type )
+        {
+             case LIBVLC_BOOL:
+             {
+                 const QString description = p_parameter_list->psz_description;
+                 parameterList.append( Phonon::EffectParameter(
+                     i_index,
+                     QString( p_parameter_list->psz_parameter_name ),
+                     Phonon::EffectParameter::ToggledHint,   //hints
+                     QVariant( ( bool ) p_parameter_list->default_value.b_bool ),
+                     QVariant( ( bool ) false ),
+                     QVariant( ( bool ) true ),
+                     QVariantList(),
+                     description ) );
+                 break;
+             }
+             case LIBVLC_INT:
+             {
+                 const QString description = p_parameter_list->psz_description;
+                     parameterList.append( Phonon::EffectParameter(
+                     i_index,
+                     QString( p_parameter_list->psz_parameter_name ),
+                     EffectParameter::IntegerHint,   //hints
+                     QVariant( ( int ) p_parameter_list->default_value.i_int ),
+                     QVariant( ( int ) p_parameter_list->min_value.i_int ),
+                     QVariant( ( int ) p_parameter_list->max_value.i_int ),
+                     QVariantList(),
+                     description ) );
+                 break;
+             }
+             case LIBVLC_FLOAT:
+             {
+                 const QString description = p_parameter_list->psz_description;
+                     parameterList.append( Phonon::EffectParameter(
+                     i_index,
+                     QString( p_parameter_list->psz_parameter_name ),
+                     0,   //hints
+                     QVariant( ( double ) p_parameter_list->default_value.f_float ),
+                     QVariant( ( double ) p_parameter_list->min_value.f_float ),
+                     QVariant( ( double ) p_parameter_list->max_value.f_float ),
+                     QVariantList(),
+                     description ) );
+                 break;
+             }
+             case LIBVLC_STRING:
+             {
+                 const QString description = p_parameter_list->psz_description;
+                     parameterList.append( Phonon::EffectParameter(
+                     i_index,
+                     QString( p_parameter_list->psz_parameter_name ),
+                     0,   //hints
+                     QVariant( (const char *) p_parameter_list->default_value.psz_string ),
+                     NULL,
+                     NULL,
+                     QVariantList(),
+                     description ) );
+                 break;
+             }
+        }
+        i_index++;
+        p_parameter_list = p_parameter_list->p_next;
+    }
+    libvlc_filter_parameters_release( p_list );
+}
+
 QList<EffectParameter> Effect::parameters() const
 {
-	QList<EffectParameter> params;
-	return params;
+	return parameterList;
 }
 
 QVariant Effect::parameterValue(const EffectParameter & param) const

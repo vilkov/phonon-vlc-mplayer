@@ -73,8 +73,12 @@ signals:
 	void availableSubtitlesChanged();
 	void availableAudioChannelsChanged();
 
-	void availableChaptersChanged();
+#if 0
+    void availableChaptersChanged();
 	void availableTitlesChanged();
+#endif
+    void availableChaptersChanged( int );
+	void availableTitlesChanged( int );
 
 	void availableAnglesChanged( int availableAngles );
 	void angleChanged( int angleNumber );

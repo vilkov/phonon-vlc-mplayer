@@ -62,8 +62,8 @@ void VLCMediaController::clearMediaController()
 
     emit availableAudioChannelsChanged();
     emit availableSubtitlesChanged();
-    emit availableTitlesChanged();
-    emit availableChaptersChanged();
+    emit availableTitlesChanged( 0 );
+    emit availableChaptersChanged( 0 );
 }
 
 /* add audio channel -> in libvlc it is track, it means audio in another
@@ -100,7 +100,7 @@ void VLCMediaController::titleAdded( int id, const QString & name )
 
 	//available_titles << Phonon::TitleDescription( id, properties );
 	available_titles++;
-	emit availableTitlesChanged();
+	emit availableTitlesChanged( available_titles );
 }
 
 /* add chapter */
@@ -112,7 +112,7 @@ void VLCMediaController::chapterAdded( int titleId, const QString & name )
 
 	//available_chapters << Phonon::ChapterDescription( titleId, properties );
 	available_chapters++;
-	emit availableChaptersChanged();
+	emit availableChaptersChanged( available_chapters );
 }
 
 //AudioChannel
@@ -153,7 +153,7 @@ void VLCMediaController::refreshAudioChannels()
 void VLCMediaController::setCurrentSubtitle( const Phonon::SubtitleDescription & subtitle )
 {
 	current_subtitle = subtitle;
-	int id = current_subtitle.index();
+	//int id = current_subtitle.index();
 	QString type = current_subtitle.property("type").toString();
 
 	if( type == "file" )

@@ -74,13 +74,17 @@ public:
 	~EffectManager();
 
 	QList<EffectInfo *> getEffectList() const;
-	void enableEqualizerEffects();
-	void disableEqualizerEffects();
+	QList<EffectInfo *> getAudioEffectList() const;
+	QList<EffectInfo *> getVideoEffectList() const;
 
 private:
 
 	QList<EffectInfo *> effectList;
+	QList<EffectInfo *> audioEffectList;
+	QList<EffectInfo *> videoEffectList;
     bool b_equalizer_enabled;
+
+    void updateEffectList();
 };
 
 }}	//Namespace Phonon::VLC

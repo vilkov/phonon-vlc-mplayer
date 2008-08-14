@@ -43,14 +43,12 @@ public:
 	Effect( EffectManager *p_em, int i_effectId, QObject *p_parent);
 	~Effect();
 
+    void setupEffectParams();
 	QList<EffectParameter> parameters() const;
-
 	QVariant parameterValue( const EffectParameter & param ) const;
-
 	void setParameterValue( const EffectParameter & param, const QVariant & newValue );
 
 	void connectToMediaObject( PrivateMediaObject *p_media_object );
-
 	void disconnectFromMediaObject( PrivateMediaObject *p_media_object );
 
 private:

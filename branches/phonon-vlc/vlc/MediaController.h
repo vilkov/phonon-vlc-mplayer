@@ -56,8 +56,12 @@ public:
 	virtual void availableSubtitlesChanged() = 0;
 	virtual void availableAudioChannelsChanged() = 0;
 
+#if 0
 	virtual void availableChaptersChanged() = 0;
 	virtual void availableTitlesChanged() = 0;
+#endif
+	virtual void availableChaptersChanged( int ) = 0;
+	virtual void availableTitlesChanged( int ) = 0;
 
 	virtual void availableAnglesChanged( int i_available_angles ) = 0;
 	virtual void angleChanged( int i_angle_number ) = 0;
