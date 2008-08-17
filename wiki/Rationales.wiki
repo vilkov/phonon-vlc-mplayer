@@ -73,7 +73,7 @@ I still have a lot of patches for him :/
 
 == VLC and MPlayer backends ==
 
-When it comes to multiplatform video engines, you have the choice between VLC and MPlayer. Let's integrate both inside Phonon library!
+When it comes to multiplatform audio/video engines, you have the choice between VLC and MPlayer. Let's integrate both inside Phonon library!
 
 == "Windows Explorer" panel ==
 
@@ -116,6 +116,7 @@ If you look at !QuarkPlayer source code, you will see that [http://code.google.c
  * [http://jajuk.info/ Jajuk] is a Java based music application
 
 ect...
-
+I've tested a number of open source and closed source multimedia applications, this helps to take UI decisions, here some of them: 
+http://code.google.com/p/phonon-vlc-mplayer/source/browse/competition
 
 http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080724-win32.png?gsc=F98u1AsAAACPmwBWT6bgpe7EAZoCOXfr
