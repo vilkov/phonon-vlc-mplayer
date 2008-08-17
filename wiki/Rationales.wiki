@@ -7,7 +7,7 @@ Rationales, background and history of !QuarkPlayer.
 Yet another media player! Here my reasons for writing another media player...
 
 Goals:
- * Multimedia (video and audio support)
+ * Multimedia (video and audio playback)
  * C++/Qt-4.4
  * Fast
  * Multiplatform
@@ -31,7 +31,9 @@ So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplaye
 
 = Rationales behind !QuarkPlayer =
 
-!QuarkPlayer is designed to be a multimedia player, meaning not only for videos but also suitable for audio playback, similar to Windows Media Player approach. !QuarkPlayer started as a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-0.1-win32-2.png?gda=zeMzP0wAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDSDk6dLSXWTIU0t_YRCVF5xDeGi6XjxcWE2ApR61obtyA video player] very similar to SMPlayer GUI before I code a playlist and other more "audio" oriented features.
+!QuarkPlayer is designed to be a multimedia player, meaning not only for videos but also suitable for audio playback, similar to Windows Media Player approach. I want to play my videos with the same application that I use for music playback.
+
+!QuarkPlayer started as a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-0.1-win32-2.png?gda=zeMzP0wAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDSDk6dLSXWTIU0t_YRCVF5xDeGi6XjxcWE2ApR61obtyA video player] very similar to SMPlayer GUI before I code a playlist and other more "music" oriented features.
 
 == Libraries dependencies ==
 
@@ -42,7 +44,7 @@ Under GNU/Linux, !QuarkPlayer can be compiled if needed with a minimal "visual" 
 == Portability ==
 
 Windows is the most used OS, when you use the portable Qt library it would have been stupid to only support GNU/Linux. Windows also comes with tools for developing: debugger and compiler from Visual C++ 2005 are for free and very good.
-Supporting more compilers help to find bugs.
+Supporting more compilers and platforms help to find bugs.
 Therefore, !QuarkPlayer compiles with Visual C++ 2005, MinGW and GCC for GNU/Linux.
 Unfortunately I don't have a MacOS computer, that's why there is no available version under this OS. Help is very welcome here.
 
@@ -100,6 +102,20 @@ If you look at !QuarkPlayer source code, you will see that [http://code.google.c
  * !ContentFetcher to download Internet contents (lyrics, Amazon cover, artist Wikipedia page)
  * !WebBrowser, a simple web browser based on QTextBrowser (so no !QtWebKit dependency)
 
+== QuarkPlayer vs other players ==
+
+ * [http://amarok.kde.org/ Amarok] depends on KDE libraries (slow under Windows) and only plays music
+ * [http://www.videolan.org/ VLC] is not suitable for music playback
+ * [http://smplayer.sourceforge.net/ SMPlayer] is not suitable for music playback
+ * [http://www.mplayerhq.hu/ MPlayer] is not suitable for music playback
+ * [http://www.dragonplayer.org/ DragonPlayer] depends on KDE libraries and is very basic
+ * [http://dekibulle.free.fr/ DéKiBulle] is not multiplatform and plays only music
+ * [http://musik.berlios.de/ wxMusik] plays only music
+ * [http://www.gnome.org/projects/totem/ Totem] is not multiplatform and is not suitable for music playback
+ * [http://www.kantaris.org/ Kantaris Media Player] could do it but is not multiplatform and relies on C# and uses closed source libraries
+ * [http://jajuk.info/ Jajuk] is a Java based music application
+
+ect...
 
 
 http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20080724-win32.png?gsc=F98u1AsAAACPmwBWT6bgpe7EAZoCOXfr
