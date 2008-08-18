@@ -16,6 +16,8 @@ Goals:
  * Phonon library
  * I like to code
 
+Warning: !QuarkPlayer will probably not revolutionize the media player landscape.
+
 = History =
 
 Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mostly a Windows users beside using GNU/Linux for about 10 years).
