@@ -39,7 +39,8 @@ VLCMediaObject::VLCMediaObject( QObject * parent )
 	: MediaObject( parent ), VLCMediaController()
 {
 	//MediaPlayer
-	p_vlc_media_player = NULL;
+	p_vlc_media_player = p_libvlc_media_player_new( p_vlc_instance, p_vlc_exception );
+        checkException();
 	p_vlc_media_player_event_manager = NULL;
 
 	//Media
@@ -58,15 +59,16 @@ VLCMediaObject::VLCMediaObject( QObject * parent )
 VLCMediaObject::~VLCMediaObject()
 {
 	//unloadMedia();
+    p_libvlc_media_player_release( p_vlc_media_player );
 }
 
 void VLCMediaObject::unloadMedia()
 {
-	if( p_vlc_media_player )
-	{
-		p_libvlc_media_player_release( p_vlc_media_player );
-		p_vlc_media_player = NULL;
-	}
+	//if( p_vlc_media_player )
+	//{
+	//	p_libvlc_media_player_release( p_vlc_media_player );
+	//	p_vlc_media_player = NULL;
+	//}
 
 	if( p_vlc_media )
 	{
@@ -84,7 +86,7 @@ void VLCMediaObject::loadMediaInternal( const QString & filename )
 	checkException();
 
 	//Create a media player environement
-	p_vlc_media_player = p_libvlc_media_player_new_from_media( p_vlc_media, p_vlc_exception );
+	p_libvlc_media_player_set_media(p_vlc_media_player, p_vlc_media, p_vlc_exception );
 	checkException();
 
 	//No need to keep the media now
