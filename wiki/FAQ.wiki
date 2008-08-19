@@ -5,6 +5,8 @@
 
 Here some common answers to common questions.
 
+If you are using the MPlayer backend, you can check [http://smplayer.wiki.sourceforge.net/FAQ SMPlayer FAQ], you will find useful informations since SMPlayer uses MPlayer
+
 === Which backend for which use? ===
 Under Windows, for video playback, I currently recommend the MPlayer backend. For music playback I recommend the !DirectShow backend.
 Under Linux, the recommended backend is Xine.
