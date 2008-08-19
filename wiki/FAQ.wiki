@@ -9,7 +9,7 @@ Here some common answers to common questions.
 Under Windows, for video playback, I currently recommend the MPlayer backend. For music playback I recommend the !DirectShow backend.
 Under Linux, the recommended backend is Xine.
 
-=== Aero is disabled with the MPlayer backend ===
+=== Aero (Windows Vista) is disabled with the MPlayer backend ===
 This is a known issue, cf http://thread.gmane.org/gmane.comp.video.mplayer.devel/48973
 
 There is no "clear" solution yet, try to use MPlayer gl/gl2 output driver or even another Phonon backend.
