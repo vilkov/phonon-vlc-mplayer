@@ -1,5 +1,5 @@
 #summary Rationales, background and history of QuarkPlayer
-#labels Phase-Design
+#labels Featured,Phase-Design
 
 = Introduction =
 
