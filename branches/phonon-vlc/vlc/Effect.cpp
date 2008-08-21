@@ -99,7 +99,7 @@ void Effect::setupEffectParams()
 	{
 	    case EffectInfo::AudioEffect:
             p_list = libvlc_audio_filter_get_parameters(
-                p_vlc_instance, (libvlc_video_filter_names_t) i_effect_filter,
+                p_vlc_instance, (libvlc_audio_filter_names_t) i_effect_filter,
                 p_vlc_exception );
             checkException();
 	        break;
@@ -193,6 +193,52 @@ QVariant Effect::parameterValue(const EffectParameter & param) const
 
 void Effect::setParameterValue(const EffectParameter & param, const QVariant & newValue)
 {
+    libvlc_value_t value;
+    libvlc_var_type_t type;
+    switch( param.type() )
+    {
+        case QVariant::Bool:
+            value.b_bool = newValue.toBool();
+            type = LIBVLC_BOOL;
+            break;
+        case QVariant::Int:
+            value.i_int = newValue.toInt();
+            type = LIBVLC_INT;
+            break;
+        case QVariant::Double:
+            value.f_float = ( float ) newValue.toDouble();
+            type = LIBVLC_FLOAT;
+            break;
+        case QVariant::String:
+            value.psz_string = newValue.toString().toAscii().data();
+            type = LIBVLC_STRING;
+            break;
+        default:
+            break;
+    }
+	switch ( effect_type )
+	{
+	    case EffectInfo::AudioEffect:
+            libvlc_audio_filter_set_parameter(
+                p_vlc_instance,
+                //(libvlc_audio_filter_names_t) i_effect_filter,
+                param.name().toAscii().data(),
+                type,
+                value,
+                p_vlc_exception );
+            checkException();
+	        break;
+	    case EffectInfo::VideoEffect:
+            libvlc_video_filter_set_parameter(
+                p_vlc_current_media_player,
+                (libvlc_video_filter_names_t) i_effect_filter,
+                param.name().toAscii().data(),
+                type,
+                value,
+                p_vlc_exception );
+            checkException();
+            break;
+	}
 }
 
 }}	//Namespace Phonon::VLC
