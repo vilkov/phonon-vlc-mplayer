@@ -4,8 +4,6 @@
 =Introduction=
 
 This document explains how to build and install phonon-vlc-mplayer under Windows and GNU/Linux.
-Sometimes it can be hard to compile phonon-vlc-mplayer as I need to use the latest versions of the depending libraries.
-Please check that you have the right Qt and Phonon versions otherwise it probably won't compile!
 
 =Requirements=
 
@@ -22,16 +20,16 @@ Please check that you have the right Qt and Phonon versions otherwise it probabl
    * CMake: >= CMake-2.6.0
       * Website: http://cmake.org/
       * Download link: http://cmake.org/HTML/Download.html
-   * Compiler: GCC or Visual C++ 2005 (MSVC8)
+   * Compiler: GCC or MinGW or Visual C++
 
 ==GNU/Linux==
 
-If Qt-4.4 is not present on your distribution (libqt4-devel packages), you will have to compile Qt-4.4.
-Please refer to the links above for downloading and installing Qt-4.4
+If Qt-4.4 is not present on your distribution (libqt4-devel packages), you will have to compile Qt-4.4 yourself. Recent GNU/Linux distributions already provide Qt-4.4.
+Please refer to the links above for downloading and installing Qt-4.4 "by hand".
 
 ==MinGW==
 
- * Install Qt-4.4 compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.0-mingw.exe qt-win-opensource-4.4.0-mingw.exe]
+ * Install Qt-4.4 compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.1-mingw.exe qt-win-opensource-4.4.1-mingw.exe]
 
 Qt-4.4 already contains a simple way to install MinGW.
 Be aware that MinGW version of Qt-4.4 does not come with Phonon. This is not an issue since phonon-vlc-mplayer comes with its own Phonon SVN copy.
@@ -39,12 +37,26 @@ Be aware that MinGW version of Qt-4.4 does not come with Phonon. This is not an 
 (For the little story, the default Windows backend for Phonon is based on !DirectShow 9 and MinGW is not capable of compiling DS9 code,
 that's why Trolltech doesn't ship Phonon with Qt-4.4 MinGW)
 
-==Visual C++ 2005 (MSVC8)==
+==Visual C++==
+
+You can use Visual C++ instead of MinGW, several versions are supported:
+ * Visual C++ 2003 (MSVC71) released in April 2003
+ * Visual C++ 2005 (MSVC8) released in November 2005
+ * Visual C++ 2008 (MSVC9) released in November 2007
+Previous versions of Visual C++ are not supported.
+
+Visual C++ (within Visual Studio) comes in different editions:
+ * Express - free for non commercial use
+ * Standard
+ * Professional
+ * Team System - comes with nice tools: performance, code analysis and testing tools
+
+If you are not sure what to use between MinGW and Visual C++, I recommend to use MinGW: the whole installation process of Visual Studio is long and uneasy.
+On the other hand, Visual C++ is better than MinGW for day to day developping and produces better binaries.
+
+Here some informations about installing Visual C++ 2005 Express Edition. Alternatively you can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here]
 
 (Informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
-
-If you want to compile phonon-vlc-mplayer under Windows, you need to install Microsoft Visual Studio 2005 Express Edition (or whatever edition of Visual C++ 2005/2008).
-Warning: the whole process is quite long and uneasy.
 
  * Install Visual C++ 2005 Express Edition: http://www.microsoft.com/express/2005/download/default.aspx
  * Install Platform SDK: [http://www.microsoft.com/downloads/details.aspx?FamilyID=0baf2b35-c656-4969-ace8-e4c0c0716adb&DisplayLang=en link]
