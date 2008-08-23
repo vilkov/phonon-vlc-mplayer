@@ -49,12 +49,13 @@ Visual C++ (within Visual Studio) comes in different editions:
  * Express - free for non commercial use
  * Standard
  * Professional
- * Team System - comes with nice tools: performance, code analysis and testing tools
+ * Team System - comes with nice tools (performance, code analysis and testing tools)
 
-If you are not sure what to use between MinGW and Visual C++, I recommend to use MinGW: the whole installation process of Visual Studio is long and uneasy.
+If you are not sure which one to choose between MinGW and Visual C++, I recommend to use MinGW: the whole installation process of Visual Studio is long and uneasy.
 On the other hand, Visual C++ is better than MinGW for day to day developping and produces better binaries.
 
-Here some informations about installing Visual C++ 2005 Express Edition. Alternatively you can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here]
+
+Here some informations about installing Visual C++ 2005 Express Edition. Alternatively you can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] (3.82 GB) or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here] (3.33GB).
 
 (Informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
 
@@ -73,7 +74,7 @@ When all this is done properly, you will be able to compile Qt-4.4 (see links ab
 ==MacOS X==
 
 I didn't try phonon-vlc-mplayer under MacOS X (I don't have an Apple computer).
-However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source code is multiplatform and depends only on Qt. I guess you will need to modify CMakeLists.txt files.
+However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source code is multiplatform and depends only on Qt. Only need should be to modify CMakeLists.txt files.
 
 ==Compiling the latest Phonon library==
 
@@ -106,7 +107,7 @@ MPlayer Phonon backend runs the MPlayer (mplayer.exe under Windows) process in s
 
  * Under GNU/Linux, you should get a MPlayer package with your favorite GNU/Linux distribution
 
- * Under Windows, install [http://smplayer.sourceforge.net/ SMPlayer] that comes with a Windows build of MPlayer. phonon-mplayer looks for {{{C:/Program Files/SMPlayer/mplayer/mplayer.exe}}}, I have to improve this code, if you have some ideas please tell me.
+ * Under Windows, install [http://smplayer.sourceforge.net/ SMPlayer] that comes with a Windows build of MPlayer. phonon-mplayer looks for {{{mplayer/mplayer.exe}}}, I have to improve this code, if you have some ideas please tell me.
 
 =Get the source code=
 
