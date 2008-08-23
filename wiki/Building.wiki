@@ -111,6 +111,8 @@ MPlayer Phonon backend runs the MPlayer (mplayer.exe under Windows) process in s
 
 =Get the source code=
 
+Source code from Subversion repository is around 15 MB.
+
  * Linux
 You need to install [http://subversion.tigris.org/ Subversion], and then enter this command line:
 {{{svn co http://phonon-vlc-mplayer.googlecode.com/svn/ phonon-vlc-mplayer}}}
