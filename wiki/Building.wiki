@@ -55,7 +55,7 @@ If you are not sure which one to choose between MinGW and Visual C++, I recommen
 On the other hand, Visual C++ is better than MinGW for day to day developping and produces better binaries.
 
 
-Here some informations about installing Visual C++ 2005 Express Edition. Alternatively you can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] (3.82 GB) or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here] (3.33GB).
+Here some informations about installing Visual C++ 2005 Express Edition. Alternatively you can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] (3.82 GB) or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here] (3.33 GB).
 
 (Informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
 
@@ -111,7 +111,7 @@ MPlayer Phonon backend runs the MPlayer (mplayer.exe under Windows) process in s
 
 =Get the source code=
 
-Source code from Subversion repository is around 15 MB.
+Source code from Subversion repository is around 10 MB.
 
  * Linux
 You need to install [http://subversion.tigris.org/ Subversion], and then enter this command line:
