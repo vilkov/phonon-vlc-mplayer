@@ -49,7 +49,7 @@ Visual C++ (within Visual Studio) comes in different editions:
  * Express - free for non commercial use
  * Standard
  * Professional
- * Team System - comes with nice tools (performance, code analysis and testing tools)
+ * Team System - comes with performance collection tools
 
 If you are not sure which one to choose between MinGW and Visual C++, I recommend to use MinGW: the whole installation process of Visual Studio is long and uneasy.
 On the other hand, Visual C++ is better than MinGW for day to day developping and produces better binaries.
