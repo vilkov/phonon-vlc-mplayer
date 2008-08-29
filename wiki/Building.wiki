@@ -51,25 +51,30 @@ Visual C++ (within Visual Studio) comes in different editions:
  * Professional
  * Team System - comes with performance collection tools
 
-If you are not sure which one to choose between MinGW and Visual C++, I recommend to use MinGW: the whole installation process of Visual Studio is long and uneasy.
-On the other hand, Visual C++ is better than MinGW for day to day developping and produces better binaries.
+Why Visual C++ over MinGW? Visual C++ is better for day to day developping and produces better binaries.
 
+After installing Visual Studio, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
+(Qt-4.4 Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
-Here some informations about installing Visual C++ 2005 Express Edition. Alternatively you can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] (3.82 GB) or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here] (3.33 GB).
+===Visual Studio Evaluation Copy===
 
-(Informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
+You can download an evaluation copy (90 days) of Visual C++ 2008 Team Suite [http://msdn.microsoft.com/en-us/evalcenter/bb633757.aspx here] (3.82 GB) or an evaluation copy (180 days) of Visual Studio 2005 [http://download.microsoft.com/download/6/f/5/6f5f7a01-50bb-422d-8742-c099c8896969/En_vs_2005_vsts_180_Trial.img here] (3.33 GB).
+After installing the evaluation copy, there is not much to do: the installer of the commercial/evaluation version sets up the environment and provides a 'Visual Studio Command Prompt'.
+
+===Visual Studio Express Edition===
+
+/!\ The whole installation process of Visual Studio Express Edition is long and uneasy, I recommend to use MinGW or an evaluation copy of Visual Studio.
+
+Here some informations about Visual C++ 2005 Express Edition (Informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
 
  * Install Visual C++ 2005 Express Edition: http://www.microsoft.com/express/2005/download/default.aspx
- * Install Platform SDK: [http://www.microsoft.com/downloads/details.aspx?FamilyID=0baf2b35-c656-4969-ace8-e4c0c0716adb&DisplayLang=en link]
+ * Install Platform/Windows SDK: [http://en.wikipedia.org/wiki/Microsoft_Windows_SDK#Obtaining_the_SDK link]
  * Install Service Pack 1 for Visual C++ 2005 Express Edition (probably not needed, please tell me if it works without): [http://www.microsoft.com/downloads/details.aspx?FamilyID=7b0b0339-613a-46e6-ab4d-080d4d4a8c4e&DisplayLang=en link]
- * Install DirectX SDK (probably not needed, please tell me if it works without): [http://www.microsoft.com/downloads/details.aspx?FamilyId=572BE8A6-263A-4424-A7FE-69CFF1A5B180&displaylang=en link]
+ * Install DirectX SDK (probably not needed, please tell me if it works without): [http://msdn.microsoft.com/en-us/directx/default.aspx link]
  * Install CMake (see links above)
 
 You need to setup you compiling environment, I use this small script: [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki/setenv.bat setenv.bat].
 Adapt this script to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
-
-When all this is done properly, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
-(Qt-4.4 Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
 ==MacOS X==
 
@@ -115,7 +120,7 @@ Source code from Subversion repository is around 10 MB.
 
  * Linux
 You need to install [http://subversion.tigris.org/ Subversion], and then enter this command line:
-{{{svn co http://phonon-vlc-mplayer.googlecode.com/svn/ phonon-vlc-mplayer}}}
+{{{svn co http://phonon-vlc-mplayer.googlecode.com/svn/trunk phonon-vlc-mplayer}}}
 
  * Windows
 Under Windows, I recommend to install [http://tortoisesvn.tigris.org/ TortoiseSVN].
