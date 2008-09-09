@@ -813,3 +813,5 @@ This way, only one include directory is needed during compilation: {{{-I$QTDIR/i
 [http://www.joelonsoftware.com/printerFriendly/articles/fog0000000043.html The Joel Test: 12 Steps to Better Code]
 
 [http://www.gamesfromwithin.com/articles/0406/000024.html Simple Is Beautiful]
+
+[http://doc.trolltech.com/qq/qq13-apis.html Designing Qt-Style C++ APIs]
