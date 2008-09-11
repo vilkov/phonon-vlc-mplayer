@@ -43,7 +43,7 @@ _You have to remember that your code will exist for a long time, long after you 
 
 _Inexperienced developers, and cowboys who do not know any better, will often fight having to follow standards. They claim they can code faster if they do it their own way. Pure hogwash. They MIGHT be able to get code out the door faster, but I doubt it. Cowboy programmers get hung up during testing when several difficult-to-find bugs crop up, and when their code needs to be enhanced it often leads to a major rewrite by them because they're the only ones who understand their code. Is this the way that you want to operate? I certainly do not._
 
-==A good example is better than a long discussion==
+==A good example is better than a long speech==
 
 Here is an implementation of a String class that inherits from std::string, file is named String.h
 
@@ -505,22 +505,7 @@ FIXME
 Example (String.cpp):
 {{{
 /*
- * WengoPhone, a voice over Internet phone
- * Copyright (C) 2004-2005  Wengo
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Copyright
  */
 
 #include "String.h"
