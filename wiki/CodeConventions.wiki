@@ -4,7 +4,7 @@
 
 ==Introduction==
 
-When writing English, you start a sentence with a majuscule and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
+When writing English, you start a sentence with an upper case letter and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
 Conventions exist for other characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}}...
 Over time the same kind of conventions appeared for programming languages.
 
@@ -54,6 +54,7 @@ Here is an implementation of a String class that inherits from std::string, file
 
 #ifndef STRING_H
 #define STRING_H
+
 
 #include <string>
 
@@ -237,7 +238,6 @@ public:
 	 * Autobrief.
 	 *
 	 * More comments.
-
 	 *
 	 * @param something ...
 	 */
@@ -812,5 +812,3 @@ This way, only one include directory is needed during compilation: {{{-I$QTDIR/i
 [http://www.gamesfromwithin.com/articles/0406/000024.html Simple Is Beautiful]
 
 [http://doc.trolltech.com/qq/qq13-apis.html Designing Qt-Style C++ APIs]
-
-[http://developer.gnome.org/doc/guides/programming-guidelines/code-style.html GNOME Coding Style]
