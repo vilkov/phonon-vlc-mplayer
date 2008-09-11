@@ -62,6 +62,9 @@ Here is an implementation of a String class that inherits from std::string, file
  *
  * Inspired from the class QString from the Qt library.
  *
+ * By the way, inheriting from std::string is not a good approach since
+ * std::string has no virtual destructor.
+ *
  * @see QString
  * @see std::string
  * @see java.lang.String
