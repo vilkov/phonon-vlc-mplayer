@@ -4,11 +4,11 @@
 
 ==Introduction==
 
-When writing English, you start a sentence with an upper case letter and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
+When writing in English, you start a sentence with an upper case letter and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
 Conventions exist for other characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}}...
 Over time the same kind of conventions appeared for programming languages.
 
-The big picture is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most people follow and like. Code conventions generally match the programming paradigm that is used.
+The big picture is that you want your code to be easily accessible to other developers (that leads to more contributions). So just to code in a 'standard' way that most people follow and like because you simply don't want to start a [http://en.wikipedia.org/wiki/Spaghetti_code spaghetti code]. Code conventions generally match the programming paradigm that is used.
 
 In our case, C++ is an oriented object language and thus most C++ developpers follow "object-oriented programming" conventions. These conventions are pretty different from C for example.
 In C most developpers use
