@@ -18,8 +18,8 @@ On the other hand "OO" developers follow the mixed case approach
 specially if they have done some Java/C# programming or used libraries like Qt.
 
 *A good start is to follow your framework or language conventions.*
-If you use Qt, just mimic the [http://doc.trolltech.com/qq/qq13-apis.html API], same for [http://java.sun.com/docs/codeconv/
- Java], [http://www.csharpfriends.com/Articles/getArticle.aspx?articleID=336 C#] and [http://developer.gnome.org/doc/guides/programming-guidelines/code-style.html GTK+]
+
+If you use Qt, just mimic the [http://doc.trolltech.com/qq/qq13-apis.html API], same for [http://java.sun.com/docs/codeconv/ Java], [http://www.csharpfriends.com/Articles/getArticle.aspx?articleID=336 C#] and [http://developer.gnome.org/doc/guides/programming-guidelines/code-style.html GTK+]
 
 These coding conventions are directly inspired from the Java coding style. Thus you should read Java coding style documents and books since this one is not exhaustive.
 
@@ -49,22 +49,7 @@ Here is an implementation of a String class that inherits from std::string, file
 
 {{{
 /*
- * WengoPhone, a voice over Internet phone
- * Copyright (C) 2004-2005  Wengo
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Copyright
  */
 
 #ifndef STRING_H
@@ -321,9 +306,6 @@ Note the mixed case for filenames.
 
 Never use spaces inside filenames nor accents, it can cause some trouble (for instance Subversion under MacOSX does not work with accents and spaces).
 
-
-
-
 ==Copyright==
 
 On each source file the copyright notice should be written.
@@ -403,6 +385,12 @@ Why public methods first and private methods last? Because nobody cares about pr
 	private:
 	};
 }}}
+
+==Getters/Setters==
+
+Most object-oriented languages follow {{{std::string getBlaBla()}}} syntax. Qt developers on the other hand follow {{{QString blaBla()}}}.
+
+Just follow your framework conventions
 
 ==Private members==
 
