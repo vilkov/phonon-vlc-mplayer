@@ -17,7 +17,7 @@ On the other hand "OO" developers follow the mixed case approach
 {{{myPrettyFunction(const std::string & myArg)}}}
 specially if they have done some Java/C# programming or used libraries like Qt.
 
-*A good start is to follow your framework or language conventions.*
+*A good start is to follow your framework or language conventions and make your whole code consistent with it*
 
 If you use Qt, just mimic the [http://doc.trolltech.com/qq/qq13-apis.html API], same for [http://java.sun.com/docs/codeconv/ Java], [http://www.csharpfriends.com/Articles/getArticle.aspx?articleID=336 C#] and [http://developer.gnome.org/doc/guides/programming-guidelines/code-style.html GTK+]
 
