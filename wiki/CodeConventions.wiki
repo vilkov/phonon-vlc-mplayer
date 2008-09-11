@@ -4,6 +4,20 @@
 
 ==Introduction==
 
+When writing English, you start a sentence with a majuscule and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
+Same for characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}} and others.
+
+
+The big picture is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most people follow and like. Code conventions generally match the programming paradigm that is used.
+
+In our case, C++ is an oriented object language and thus most C++ developpers follow "object-oriented programming" conventions. These conventions are pretty different from C for example.
+
+In C most developpers use
+{{{my_pretty_function(const char * my_arg)}}}
+On the other hand "OO" developers follow the mixed case approach
+{{{myPrettyFunction(const std::string & myArg)}}}
+specially if they have done some Java/C# programming or used libraries like Qt.
+
 These coding conventions are directly inspired from the Java coding style. Thus you should read Java coding style documents and books since this one is not exhaustive.
 
 Here are some interesting documents that you should read:
@@ -302,6 +316,9 @@ C++ implementation files are of the form {{{MyClass.cpp}}}
 Note the mixed case for filenames.
 
 Never use spaces inside filenames nor accents, it can cause some trouble (for instance Subversion under MacOSX does not work with accents and spaces).
+
+
+
 
 ==Copyright==
 
