@@ -5,8 +5,8 @@
 ==Introduction==
 
 When writing English, you start a sentence with a majuscule and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
-Same for characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}} and others.
-
+Conventions exist for other characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}}...
+Over time the same kind of conventions appeared for programming languages.
 
 The big picture is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most people follow and like. Code conventions generally match the programming paradigm that is used.
 
