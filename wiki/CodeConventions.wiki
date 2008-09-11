@@ -4,22 +4,22 @@
 
 ==Introduction==
 
-When writing in English, you start a sentence with an upper case letter and end it with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
+When writing in English, a sentence starts with an upper case letter and ends with a dot. When writing !, there should be no space between the ! and the word ("Hello everybody!" is correct, "Hello everybody !" is considered not to be).
 Conventions exist for other characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}}...
 Over time the same kind of conventions appeared for programming languages.
 
-The big picture is that you want your code to be easily accessible to other developers (that leads to more contributions). So just to code in a 'standard' way that most people follow and like because you simply don't want to start a [http://en.wikipedia.org/wiki/Spaghetti_code spaghetti code]. Code conventions generally match the programming paradigm that is used.
+The big picture is that you want your code to be easily accessible to other developers (that leads to more contributions). The idea is to code in a "standard" way that most people follow and like because you simply don't want to start a [http://en.wikipedia.org/wiki/Spaghetti_code spaghetti code]. Code conventions generally match the programming paradigm that is used.
 
 In our case, C++ is an oriented object language and thus most C++ developpers follow "object-oriented programming" conventions. These conventions are pretty different from C for example.
 In C most developpers use
 {{{my_pretty_function(const char * my_arg)}}}
 On the other hand "OO" developers follow the mixed case approach
 {{{myPrettyFunction(const std::string & myArg)}}}
-specially if they have done some Java/C# programming or used libraries like Qt.
+specially if they have done some Java/C# programming or have used libraries like Qt.
 
 *A good start is to follow your framework or language conventions and make your whole code consistent with it*
 
-If you use Qt, just mimic the [http://doc.trolltech.com/qq/qq13-apis.html API], same for [http://java.sun.com/docs/codeconv/ Java], [http://www.csharpfriends.com/Articles/getArticle.aspx?articleID=336 C#] and [http://developer.gnome.org/doc/guides/programming-guidelines/code-style.html GTK+]
+If you use Qt, just mimic the [http://doc.trolltech.com/qq/qq13-apis.html API], same for [http://java.sun.com/docs/codeconv/ Java], [http://www.csharpfriends.com/Articles/getArticle.aspx?articleID=336 C#] or [http://developer.gnome.org/doc/guides/programming-guidelines/code-style.html GTK+]
 
 These coding conventions are directly inspired from the Java coding style. Thus you should read Java coding style documents and books since this one is not exhaustive.
 
