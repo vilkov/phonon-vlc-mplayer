@@ -29,7 +29,7 @@ Please refer to the links above for downloading and installing Qt-4.4 "by hand".
 
 ==MinGW==
 
- * Install Qt-4.4 compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.1-mingw.exe qt-win-opensource-4.4.1-mingw.exe]
+ * Install Qt-4.4 compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.3-mingw.exe qt-win-opensource-4.4.3-mingw.exe]
 
 Qt-4.4 already contains a simple way to install MinGW.
 Be aware that MinGW version of Qt-4.4 does not come with Phonon. This is not an issue since phonon-vlc-mplayer comes with its own Phonon SVN copy.
