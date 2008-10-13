@@ -21,7 +21,7 @@ Warning: !QuarkPlayer will probably not revolutionize the media player landscape
 
 Everything started in march 2008 when I've discovered the video player [http://smplayer.sourceforge.net/ SMPlayer]. Until then I was using the well known [http://www.videolan.org/ VLC] video player under Windows (I am mostly a Windows users beside using GNU/Linux for many years).
 
-Compared to VLC (version 0.8.6 at that ti), SMPlayer has a much better GUI based on the [http://trolltech.com/ Qt] toolkit. (VLC 0.8.6 was based on [http://wxwidgets.org/ wxWidgets] before moving to Qt toolkit for 0.9 release).
+Compared to VLC (version 0.8.6 at that time), SMPlayer has a much better GUI based on the [http://trolltech.com/ Qt] toolkit. (VLC 0.8.6 was based on [http://wxwidgets.org/ wxWidgets] before moving to Qt toolkit for 0.9 release).
 Of course, as a developer, I've started to look at SMPlayer source code and found that there were no separation between the engine (which uses the very good [http://www.mplayerhq.hu/ MPlayer]) and the GUI.
 At the same time, [http://phonon.kde.org/ Phonon], a multimedia API for Qt4, started to get mature and I was seduced by this thin multimedia layer where you can implement different backends (!DirectShow, Xine, GStreamer...)
 
@@ -34,8 +34,6 @@ So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplaye
 = Rationales behind !QuarkPlayer =
 
 !QuarkPlayer is designed to be a multimedia player, meaning not only for videos but also suitable for audio playback, similar to Windows Media Player approach. I want to play my videos with the same application that I use for music playback.
-
-!QuarkPlayer started as a [http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-0.1-win32-2.png?gda=zeMzP0wAAABAIzXrRkc0UJYuMPqsOGZvZi_IuTZWNTMOeWCE90_-qmG1qiJ7UbTIup-M2XPURDSDk6dLSXWTIU0t_YRCVF5xDeGi6XjxcWE2ApR61obtyA video player] very similar to SMPlayer GUI before I code a playlist and other more "music" oriented features.
 
 === Back to the basics ===
 
