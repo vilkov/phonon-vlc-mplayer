@@ -84,6 +84,8 @@ I still have a lot of patches for him :/
 
 !QuarkPlayer name comes from [http://en.wikipedia.org/wiki/Quark Quark] to keep it in physics area like [http://en.wikipedia.org/wiki/Phonon Phonon].
 
+http://phonon.kde.org/images/rect3400p.png
+
 === VLC and MPlayer backends ===
 
 When it comes to multiplatform audio/video engines, you have the choice between VLC and MPlayer. Let's integrate both inside Phonon library!
