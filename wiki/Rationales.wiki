@@ -38,7 +38,7 @@ So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplaye
 === Back to the basics ===
 
 Do you remember the time you were using [http://en.wikipedia.org/wiki/Winamp#Winamp_2 Winamp 2] or [http://en.wikipedia.org/wiki/X11Amp X11Amp]?
-At the time you had 2 windows: the music playback window and the playlist window, a little drag and drop from your file manager and you were done. I have discovered that a lot of people (including me of course) are still using music players this way. Current QuarkPlayer focus is to get back to this simple approach and improve it.
+At the time you had 2 windows: the music playback window and the playlist window, a little drag and drop from your file manager and you were done. I have discovered that a lot of people (including me of course) are still using music players this way. Current !QuarkPlayer focus is to get back to this simple approach and improve it.
 
 That's why I've added a "File Browser" panel inside !QuarkPlayer from where they can do drag&drop to the playlist. It also includes a fast search engine.
 
@@ -52,9 +52,9 @@ Under GNU/Linux, !QuarkPlayer can be compiled if needed with a minimal "visual" 
 
 === Portability ===
 
-Windows is the most used OS, when you use the portable Qt library it would have been stupid to only support GNU/Linux. Windows also comes with tools for developing: debugger and compiler from Visual C++ 2005 are for free and very good.
+Windows is the most used OS, when you use the portable Qt library it would have been stupid to only support GNU/Linux. Windows also comes with tools for developing: debugger and compiler from Visual Studio are for free and very good.
 Supporting more compilers and platforms help to find bugs.
-Therefore, !QuarkPlayer compiles with Visual C++ 2005, MinGW and GCC for GNU/Linux.
+Therefore, !QuarkPlayer compiles with Visual C++ 2005/2008, MinGW and GCC for GNU/Linux.
 Unfortunately I don't have a MacOS computer, that's why there is no available version under this OS. Help is very welcome here.
 
 === C++ ===
