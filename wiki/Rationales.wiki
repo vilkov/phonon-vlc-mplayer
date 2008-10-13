@@ -37,7 +37,7 @@ So I moved the experimental VLC and MPlayer backends to http://phonon-vlc-mplaye
 
 === Back to the basics ===
 
-Do you remember the time you were using [http://en.wikipedia.org/wiki/Winamp#Winamp_2 Winamp 2] or [http://en.wikipedia.org/wiki/X11Amp !X11Amp]?
+Do you remember the time you were using [http://en.wikipedia.org/wiki/Winamp#Winamp_2 Winamp 2] or [http://en.wikipedia.org/wiki/X11Amp X11Amp]?
 At the time you had 2 windows: the music playback window and the playlist window, a little drag and drop from your file manager and you were done. I have discovered that a lot of people (including me of course) are still using music players this way. Current !QuarkPlayer focus is to get back to this simple approach and improve it.
 
 That's why I've added a "File Browser" panel inside !QuarkPlayer from where they can do drag&drop to the playlist. It also includes a fast search engine.
