@@ -69,6 +69,8 @@ http://phonon-vlc-mplayer.googlegroups.com/web/QuarkPlayer-20081013-memory.png?g
 
 Free as in free speech, not as in free beer. Source code is under GPLv3+
 
+http://www.gnu.org/graphics/gplv3-127x51.png
+
 === Skins support ===
 
 I'm not a skins fan, I prefer good OS integration and this is what Qt brings.
