@@ -16,7 +16,7 @@ This document explains how to build and install phonon-vlc-mplayer under Windows
       * Website: http://trolltech.com/
       * Download link: ftp://ftp.trolltech.com/qt/source/
    * Phonon: >= 4.2.80 (provided by phonon-vlc-mplayer)
-      * Website: http://kde.org/
+      * Website: http://phonon.kde.org/
    * CMake: >= 2.6.1
       * Website: http://cmake.org/
       * Download link: http://cmake.org/HTML/Download.html
@@ -27,21 +27,12 @@ This document explains how to build and install phonon-vlc-mplayer under Windows
 If Qt is not present on your distribution (libqt4-devel packages), you will have to compile Qt yourself. Recent GNU/Linux distributions already provide Qt.
 Please refer to the links above for downloading and installing Qt "by hand".
 
-==MinGW==
-
- * Install Qt compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.3-mingw.exe qt-win-opensource-4.4.3-mingw.exe]
-
-This package includes Qt and MinGW.
-
-(For the little story, the default Windows backend for Phonon is based on !DirectShow 9 and MinGW is not capable of compiling it, that's why Trolltech doesn't ship the !DirectShow 9 backend with Qt MinGW)
-
 ==Visual C++==
 
-You can use Visual C++ instead of MinGW, several versions are supported:
+Several versions are supported:
  * Visual C++ 2003 (MSVC71) released in April 2003
  * Visual C++ 2005 (MSVC8) released in November 2005
  * Visual C++ 2008 (MSVC9) released in November 2007
-Previous versions of Visual C++ are not supported.
 
 Visual C++ (within Visual Studio) comes in different editions:
  * Express - free for non commercial use
@@ -64,16 +55,25 @@ After installing the evaluation copy, there is not much to do: the installer of 
 
 /!\ The whole installation process of Visual Studio Express Edition is long and uneasy, I recommend to use an evaluation copy of Visual Studio or MinGW.
 
-Here some informations about Visual C++ 2005 Express Edition (informations taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio#Visual_Studio_2005_Express_Edition KDE TechBase])
+Here some informations about Visual C++ 2005 Express Edition (taken from [http://techbase.kde.org/index.php?title=Getting_Started/Build/KDE4/Windows/MS_Visual_Studio KDE TechBase])
 
  * Install Visual C++ 2005 Express Edition: http://www.microsoft.com/express/2005/download/default.aspx
  * Install Platform/Windows SDK: [http://en.wikipedia.org/wiki/Microsoft_Windows_SDK#Obtaining_the_SDK link]
  * Install Service Pack 1 for Visual C++ 2005 Express Edition (probably not needed, please tell me if it works without): [http://www.microsoft.com/downloads/details.aspx?FamilyID=7b0b0339-613a-46e6-ab4d-080d4d4a8c4e&DisplayLang=en link]
  * Install DirectX SDK if you want to compile the !DirectShow 9 backend: [http://msdn.microsoft.com/en-us/directx/default.aspx link]
- * Install CMake (see links above)
 
 You need to setup you compiling environment, I use this small script: [http://code.google.com/p/phonon-vlc-mplayer/source/browse/wiki setenv-*.bat].
 Adapt this script to fit your own needs. You have to run it from a 'Command prompt' each time you want to compile something using Visual C++ 2005.
+
+==MinGW==
+
+You can use MinGW instead of Visual C++.
+
+ * Install Qt compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.3-mingw.exe qt-win-opensource-4.4.3-mingw.exe]
+
+This package includes Qt and MinGW.
+
+(For the little story, the default Windows backend for Phonon is based on !DirectShow 9 and MinGW is not capable of compiling it, that's why Trolltech doesn't ship the !DirectShow 9 backend with Qt for MinGW)
 
 ==MacOS X==
 
@@ -82,7 +82,7 @@ However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source 
 
 ==Compiling the latest Phonon library==
 
-Qt generally comes with an old version of Phonon, that's one of the reason why phonon-vlc-mplayer ships its own copy of Phonon SVN that contains several patches not included yet inside the official version.
+Qt generally comes with an old version of Phonon, that's one of the reason why phonon-vlc-mplayer ships its own copy of Phonon SVN (contains several patches not included yet inside the official version).
 
 ==MPlayer Phonon backend==
 
@@ -101,11 +101,12 @@ MPlayer Phonon backend runs the MPlayer (mplayer.exe under Windows) process in s
 
 ==VLC Phonon backend==
 
-/!\ phonon-vlc-mplayer, beside its name, does not come anymore with the VLC backend. Please see http://git.videolan.org/?p=vlc-lukas.git;a=tree;f=projects/phonon/vlc;hb=HEAD
+/!\ phonon-vlc-mplayer (beside its name) does not come anymore with the VLC backend.
+It is now developed independently, please see http://git.videolan.org/?p=vlc-lukas.git;a=tree;f=projects/phonon/vlc;hb=HEAD
 
  * Dependencies
    * Same as above +
-   * VLC: VLC-0.9 (git trunk)
+   * VLC: git trunk
       * Website: http://www.videolan.org/
       * Developers infos: http://wiki.videolan.org/Developers_Corner
       * Download link: http://nightlies.videolan.org/
@@ -158,19 +159,19 @@ You can also generate Debian, RPM, NSIS, ZIP... packages using command: {{{make 
 
 =Run the Phonon backends=
 
-Qt looks for a specific location where Phonon .(dll|so) plugins are installed. Qt will load the first plugin found from this location.
+Qt looks for a specific location where Phonon .(dll|so) backends are installed. Qt will load the first backend found from this location.
 Check Qt Plugins !HowTo: http://doc.trolltech.com/main-snapshot/plugins-howto.html
 
-KDE allows you to configure the Phonon backend you want to use via the command {{{systemsettings}}}.
-Qt comes with the program {{{qtconfig}}} under GNU/Linux that let's you configure your Phonon backend.
+KDE allows you to configure the Phonon backend you want to use via {{{systemsettings}}}.
+Qt comes with {{{qtconfig}}} under GNU/Linux that let's you configure the preferred Phonon backend.
 
-Currenlty, Phonon backends have to be recompiled either for KDE or for Qt, that's why you will find some KDE4_FOUND defines in phonon-vlc-mplayer code (Backend.cpp and CMakeLists.txt)
+Currently, Phonon backends have to be recompiled either for KDE or for Qt, that's why you will find some KDE4_FOUND defines inside phonon-vlc-mplayer code (Backend.cpp and CMakeLists.txt)
 
-Qt looks for Phonon plugins inside {{{$QTDIR/plugins/phonon_backend}}} and {{{$APPDIR/phonon_backend}}}
+Qt looks for Phonon backends inside {{{$QTDIR/plugins/phonon_backend}}} and {{{$APPDIR/phonon_backend}}}
 
 =Use phonon-vlc-mplayer with your own Qt application=
 
-Copy phonon-vlc.(dll|so) or phonon-mplayer.(dll|so) inside {{{MYAPP/phonon_backend/}}}
+Copy phonon-mplayer.(dll|so) inside {{{MYAPP/phonon_backend/}}}
 
 It is not possible to do a {{{Phonon::setPreferredBackend("backend my app need")}}} inside your Qt application.
 
