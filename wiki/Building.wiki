@@ -24,18 +24,18 @@ This document explains how to build and install phonon-vlc-mplayer under Windows
 
 ==GNU/Linux==
 
-If Qt-4.4 is not present on your distribution (libqt4-devel packages), you will have to compile Qt-4.4 yourself. Recent GNU/Linux distributions already provide Qt-4.4.
-Please refer to the links above for downloading and installing Qt-4.4 "by hand".
+If Qt is not present on your distribution (libqt4-devel packages), you will have to compile Qt yourself. Recent GNU/Linux distributions already provide Qt.
+Please refer to the links above for downloading and installing Qt "by hand".
 
 ==MinGW==
 
- * Install Qt-4.4 compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.3-mingw.exe qt-win-opensource-4.4.3-mingw.exe]
+ * Install Qt compiled for MinGW: [http://ftp.ntua.gr/pub/X11/Qt/qt/source/qt-win-opensource-4.4.3-mingw.exe qt-win-opensource-4.4.3-mingw.exe]
 
-Qt-4.4 already contains a simple way to install MinGW.
-Be aware that MinGW version of Qt-4.4 does not come with Phonon. This is not an issue since phonon-vlc-mplayer comes with its own Phonon SVN copy.
+Qt already contains a simple way to install MinGW.
+Be aware that MinGW version of Qt does not come with Phonon. This is not an issue since phonon-vlc-mplayer comes with its own Phonon SVN copy.
 
 (For the little story, the default Windows backend for Phonon is based on !DirectShow 9 and MinGW is not capable of compiling DS9 code,
-that's why Trolltech doesn't ship Phonon with Qt-4.4 MinGW)
+that's why Trolltech doesn't ship Phonon with Qt MinGW)
 
 ==Visual C++==
 
@@ -53,8 +53,8 @@ Visual C++ (within Visual Studio) comes in different editions:
 
 Why Visual C++ over MinGW? Visual C++ is better for day to day developping and produces better binaries.
 
-After installing Visual Studio, you will be able to compile Qt-4.4 (see links above) and then phonon-vlc-mplayer.
-(Qt-4.4 Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
+After installing Visual Studio, you will be able to compile Qt (see links above) and then phonon-vlc-mplayer. When compiling Qt, I recommend to use {{{configure -no-qt3support -nomake examples -nomake demos}}}
+(Old Qt Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
 ===Visual Studio Evaluation Copy===
 
@@ -83,8 +83,7 @@ However, VLC and MPlayer run under MacOS X and 99% of phonon-vlc-mplayer source 
 
 ==Compiling the latest Phonon library==
 
-If you use KDE-4.1, then you have the latest Phonon library and phonon-vlc-mplayer will use it.
-Qt-4.4 contains an old version of Phonon, that's why phonon-vlc-mplayer ships with its own copy of Phonon SVN.
+Qt contains an old version of Phonon, that's why phonon-vlc-mplayer ships with its own copy of Phonon SVN.
 
 ==VLC Phonon backend==
 
