@@ -54,6 +54,7 @@ Visual C++ (within Visual Studio) comes in different editions:
 Why Visual C++ over MinGW? Visual C++ is better for day to day developping and produces better binaries.
 
 After installing Visual Studio, you will be able to compile Qt (see links above) and then phonon-vlc-mplayer. When compiling Qt, I recommend to use {{{configure -no-qt3support -nomake examples -nomake demos}}}
+
 (Old Qt Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
 ===Visual Studio Evaluation Copy===
