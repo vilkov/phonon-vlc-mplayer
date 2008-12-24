@@ -17,9 +17,9 @@ This document explains how to build and install !QuarkPlayer under Windows and G
       * Download link: ftp://ftp.trolltech.com/qt/source/
    * Phonon >= 4.2.80 (provided with !QuarkPlayer, no manual install needed)
       * Website: http://phonon.kde.org/
-   * TagLib >= 1.5.1 (provided with !QuarkPlayer, no manual install needed)
+   * !TagLib >= 1.5.1 (provided with !QuarkPlayer, no manual install needed)
       * Website: http://developer.kde.org/~wheeler/taglib.html
-   * MediaInfo >= 0.7.8 (provided with !QuarkPlayer, no manual install needed)
+   * !MediaInfo >= 0.7.8 (provided with !QuarkPlayer, no manual install needed)
       * Website: http://mediainfo.sourceforge.net/
    * CMake >= 2.6.2
       * Website: http://cmake.org/
