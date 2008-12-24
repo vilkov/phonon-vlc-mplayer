@@ -1,9 +1,9 @@
-#summary How to build and install QuarkPlayer
+#summary How to build and install !QuarkPlayer
 #labels Featured,Phase-Requirements,Phase-Deploy
 
 =Introduction=
 
-This document explains how to build and install QuarkPlayer under Windows and GNU/Linux.
+This document explains how to build and install !QuarkPlayer under Windows and GNU/Linux.
 
 =Requirements=
 
@@ -15,11 +15,11 @@ This document explains how to build and install QuarkPlayer under Windows and GN
    * Qt >= 4.4.3
       * Website: http://trolltech.com/
       * Download link: ftp://ftp.trolltech.com/qt/source/
-   * Phonon >= 4.2.80 (provided by QuarkPlayer, no manual install needed)
+   * Phonon >= 4.2.80 (provided by !QuarkPlayer, no manual install needed)
       * Website: http://phonon.kde.org/
-   * TagLib >= 1.5.1 (provided by QuarkPlayer, no manual install needed)
+   * TagLib >= 1.5.1 (provided by !QuarkPlayer, no manual install needed)
       * Website: http://developer.kde.org/~wheeler/taglib.html
-   * MediaInfo >= 0.7.8 (provided by QuarkPlayer, no manual install needed)
+   * MediaInfo >= 0.7.8 (provided by !QuarkPlayer, no manual install needed)
       * Website: http://mediainfo.sourceforge.net/
    * CMake: >= 2.6.2
       * Website: http://cmake.org/
@@ -46,7 +46,7 @@ Visual C++ (within Visual Studio) comes in different editions:
 
 Why Visual C++ over MinGW? Visual C++ is better for day to day developing and produces better binaries. Visual C++ is the recommended compiler under Windows.
 
-After installing Visual Studio, you will be able to compile Qt (see links above) and then QuarkPlayer. When compiling Qt, I recommend to use {{{configure -no-qt3support -nomake examples -nomake demos}}}
+After installing Visual Studio, you will be able to compile Qt (see links above) and then !QuarkPlayer. When compiling Qt, I recommend to use {{{configure -no-qt3support -nomake examples -nomake demos}}}
 
 (Old Qt Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
@@ -81,12 +81,12 @@ This package already also comes with MinGW, thus you don't need to install it in
 
 ==MacOS X==
 
-I didn't try QuarkPlayer under MacOS X (I don't have an Apple computer).
-However, MPlayer runs under MacOS X and 99% of QuarkPlayer source code is multiplatform and depends only on Qt. Only need should be to modify CMakeLists.txt files.
+I didn't try !QuarkPlayer under MacOS X (I don't have an Apple computer).
+However, MPlayer runs under MacOS X and 99% of !QuarkPlayer source code is multiplatform and depends only on Qt. Only need should be to modify CMakeLists.txt files.
 
 ==Compiling the latest Phonon library==
 
-Qt generally comes with an old version of Phonon, that's one of the reason why QuarkPlayer ships its own copy of Phonon SVN (contains several patches not included yet inside the official version).
+Qt generally comes with an old version of Phonon, that's one of the reason why !QuarkPlayer ships its own copy of Phonon SVN (contains several patches not included yet inside the official version).
 
 ==MPlayer Phonon backend==
 
@@ -105,7 +105,7 @@ MPlayer Phonon backend runs the MPlayer (mplayer.exe under Windows) process in s
 
 ==VLC Phonon backend==
 
-/!\ QuarkPlayer (beside its name) does not come anymore with the VLC backend.
+/!\ !QuarkPlayer does not come anymore with the VLC backend.
 It is now developed independently, please see http://git.videolan.org/?p=vlc-lukas.git;a=tree;f=projects/phonon/vlc;hb=HEAD
 
  * Dependencies
@@ -125,7 +125,7 @@ Source code from Subversion repository is around 10 MB.
 
  * Linux
 You need to install [http://subversion.tigris.org/ Subversion], and then enter this command line:
-{{{svn co http://phonon-vlc-mplayer.googlecode.com/svn/trunk QuarkPlayer}}}
+{{{svn co http://phonon-vlc-mplayer.googlecode.com/svn/trunk quarkplayer}}}
 
  * Windows
 Under Windows, I recommend to install [http://tortoisesvn.tigris.org/ TortoiseSVN].
@@ -169,7 +169,7 @@ Check Qt Plugins !HowTo: http://doc.trolltech.com/main-snapshot/plugins-howto.ht
 KDE allows you to configure the Phonon backend you want to use via {{{systemsettings}}}.
 Qt comes with {{{qtconfig}}} under GNU/Linux that let's you configure the preferred Phonon backend.
 
-Currently, Phonon backends have to be recompiled either for KDE or for Qt, that's why you will find some KDE4_FOUND defines inside QuarkPlayer code (Backend.cpp and CMakeLists.txt)
+Currently, Phonon backends have to be recompiled either for KDE or for Qt, that's why you will find some KDE4_FOUND defines inside !QuarkPlayer code (Backend.cpp and CMakeLists.txt)
 
 Qt looks for Phonon backends inside {{{$QTDIR/plugins/phonon_backend}}} and {{{$APPDIR/phonon_backend}}}
 
