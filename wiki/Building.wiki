@@ -1,4 +1,4 @@
-#summary How to build and install !QuarkPlayer
+#summary How to build and install QuarkPlayer
 #labels Featured,Phase-Requirements,Phase-Deploy
 
 =Introduction=
@@ -15,13 +15,13 @@ This document explains how to build and install !QuarkPlayer under Windows and G
    * Qt >= 4.4.3
       * Website: http://trolltech.com/
       * Download link: ftp://ftp.trolltech.com/qt/source/
-   * Phonon >= 4.2.80 (provided by !QuarkPlayer, no manual install needed)
+   * Phonon >= 4.2.80 (provided with !QuarkPlayer, no manual install needed)
       * Website: http://phonon.kde.org/
-   * TagLib >= 1.5.1 (provided by !QuarkPlayer, no manual install needed)
+   * TagLib >= 1.5.1 (provided with !QuarkPlayer, no manual install needed)
       * Website: http://developer.kde.org/~wheeler/taglib.html
-   * MediaInfo >= 0.7.8 (provided by !QuarkPlayer, no manual install needed)
+   * MediaInfo >= 0.7.8 (provided with !QuarkPlayer, no manual install needed)
       * Website: http://mediainfo.sourceforge.net/
-   * CMake: >= 2.6.2
+   * CMake >= 2.6.2
       * Website: http://cmake.org/
       * Download link: http://cmake.org/HTML/Download.html
    * Compiler: GCC or MinGW or Visual C++
@@ -135,7 +135,7 @@ http://phonon-vlc-mplayer.googlegroups.com/web/phonon-vlc-mplayer-tortoisesvn.pn
 
 =How to build=
 
-Warning: be sure that your Qt installation matches the way you compile vlc-mplayer i.e if Qt is in debug mode, vlc-mplayer should be compiled in debug mode too. You cannot mix vlc-mplayer in release mode and Qt in debug mode (you will get an error message: "backend cannot be loaded" when running vlc-mplayer).
+Warning: be sure that your Qt installation matches the way you compile the !QuarkPlayer i.e if Qt is in debug mode, !QuarkPlayer should be compiled in debug mode too. You cannot mix !QuarkPlayer in release mode and Qt in debug mode (you will get an error message: "backend cannot be loaded" when running !QuarkPlayer).
 
  * Under GNU/Linux:
 {{{
@@ -163,10 +163,10 @@ You can also generate Debian, RPM, NSIS, ZIP... packages using command: {{{make 
 
 =Run the Phonon backends=
 
-Qt looks for a specific location where Phonon .(dll|so) backends are installed. Qt will load the first backend found from this location.
+Qt looks for a specific location where Phonon .(dll|so) backends are installed. Qt will load the first backend found (alphabetically) from this location.
 Check Qt Plugins !HowTo: http://doc.trolltech.com/main-snapshot/plugins-howto.html
 
-KDE allows you to configure the Phonon backend you want to use via {{{systemsettings}}}.
+KDE allows you to configure the Phonon backend you want to use globally via {{{systemsettings}}}.
 Qt comes with {{{qtconfig}}} under GNU/Linux that let's you configure the preferred Phonon backend.
 
 Currently, Phonon backends have to be recompiled either for KDE or for Qt, that's why you will find some KDE4_FOUND defines inside !QuarkPlayer code (Backend.cpp and CMakeLists.txt)
@@ -177,6 +177,6 @@ Qt looks for Phonon backends inside {{{$QTDIR/plugins/phonon_backend}}} and {{{$
 
 Copy phonon-mplayer.(dll|so) inside {{{MYAPP/phonon_backend/}}}
 
-It is not possible to do a {{{Phonon::setPreferredBackend("backend my app need")}}} inside your Qt application.
+It is not possible to specify the Phonon backend used at the application level (there no function like {{{Phonon::setPreferredBackend("the backend my app needs")}}})
 
 Please tell me if you encounter some problems via: phonon-vlc-mplayer@googlegroups.com
