@@ -1,7 +1,7 @@
 @echo off
 
-@echo Setting up Qt 4.5.0...
-@set QTDIR=C:\Qt\4.5.0
+@echo Setting up Qt 4.4.0...
+@set QTDIR=C:\Qt\4.4.0
 @set PATH=%QTDIR%\bin;%PATH%
 @set QMAKESPEC=win32-msvc2005
 
@@ -23,5 +23,5 @@ rem See C:\Program Files\Microsoft DirectX SDK (November 2007)\Utilities\Bin\dx_
 @set LIB=%DXSDK_DIR%\Lib\x86;%LIB%
 
 rem Must be the last line in this script: create a new shell/prompt
-@echo Setting up Microsoft Visual Studio...
+@echo Setting up Microsoft Visual Studio 2005 (MSVC80)...
 "C:\Program Files\Microsoft Visual Studio 8\Common7\Tools\vsvars32.bat"
