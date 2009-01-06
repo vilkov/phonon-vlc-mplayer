@@ -154,7 +154,7 @@ make deb
 make rpm
 
 #Create a generic .tar.bz2 file containing the binaries
-nmake package
+make package
 }}}
 
 Example of build structure:
