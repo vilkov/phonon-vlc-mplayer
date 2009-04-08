@@ -8,7 +8,7 @@ This document explains how to build and install !QuarkPlayer under Windows and G
 =Requirements=
 
  * OS: GNU/Linux, Windows
- * Tested under: Windows XP SP2, Ubuntu Hardy 8.04
+ * Tested under: Windows XP SP3, Windows Vista SP1, Ubuntu 8.10
  * Language: C++
  * License: GNU LGPL
  * Dependencies:
