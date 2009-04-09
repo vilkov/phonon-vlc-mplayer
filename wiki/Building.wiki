@@ -53,7 +53,9 @@ Why Visual C++ over MinGW? Visual C++ is better for day to day developing and pr
 
 After installing Visual Studio, you will be able to compile Qt (see links above) and then !QuarkPlayer. When compiling Qt, I recommend to use {{{configure -no-qt3support -nomake examples -nomake demos}}}
 
-(Old Qt Windows binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
+I recommend the use of the [http://www.qtsoftware.com/downloads/visual-studio-add-in Qt Visual Studio Add-in]. This helps when debugging QString, QStringList...
+
+(Old Qt Windows Visual C++ binaries can be found here: http://qt.windows.binaries.googlepages.com/index.html)
 
 ===Visual Studio Evaluation Copy===
 
