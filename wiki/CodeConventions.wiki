@@ -677,6 +677,14 @@ Same for "if (...) {" and "if (...){"
 
 [http://www.google.com/codesearch?hl=en&lr=&q=%22char*%22&btnG=Search "char*" -> 1,710,000 answers]
 
+"filename" lang:C++ case sensitive -> 551,000 answers
+
+"fileName" lang:C++ case sensitive -> 203,000 answers
+
+"filename" lang:Java case sensitive -> 184,000 answers
+
+"fileName" lang:Java case sensitive -> 117,000 answers
+
 General idea is that you want your code to be accessible to other developers (that leads to more contributions), a good start is to code in a 'standard' way that most developers follow.
 
 ==Methods and functions==
