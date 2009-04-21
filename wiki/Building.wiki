@@ -18,7 +18,7 @@ This document explains how to build and install !QuarkPlayer under Windows and G
    * CMake >= 2.6.2
       * Website: http://cmake.org/
       * Download link: http://cmake.org/HTML/Download.html
-   * Compiler: GCC or MinGW or Visual C++
+   * Compiler: GCC or MinGW or Visual C++ (from version 2003 to 2008)
    * Phonon (provided with !QuarkPlayer, no manual install needed)
       * Website: http://phonon.kde.org/
    * !TagLib (provided with !QuarkPlayer, no manual install needed)
