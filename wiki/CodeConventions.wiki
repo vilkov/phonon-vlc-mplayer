@@ -45,7 +45,7 @@ _Inexperienced developers, and cowboys who do not know any better, will often fi
 
 ==A good example is better than a long speech==
 
-Here is an implementation of a String class that inherits from std::string, file is named String.h
+Here is an implementation of a String class that inherits from std::string (which is bad btw), file is named String.h
 
 {{{
 /*
@@ -73,18 +73,6 @@ Here is an implementation of a String class that inherits from std::string, file
  */
 class String : public std::string {
 public:
-
-	/**
-	 * Null string.
-	 *
-	 * Rather than to code something like this:
-	 * if (myString == "")
-	 * it's better to write:
-	 * if (myString.empty())
-	 * return "" -> return String::null
-	 */
-	static const String null;
-
 
 	String() : std::string() { }
 
@@ -514,8 +502,6 @@ Example (String.cpp):
 #include <algorithm>
 #include <sstream>
 using namespace std;
-
-const String String::null;
 
 int String::toInteger() const {
 	int tmp;
