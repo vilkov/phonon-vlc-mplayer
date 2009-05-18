@@ -8,7 +8,7 @@ When writing in English, a sentence starts with an upper case letter and ends wi
 Conventions exist for other characters like {{{(}}} {{{)}}} {{{?}}} {{{,}}} {{{-}}}...
 Over time the same kind of conventions appeared for programming languages.
 
-The big picture is that you want your code to be easily accessible to other developers (that leads to more contributions). The idea is to code in a "standard" way that most people follow and like because you simply don't want to start a [http://en.wikipedia.org/wiki/Spaghetti_code spaghetti code]. Code conventions generally match the programming paradigm that is used.
+The big picture is that you want your code to be easily accessible to other developers (that leads to more contributions). The idea is to code in a "standard" way that most people follow and like. Code conventions generally match the programming paradigm that is used.
 
 In our case, C++ is an oriented object language and thus most C++ developpers follow "object-oriented programming" conventions. These conventions are pretty different from C for example.
 In C most developpers use
@@ -421,7 +421,7 @@ Another option is to start private members by {{{m_}}}.
 ==Constants==
 
 {{{
-	static const std::string MY_CONSTANT;
+	static const char * MY_CONSTANT;
 }}}
 
 ==Indentation==
@@ -791,7 +791,7 @@ Visual C++ project files
 
 ==Qt Specific issues==
 
-In order to avoid unnecessary include directories (and thus increase compilation time) it is recommended to write:
+In order to avoid unnecessary include directories it is recommended to write:
 
 {{{
 #include <QtCore/QObject>
@@ -820,3 +820,11 @@ This way, only one include directory is needed during compilation: {{{-I$QTDIR/i
 [http://www.gamesfromwithin.com/articles/0406/000024.html Simple Is Beautiful]
 
 [http://doc.trolltech.com/qq/qq13-apis.html Designing Qt-Style C++ APIs]
+
+[http://qt.gitorious.org/qt/pages/ApiDesignPrinciples Qt Api Design Principles]
+
+[http://chaos.troll.no/~shausman/api-design/api-design.pdf The Little Manual of API Design]
+
+[http://qt.gitorious.org/qt/pages/CodingConventions Qt Coding Conventions]
+
+[http://qt.gitorious.org/qt/pages/BinaryCompatibilityWorkarounds Qt Binary Compatibility Workarounds]
