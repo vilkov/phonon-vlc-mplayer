@@ -12,10 +12,10 @@ Under Windows and Linux, for video playback, I currently recommend the MPlayer b
 
 === Aero (Windows Vista) is disabled with the MPlayer backend ===
 This is a known issue, cf http://thread.gmane.org/gmane.comp.video.mplayer.devel/48973
-A solution is to use the new Direct3D video output driver. It is integrated within QuarkPlayer installer under Windows.
+A solution is to use the new Direct3D video output driver. It is integrated within !QuarkPlayer installer under Windows.
 
 === Where do you get the MPlayer builds under Windows? ===
-QuarkPlayer integrates builds from Sherpya: http://sourceforge.net/projects/mplayer-win32/
+!QuarkPlayer integrates builds from Sherpya: http://sourceforge.net/projects/mplayer-win32/
 
 === Incorrect length of VBR mp3 files with the MPlayer backend ===
 This is a known issue, cf http://article.gmane.org/gmane.comp.video.mplayer.devel/42003
