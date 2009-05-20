@@ -154,7 +154,7 @@ cd build
 make
 make install
 
-#Create a Debian package (you need to install fakeroot)
+#Create a Debian package (you need to install fakeroot and debhelper)
 make deb
 
 #Create a RPM package (you need to install rpmbuild)
