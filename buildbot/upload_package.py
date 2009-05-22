@@ -16,27 +16,36 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys, os
+import sys, os, glob
 import ftplib
 
-def uploadFile(server, login, password, serverPath, fileToUpload):
+def ftp_upload_files(host, login, password, host_path, files_to_upload):
 	"""
-	This method upload a file onto a FTP server in binary mode.
+	Uploads files onto a FTP server in binary mode.
+	Once the files are uploaded, they are deleted.
 	"""
 
-	print 'Upload {0} to ftp://{1}@{2}:{3}'.format(
-		fileToUpload, login, server, serverPath)
-
-	file = open(fileToUpload, 'rb')
-	ftp = ftplib.FTP(server)
+	ftp = ftplib.FTP(host)
 	ftp.login(login, password)
-	ftp.storbinary('STOR ' + os.path.join(serverPath, os.path.basename(fileToUpload)), file)
+
+	for file_to_upload in files_to_upload:
+		print 'upload {0} to ftp://{1}@{2}:{3}'.format(file_to_upload, login, host, host_path)
+
+		file = open(file_to_upload, 'rb')
+		ftp.storbinary('STOR ' + os.path.join(host_path, os.path.basename(file_to_upload)), file)
+
+		print 'rm {0}'.format(file_to_upload)
+		os.remove(file_to_upload)
+
 	ftp.quit()
 
 if __name__ == "__main__":
 	file = open('login.txt', 'r')
-	login = file.readline().split()[0]
-	password = file.readline().split()[0]
-	fileToUpload = sys.argv[1]
-	uploadFile('192.168.0.12', login, password, '/var/www/snapshots/', fileToUpload)
-	os.remove(fileToUpload)
+	login = file.readline().strip()
+	password = file.readline().strip()
+	files_to_upload = []
+	for i, pattern in enumerate(sys.argv):
+		if i > 0:
+			files_to_upload.extend(glob.glob(pattern))
+	print files_to_upload
+	ftp_upload_files('192.168.0.12', login, password, '/var/www/snapshots/', files_to_upload)
