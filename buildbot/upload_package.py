@@ -22,7 +22,6 @@ import ftplib
 def ftp_upload_files(host, login, password, host_path, files_to_upload):
 	"""
 	Uploads files onto a FTP server in binary mode.
-	Once the files are uploaded, they are deleted.
 	"""
 
 	ftp = ftplib.FTP(host)
@@ -34,18 +33,27 @@ def ftp_upload_files(host, login, password, host_path, files_to_upload):
 		file = open(file_to_upload, 'rb')
 		ftp.storbinary('STOR ' + os.path.join(host_path, os.path.basename(file_to_upload)), file)
 
-		print 'rm {0}'.format(file_to_upload)
-		os.remove(file_to_upload)
-
 	ftp.quit()
 
 if __name__ == "__main__":
 	file = open('login.txt', 'r')
 	login = file.readline().strip()
 	password = file.readline().strip()
+
 	files_to_upload = []
 	for i, pattern in enumerate(sys.argv):
 		if i > 0:
+
+			# Fix a bug under Windows,
+			# this script gets called with these arguments:
+			# ['upload_package.py', '"*.exe"', '"*.deb"', '"*.rpm"']
+			# instead of ['upload_package.py', '*.exe', '*.deb', '*.rpm']
+			pattern = pattern.replace("\"", "")
+
 			files_to_upload.extend(glob.glob(pattern))
-	print files_to_upload
+
 	ftp_upload_files('192.168.0.12', login, password, '/var/www/snapshots/', files_to_upload)
+
+	for file_to_upload in files_to_upload:
+		print 'rm {0}'.format(file_to_upload)
+		os.remove(file_to_upload)
