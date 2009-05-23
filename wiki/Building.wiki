@@ -80,6 +80,8 @@ Adapt this script to fit your own needs. You have to run it from a 'Command prom
 
 You can use MinGW instead of Visual C++.
 
+/!\ MinGW STL does not support wide characters (wchar_t), see http://www.mingw.org/wiki/wide_characters
+
  * Install Qt MinGW SDK: http://www.qtsoftware.com/downloads/sdk-windows-cpp
 
 This package already also comes with MinGW, thus you don't need to install it independently.
