@@ -29,16 +29,22 @@ def ftp_upload_files(host, login, password, host_path, files_to_upload):
 
 	for file_to_upload in files_to_upload:
 		print 'upload {0} to ftp://{1}@{2}:{3}'.format(file_to_upload, login, host, host_path)
-
 		file = open(file_to_upload, 'rb')
-		ftp.storbinary('STOR ' + os.path.join(host_path, os.path.basename(file_to_upload)), file)
+		destpath = os.path.join(host_path, os.path.basename(file_to_upload))
+		ftp.storbinary('STOR ' + destpath, file)
+
+		mode = '644'
+		print 'chmod {0} {1}'.format(mode, file_to_upload)
+		ftp.voidcmd('SITE CHMOD ' + mode + ' ' + destpath)
 
 	ftp.quit()
 
 if __name__ == "__main__":
-	file = open('login.txt', 'r')
+	loginfile = 'login.txt'
+	file = open(loginfile, 'r')
 	login = file.readline().strip()
 	password = file.readline().strip()
+	os.remove(loginfile)
 
 	files_to_upload = []
 	for i, pattern in enumerate(sys.argv):
@@ -46,9 +52,10 @@ if __name__ == "__main__":
 
 			# Fix a bug under Windows,
 			# this script gets called with these arguments:
-			# ['upload_package.py', '"*.exe"', '"*.deb"', '"*.rpm"']
+			# ['upload_package.py', "'*.exe'", "'*.deb'", "'*.rpm'"]
 			# instead of ['upload_package.py', '*.exe', '*.deb', '*.rpm']
-			pattern = pattern.replace("\"", "")
+			pattern = pattern.replace('\'', '')
+			pattern = pattern.replace('\"', '')
 
 			files_to_upload.extend(glob.glob(pattern))
 
