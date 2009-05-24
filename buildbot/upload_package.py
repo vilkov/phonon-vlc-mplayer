@@ -44,6 +44,7 @@ if __name__ == "__main__":
 	file = open(loginfile, 'r')
 	login = file.readline().strip()
 	password = file.readline().strip()
+	file.close()
 	os.remove(loginfile)
 
 	files_to_upload = []
